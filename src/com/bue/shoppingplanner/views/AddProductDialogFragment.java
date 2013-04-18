@@ -10,6 +10,7 @@ import com.bue.shoppingplanner.model.ProductKind;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -41,7 +42,16 @@ public class AddProductDialogFragment extends DialogFragment {
 		}
 		addSpinnerFromDatabase(getActivity(),dialogMainView, productKindAddDialogSpinner, R.id.productKindAddDialogSpinner, productKindSpinnerList, android.R.layout.simple_spinner_item,android.R.layout.simple_spinner_dropdown_item);
 		builder.setTitle("Add Product")
-			.setView(dialogMainView);
+			.setView(dialogMainView)
+			.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                }
+            })
+            .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                }
+            });
+
 		return builder.create();
 	}
 	
