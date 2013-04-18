@@ -165,78 +165,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.execSQL(CREATE_TABLE_ADDRESS);
 		db.execSQL(CREATE_TABLE_SHOP);
 		db.execSQL(CREATE_TABLE_BUYS);
-		
-		//Insert Groups
-		ProductGroup group=new ProductGroup();
-		group.setName("Main Need");//1
-		addProductGroup(group);
-		group.setName("Secondary Need");//2
-		addProductGroup(group);
-		group.setName("Other");//3
-		addProductGroup(group);
-		group.setName("Bill");//4
-		addProductGroup(group);
-		group.setName("Tax");//5
-		addProductGroup(group);
-		group.setName("Entertainment");//6
-		addProductGroup(group);
-		group.setName("Maintenance");//7
-		addProductGroup(group);
-		
-		//Insert Kinds
-		ProductKind kind=new ProductKind();
-		kind.setName("Food");//1		
-		addProductKind(kind);
-		kind.setName("Drinks");//2		
-		addProductKind(kind);
-		kind.setName("Health");//3		
-		addProductKind(kind);
-		kind.setName("Telecomunication");//4		
-		addProductKind(kind);
-		kind.setName("Sports");//5		
-		addProductKind(kind);
-		kind.setName("Hobbies");//6		
-		addProductKind(kind);
-		kind.setName("Technology");//7		
-		addProductKind(kind);
-		kind.setName("Work Equipment");//8		
-		addProductKind(kind);
-		kind.setName("Games");//9		
-		addProductKind(kind);
-		kind.setName("Home Equipment");//10		
-		addProductKind(kind);
-		kind.setName("Travel");//11		
-		addProductKind(kind);
-		kind.setName("Houshold");//12		
-		addProductKind(kind);
-		kind.setName("Beauty/Personal Care");//13		
-		addProductKind(kind);
-		kind.setName("Children Products");//14		
-		addProductKind(kind);
-		kind.setName("Mobile Phone Bills");//15		
-		addProductKind(kind);
-		kind.setName("Phone Bills");//16		
-		addProductKind(kind);
-		kind.setName("Energy Bills");//17		
-		addProductKind(kind);
-		kind.setName("Electronics");//18		
-		addProductKind(kind);
-		kind.setName("Cigarettes");//19		
-		addProductKind(kind);
-		kind.setName("Vehicles & Parts");//20		
-		addProductKind(kind);
-		kind.setName("Clothes");//21		
-		addProductKind(kind);
-		kind.setName("Heyngine");//22		
-		addProductKind(kind);
-		kind.setName("Pet");//23		
-		addProductKind(kind);
-		kind.setName("Home Entertainment");//24		
-		addProductKind(kind);
-		kind.setName("Outside Entertainment");//25		
-		addProductKind(kind);
-		kind.setName("Other");//26		
-		addProductKind(kind);
 	}
  
     // Upgrading database
@@ -337,10 +265,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String countQuery = "SELECT  * FROM " + TABLE_PRODUCT_GROUP;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
-        cursor.close();
+        
  
         // return count
         int count=cursor.getCount();
+        cursor.close();
         db.close();
         return count;
     }
@@ -429,10 +358,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String countQuery = "SELECT  * FROM " + TABLE_PRODUCT_KIND;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
-        cursor.close();
+        
  
         // return count
         int count=cursor.getCount();
+        cursor.close();
         db.close();
         return count;
     }
