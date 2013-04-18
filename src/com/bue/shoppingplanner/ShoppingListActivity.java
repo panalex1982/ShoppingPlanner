@@ -1,14 +1,19 @@
 package com.bue.shoppingplanner;
 
+import com.bue.shoppingplanner.views.AddProductDialogFragment;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
 import android.os.Build;
 
-public class ShoppingListActivity extends Activity {
+public class ShoppingListActivity extends FragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,5 +56,19 @@ public class ShoppingListActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	public void showAddProductDialog() {
+        // Create an instance of the dialog fragment and show it
+		DialogFragment dialog = new AddProductDialogFragment();
+        dialog.show(getSupportFragmentManager(), "AddProductDialogFragment");
+    }
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		showAddProductDialog();
+		return true;
+	}
+	
+	
 
 }

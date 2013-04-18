@@ -18,14 +18,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
  
     // Database Name
     private static final String DATABASE_NAME = "shoppingPlannerDB";
- 
-    // Contacts table name
-    private static final String TABLE_CONTACTS = "contacts";
- 
-    // Contacts Table Columns names
-    private static final String KEY_ID = "id";
-    private static final String KEY_NAME = "name";
-    private static final String KEY_PH_NO = "phone_number";
     
     //Tables name
     private static final String TABLE_PRODUCT_GROUP="productGroup";
@@ -52,6 +44,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final String PRODUCT_NAME="name";
 	private static final String PRODUCT_BARCODE="barcode";
 	private static final String PRODUCT_KIND="kind";
+	private static final String PRODUCT_GROUP_ID_FK="productGroupId";
 	
 	//Commercial Product
 	private static final String COMMERCIAL_PRODUCT_BARCODE="barcode";
@@ -117,9 +110,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     								PRODUCT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT ," +
     								PRODUCT_NAME + " TEXT NOT NULL," +
 									PRODUCT_BARCODE + " TEXT NOT NULL," +
-									PRODUCT_KIND+ " INTEGER NOT NULL,"+ 
+									PRODUCT_KIND+ " INTEGER NOT NULL," +
+									PRODUCT_GROUP_ID_FK+ " INTEGER NOT NULL," +
 									"FOREIGN KEY("+PRODUCT_BARCODE+") REFERENCES "+ TABLE_COMMERCIAL_PRODUCT+"("+COMMERCIAL_PRODUCT_BARCODE+"),"+
 									"FOREIGN KEY("+PRODUCT_KIND+") REFERENCES "+ TABLE_PRODUCT_KIND+"("+PRODUCT_KIND_ID+")"+
+									"FOREIGN KEY("+PRODUCT_GROUP_ID_FK+") REFERENCES "+ TABLE_PRODUCT_GROUP+"("+PRODUCT_GROUP_ID+")"+
 									")";
     	
     	//Shop Description
@@ -171,19 +166,77 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.execSQL(CREATE_TABLE_SHOP);
 		db.execSQL(CREATE_TABLE_BUYS);
 		
+		//Insert Groups
 		ProductGroup group=new ProductGroup();
 		group.setName("Main Need");//1
 		addProductGroup(group);
 		group.setName("Secondary Need");//2
 		addProductGroup(group);
-		group.setName("Bill");//3
+		group.setName("Other");//3
 		addProductGroup(group);
-		group.setName("Tax");//4
+		group.setName("Bill");//4
 		addProductGroup(group);
-		group.setName("Entertainment");//5
+		group.setName("Tax");//5
 		addProductGroup(group);
-		group.setName("Maintenance");//6
+		group.setName("Entertainment");//6
 		addProductGroup(group);
+		group.setName("Maintenance");//7
+		addProductGroup(group);
+		
+		//Insert Kinds
+		ProductKind kind=new ProductKind();
+		kind.setName("Food");//1		
+		addProductKind(kind);
+		kind.setName("Drinks");//2		
+		addProductKind(kind);
+		kind.setName("Health");//3		
+		addProductKind(kind);
+		kind.setName("Telecomunication");//4		
+		addProductKind(kind);
+		kind.setName("Sports");//5		
+		addProductKind(kind);
+		kind.setName("Hobbies");//6		
+		addProductKind(kind);
+		kind.setName("Technology");//7		
+		addProductKind(kind);
+		kind.setName("Work Equipment");//8		
+		addProductKind(kind);
+		kind.setName("Games");//9		
+		addProductKind(kind);
+		kind.setName("Home Equipment");//10		
+		addProductKind(kind);
+		kind.setName("Travel");//11		
+		addProductKind(kind);
+		kind.setName("Houshold");//12		
+		addProductKind(kind);
+		kind.setName("Beauty/Personal Care");//13		
+		addProductKind(kind);
+		kind.setName("Children Products");//14		
+		addProductKind(kind);
+		kind.setName("Mobile Phone Bills");//15		
+		addProductKind(kind);
+		kind.setName("Phone Bills");//16		
+		addProductKind(kind);
+		kind.setName("Energy Bills");//17		
+		addProductKind(kind);
+		kind.setName("Electronics");//18		
+		addProductKind(kind);
+		kind.setName("Cigarettes");//19		
+		addProductKind(kind);
+		kind.setName("Vehicles & Parts");//20		
+		addProductKind(kind);
+		kind.setName("Clothes");//21		
+		addProductKind(kind);
+		kind.setName("Heyngine");//22		
+		addProductKind(kind);
+		kind.setName("Pet");//23		
+		addProductKind(kind);
+		kind.setName("Home Entertainment");//24		
+		addProductKind(kind);
+		kind.setName("Outside Entertainment");//25		
+		addProductKind(kind);
+		kind.setName("Other");//26		
+		addProductKind(kind);
 	}
  
     // Upgrading database
@@ -488,8 +541,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	*PRODUCT_NAME + " TEXT NOT NULL," +
 	*PRODUCT_BARCODE + " TEXT NOT NULL," +
 	*PRODUCT_KIND+ " INTEGER NOT NULL,"+ 
+	*PRODUCT_GROUP_ID_FK+ " INTEGER NOT NULL,"+ 
 	*"FOREIGN KEY("+PRODUCT_BARCODE+") REFERENCES "+ TABLE_COMMERCIAL_PRODUCT+"("+COMMERCIAL_PRODUCT_BARCODE+"),"+
 	*"FOREIGN KEY("+PRODUCT_KIND+") REFERENCES "+ TABLE_PRODUCT_KIND+"("+PRODUCT_KIND_ID+")"+
+	*"FOREIGN KEY("+PRODUCT_GROUP_ID_FK+") REFERENCES "+ TABLE_PRODUCT_GROUP+"("+PRODUCT_GROUP_ID+")"+
 	*")"; 
 	*Product
     */
@@ -500,6 +555,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(PRODUCT_NAME, product.getName());
         values.put(PRODUCT_BARCODE, product.getBarcode());
         values.put(PRODUCT_KIND, product.getKind());
+        values.put(PRODUCT_GROUP_ID_FK, product.getKind());
  
         // Inserting Row
         db.insert(TABLE_PRODUCT, null, values);
@@ -510,12 +566,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
  
         Cursor cursor = db.query(TABLE_PRODUCT, new String[] { PRODUCT_NAME, PRODUCT_BARCODE, 
-        		PRODUCT_KIND,}, PRODUCT_ID + "=?",
+        		PRODUCT_KIND,PRODUCT_GROUP_ID_FK, }, PRODUCT_ID + "=?",
                 new String[] { String.valueOf(id) }, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
  
-        Product product = new Product(id, cursor.getString(0), cursor.getString(1), cursor.getInt(2));
+        Product product = new Product(id, cursor.getString(0), cursor.getString(1), cursor.getInt(2), cursor.getInt(3));
         cursor.close();
         db.close();
         
@@ -539,6 +595,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             	product.setName(cursor.getString(1));
             	product.setBarcode(cursor.getString(2));
             	product.setKind(cursor.getInt(3));
+            	product.setGroup(cursor.getInt(4));
                 // Adding contact to list
             	productList.add(product);
             } while (cursor.moveToNext());
@@ -557,6 +614,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(PRODUCT_NAME, product.getName());
         values.put(PRODUCT_BARCODE, product.getBarcode());
         values.put(PRODUCT_KIND, product.getKind());
+        values.put(PRODUCT_GROUP_ID_FK, product.getKind());
  
         // updating row
         int updateMessage =  db.update(TABLE_PRODUCT, values, PRODUCT_ID + " = ?",
