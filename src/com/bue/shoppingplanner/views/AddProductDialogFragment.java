@@ -16,12 +16,23 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 
 public class AddProductDialogFragment extends DialogFragment {
 	private DatabaseHandler db;
-	Spinner productGroupAddDialogSpinner;
-	Spinner productKindAddDialogSpinner;
+	
+	private EditText productAddDialogEditText;
+	private EditText brandAddDialogEditText;
+	private EditText priceAddDialogEditText;
+	private EditText numberAddDialogEditText;
+	
+	private ImageButton numberAddAddDialogImageButton;
+	private ImageButton numberRemoveAddDialogImageButton;
+	
+	private Spinner productGroupAddDialogSpinner;
+	private Spinner productKindAddDialogSpinner;
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -30,7 +41,13 @@ public class AddProductDialogFragment extends DialogFragment {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		View dialogMainView=inflater.inflate(R.layout.add_product_dialog, null);
+		//EditTexts
+		productAddDialogEditText=(EditText) dialogMainView.findViewById(R.id.priceAddDialogTextView);
+		brandAddDialogEditText=(EditText) dialogMainView.findViewById(R.id.brandAddDialogEditText);
+		priceAddDialogEditText=(EditText) dialogMainView.findViewById(R.id.productAddDialogEditText);
+		numberAddDialogEditText=(EditText) dialogMainView.findViewById(R.id.numberAddDialogEditText);
 		
+		//Spinners
 		ArrayList<CharSequence> productGroupSpinnerList=new ArrayList<CharSequence>();
 		for(ProductGroup group:db.getAllProductGroup()){
 			productGroupSpinnerList.add(group.getName());
@@ -41,6 +58,8 @@ public class AddProductDialogFragment extends DialogFragment {
 			productKindSpinnerList.add(kind.getName());
 		}
 		addSpinnerFromDatabase(getActivity(),dialogMainView, productKindAddDialogSpinner, R.id.productKindAddDialogSpinner, productKindSpinnerList, android.R.layout.simple_spinner_item,android.R.layout.simple_spinner_dropdown_item);
+		
+		
 		builder.setTitle("Add Product")
 			.setView(dialogMainView)
 			.setPositiveButton("ok", new DialogInterface.OnClickListener() {
