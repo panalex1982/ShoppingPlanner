@@ -42,9 +42,9 @@ public class AddProductDialogFragment extends DialogFragment {
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		View dialogMainView=inflater.inflate(R.layout.add_product_dialog, null);
 		//EditTexts
-		productAddDialogEditText=(EditText) dialogMainView.findViewById(R.id.priceAddDialogTextView);
+		productAddDialogEditText=(EditText) dialogMainView.findViewById(R.id.productAddDialogEditText);
 		brandAddDialogEditText=(EditText) dialogMainView.findViewById(R.id.brandAddDialogEditText);
-		priceAddDialogEditText=(EditText) dialogMainView.findViewById(R.id.productAddDialogEditText);
+		priceAddDialogEditText=(EditText) dialogMainView.findViewById(R.id.priceAddDialogEditText);
 		numberAddDialogEditText=(EditText) dialogMainView.findViewById(R.id.numberAddDialogEditText);
 		
 		//Spinners
