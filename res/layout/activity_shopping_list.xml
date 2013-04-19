@@ -1,32 +1,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:layout_gravity="right"
-    android:gravity="left|right"
     android:orientation="vertical" >
-
-    <ImageButton
-        android:id="@+id/addProductButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_menu_edit" />
-
-    <ScrollView
-        android:id="@+id/scrollView1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
+        <ListView
+            android:id="@+id/shoppingListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="50dp" >
+        </ListView>
+        
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical" >
-            
-	
-		    <ListView
-		        android:id="@+id/shoppingListView"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content" >
-		    </ListView>
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+	        <ImageButton
+	        android:id="@+id/addProductButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:src="@android:drawable/ic_menu_edit"
+	         />
         </LinearLayout>
-    </ScrollView>
+
 </LinearLayout>

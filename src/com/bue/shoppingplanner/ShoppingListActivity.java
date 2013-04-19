@@ -1,26 +1,69 @@
 package com.bue.shoppingplanner;
 
+import java.util.ArrayList;
+import java.util.Set;
+
 import com.bue.shoppingplanner.views.AddProductDialogFragment;
+import com.bue.shoppingplanner.helpers.ShoppingListElementHelper;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
+import android.widget.ListView;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
 import android.os.Build;
 
-public class ShoppingListActivity extends FragmentActivity {
-
+public class ShoppingListActivity extends FragmentActivity implements AddProductDialogFragment.AddProductDialogListener{
+	
+	private ImageButton addProductButton;
+	private ListView shoppingListView;
+	private ArrayAdapter<CharSequence> shoppingListAdapter;
+	//private Set<String> shoppingListSet;
+	private ArrayList<ShoppingListElementHelper> shoppingListArrayList;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		shoppingListArrayList=new ArrayList<ShoppingListElementHelper>();
+		if(savedInstanceState!=null){
+			ArrayList<String> savedList=savedInstanceState.getStringArrayList("encodedShoppingList");
+			for(String element:savedList){
+				ShoppingListElementHelper objectElement=new ShoppingListElementHelper();
+				objectElement.decode(element);
+				shoppingListArrayList.add(objectElement);
+			}
+		}
 		setContentView(R.layout.activity_shopping_list);
 		// Show the Up button in the action bar.
 		setupActionBar();
+		
+		//addProductButton initialize and listener 
+		addProductButton=(ImageButton) findViewById(R.id.addProductButton);		
+		addProductButton.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if(event.getAction()==MotionEvent.ACTION_UP){
+					showAddProductDialog();
+				}
+				return false;
+			}
+		});
+		
+		//shoppingListView and shoppingListAdapter initialize
+		shoppingListView=(ListView) findViewById(R.id.shoppingListView);
+		shoppingListAdapter=new ArrayAdapter<CharSequence>(this,android.R.layout.simple_spinner_item);
+		shoppingListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		shoppingListView.setAdapter(shoppingListAdapter);
+		addAllElementsOfShoppingListAdapter();		
 	}
 
 	/**
@@ -57,17 +100,49 @@ public class ShoppingListActivity extends FragmentActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
+	
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		ArrayList<String> encodedShoppingList=new ArrayList<String>();
+		for(ShoppingListElementHelper element:shoppingListArrayList){
+			encodedShoppingList.add(element.encodeObject());
+		}
+		outState.putStringArrayList("encodedShoppingList", encodedShoppingList);
+	}
+
 	public void showAddProductDialog() {
         // Create an instance of the dialog fragment and show it
 		DialogFragment dialog = new AddProductDialogFragment();
-        dialog.show(getSupportFragmentManager(), "AddProductDialogFragment");
+        dialog.show(getSupportFragmentManager(), "AddProductDialogFragment");        
     }
 
 	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		showAddProductDialog();
-		return true;
+	public void onDialogPositiveClick(DialogFragment dialog) {
+		AddProductDialogFragment addProductDialog=(AddProductDialogFragment) dialog;
+		shoppingListArrayList.add(addProductDialog.getListElement());
+		addNewElementToShoppingListAdapter();
 	}
+
+	@Override
+	public void onDialogNegativeClick(DialogFragment dialog) {
+		// TODO Do Nothing
+		
+	}
+	
+	public void addAllElementsOfShoppingListAdapter(){
+		for(ShoppingListElementHelper element:shoppingListArrayList){
+			shoppingListAdapter.add(element.getProduct()+" "+element.getPrice()+" x"+element.getQuantity());
+		}
+	}
+	
+	public void addNewElementToShoppingListAdapter(){
+		ShoppingListElementHelper element=shoppingListArrayList.get(shoppingListArrayList.size()-1);
+		shoppingListAdapter.add(element.getProduct()+" "+element.getPrice()+" x"+element.getQuantity());
+	}
+	
+	
 	
 	
 
