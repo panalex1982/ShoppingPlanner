@@ -32,12 +32,12 @@ public class ShoppingListElementArrayAdapter extends ArrayAdapter<ShoppingListEl
 		this.data=data;
 	}
 	
-	public ShoppingListElementArrayAdapter(Context context,	int textViewResourceId) {
+	/*public ShoppingListElementArrayAdapter(Context context,	int textViewResourceId) {
 		super(context, textViewResourceId);
 		this.context=context;
 		this.layoutResourceId=textViewResourceId;
 		data=new ArrayList<ShoppingListElementHelper>();
-	}
+	}*/
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {

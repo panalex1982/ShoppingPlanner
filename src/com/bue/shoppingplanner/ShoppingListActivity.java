@@ -61,10 +61,10 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 		
 		//shoppingListView and shoppingListAdapter initialize
 		shoppingListView=(ListView) findViewById(R.id.shoppingListView);
-		shoppingListAdapter=new ShoppingListElementArrayAdapter(this,R.layout.shopping_list_element_view);
+		shoppingListAdapter=new ShoppingListElementArrayAdapter(this,R.layout.shopping_list_element_view, shoppingListArrayList);
 		shoppingListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		shoppingListView.setAdapter(shoppingListAdapter);
-		addAllElementsOfShoppingListAdapter();		
+		//addAllElementsOfShoppingListAdapter();		
 	}
 
 	/**
@@ -140,9 +140,10 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 	}
 	
 	public void addNewElementToShoppingListAdapter(){
-		ShoppingListElementHelper element=shoppingListArrayList.get(shoppingListArrayList.size()-1);
+		//ShoppingListElementHelper element=shoppingListArrayList.get(shoppingListArrayList.size()-1);
 		//shoppingListAdapter.add(element.getProduct()+" "+element.getPrice()+" x"+element.getQuantity());
-		shoppingListAdapter.add(element);
+		//shoppingListAdapter.add(element);
+		shoppingListAdapter.notifyDataSetChanged();
 	}
 	
 	
