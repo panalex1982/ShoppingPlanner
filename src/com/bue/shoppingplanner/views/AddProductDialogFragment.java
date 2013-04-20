@@ -104,6 +104,7 @@ public class AddProductDialogFragment extends DialogFragment {
                 	
                 	listElement.setGroup(productGroupAddDialogSpinner.getSelectedItem().toString());
                 	listElement.setKind(productKindAddDialogSpinner.getSelectedItem().toString());
+                	listElement.setChecked(true);
                 	//TODO: Debug Log.d("listElement.toString(): ",listElement.toString());
                 	// Send the positive button event back to the host activity
                     mListener.onDialogPositiveClick(AddProductDialogFragment.this);

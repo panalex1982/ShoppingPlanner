@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import com.bue.shoppingplanner.views.AddProductDialogFragment;
+import com.bue.shoppingplanner.views.ShoppingListElementArrayAdapter;
 import com.bue.shoppingplanner.helpers.ShoppingListElementHelper;
 
 import android.os.Bundle;
@@ -24,7 +25,7 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 	
 	private ImageButton addProductButton;
 	private ListView shoppingListView;
-	private ArrayAdapter<CharSequence> shoppingListAdapter;
+	private ShoppingListElementArrayAdapter shoppingListAdapter;
 	//private Set<String> shoppingListSet;
 	private ArrayList<ShoppingListElementHelper> shoppingListArrayList;
 	
@@ -60,7 +61,7 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 		
 		//shoppingListView and shoppingListAdapter initialize
 		shoppingListView=(ListView) findViewById(R.id.shoppingListView);
-		shoppingListAdapter=new ArrayAdapter<CharSequence>(this,android.R.layout.simple_spinner_item);
+		shoppingListAdapter=new ShoppingListElementArrayAdapter(this,R.layout.shopping_list_element_view);
 		shoppingListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		shoppingListView.setAdapter(shoppingListAdapter);
 		addAllElementsOfShoppingListAdapter();		
@@ -133,13 +134,15 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 	
 	public void addAllElementsOfShoppingListAdapter(){
 		for(ShoppingListElementHelper element:shoppingListArrayList){
-			shoppingListAdapter.add(element.getProduct()+" "+element.getPrice()+" x"+element.getQuantity());
+			//shoppingListAdapter.add(element.getProduct()+" "+element.getPrice()+" x"+element.getQuantity());
+			shoppingListAdapter.add(element);
 		}
 	}
 	
 	public void addNewElementToShoppingListAdapter(){
 		ShoppingListElementHelper element=shoppingListArrayList.get(shoppingListArrayList.size()-1);
-		shoppingListAdapter.add(element.getProduct()+" "+element.getPrice()+" x"+element.getQuantity());
+		//shoppingListAdapter.add(element.getProduct()+" "+element.getPrice()+" x"+element.getQuantity());
+		shoppingListAdapter.add(element);
 	}
 	
 	
