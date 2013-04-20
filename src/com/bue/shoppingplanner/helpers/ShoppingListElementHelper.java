@@ -1,6 +1,8 @@
 package com.bue.shoppingplanner.helpers;
 
-public class ShoppingListElementHelper {
+import java.io.Serializable;
+
+public class ShoppingListElementHelper implements Serializable {
 	private String product;
 	private String brand;
 	private double price;

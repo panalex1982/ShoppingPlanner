@@ -41,8 +41,6 @@ public class ShoppingListElementArrayAdapter extends ArrayAdapter<ShoppingListEl
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		
-		
 		View row=convertView;
 		ShoppingListElementHolder holder = null;
        
@@ -67,20 +65,23 @@ public class ShoppingListElementArrayAdapter extends ArrayAdapter<ShoppingListEl
        
         final ShoppingListElementHelper listElement = data.get(position);
         holder.listElementTextView.setText(listElement.getProduct()+" "+listElement.getPrice()+" x"+listElement.getQuantity());
-        holder.listElementCheckBox.setChecked(listElement.isChecked());        
+        holder.listElementCheckBox.setChecked(listElement.isChecked());
         
-        holder.listElementCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
-        	
+        holder.listElementCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){        	
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {
-				/** Getting the view position in the ListView */
-	            ListView parent = (ListView)(buttonView.getParent()).getParent();
-	            int pos = parent.getPositionForView(buttonView);
-	            
-				listElement.setChecked(isChecked);
-				data.remove(pos);
-				data.add(pos,listElement);
+				try{
+					/** Getting the view position in the ListView */
+		            ListView parent = (ListView)(buttonView.getParent()).getParent();
+		            int pos = parent.getPositionForView(buttonView);
+		            
+					listElement.setChecked(isChecked);
+					data.remove(pos);
+					data.add(pos,listElement);
+				}catch(Exception ex){
+					Log.d("onCheckedChangedError", ex.toString());
+				}
 			}
         	
         });
@@ -98,7 +99,7 @@ public class ShoppingListElementArrayAdapter extends ArrayAdapter<ShoppingListEl
 
 
 
-	static class ShoppingListElementHolder
+	private class ShoppingListElementHolder
     {
         ImageView listElementAddImageView, listElementRemoveImageView, listElementEditImageView;
         TextView listElementTextView;

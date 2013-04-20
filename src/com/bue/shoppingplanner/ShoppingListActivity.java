@@ -1,13 +1,17 @@
 package com.bue.shoppingplanner;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Set;
 
+import com.bue.shoppingplanner.utilities.SPSharedPrefrences;
+import com.bue.shoppingplanner.utilities.SerializeObject;
 import com.bue.shoppingplanner.views.AddProductDialogFragment;
 import com.bue.shoppingplanner.views.ShoppingListElementArrayAdapter;
 import com.bue.shoppingplanner.helpers.ShoppingListElementHelper;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -19,20 +23,27 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
+import android.content.SharedPreferences;
 import android.os.Build;
 
-public class ShoppingListActivity extends FragmentActivity implements AddProductDialogFragment.AddProductDialogListener{
+public class ShoppingListActivity extends FragmentActivity implements AddProductDialogFragment.AddProductDialogListener,SPSharedPrefrences{
 	
 	private ImageButton addProductButton;
+	private ImageButton saveProductButton;
+	
 	private ListView shoppingListView;
 	private ShoppingListElementArrayAdapter shoppingListAdapter;
 	//private Set<String> shoppingListSet;
 	private ArrayList<ShoppingListElementHelper> shoppingListArrayList;
 	
+	private SharedPreferences savedShoppingList;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		savedShoppingList=getSharedPreferences(PREFS_NAME, 0);
+		boolean hasList=savedShoppingList.getBoolean(PREFS_HAS_SAVED_FILE, false);
 		shoppingListArrayList=new ArrayList<ShoppingListElementHelper>();
 		if(savedInstanceState!=null){
 			ArrayList<String> savedList=savedInstanceState.getStringArrayList("encodedShoppingList");
@@ -40,6 +51,22 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 				ShoppingListElementHelper objectElement=new ShoppingListElementHelper();
 				objectElement.decode(element);
 				shoppingListArrayList.add(objectElement);
+			}
+		}else if(hasList){//shoppingListSet!=null){
+			//String[] shoppingListArray=(String[]) shoppingListSet.toArray();
+//			for(String elementshoppingListArray){
+//				ShoppingListElementHelper objectElement=new ShoppingListElementHelper();
+//				objectElement.decode(element);
+//				shoppingListArrayList.add(objectElement);
+//			}
+			try {
+				shoppingListArrayList=(ArrayList<ShoppingListElementHelper>)SerializeObject.read(this, "savedSP.sl");
+			} catch (IOException e) {
+				Log.d("Serializing Exception",e.toString());
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				Log.d("Serializing Exception",e.toString());
+				e.printStackTrace();
 			}
 		}
 		setContentView(R.layout.activity_shopping_list);
@@ -54,6 +81,30 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 			public boolean onTouch(View v, MotionEvent event) {
 				if(event.getAction()==MotionEvent.ACTION_UP){
 					showAddProductDialog();
+				}
+				return false;
+			}
+		});
+		
+		//editProductButton initialize and listener
+		saveProductButton=(ImageButton)findViewById(R.id.saveProductButton);
+		saveProductButton.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if(event.getAction()==MotionEvent.ACTION_UP){
+//					test for(int i=1;i<30;i++){
+//						shoppingListArrayList.add(new ShoppingListElementHelper("product"+i,"brand"+i,i,i,"test","test",true));
+//					}
+					try {
+						SerializeObject.write(v.getContext(), (Object)shoppingListArrayList,"savedSP.sl");
+						SharedPreferences.Editor editor=savedShoppingList.edit();
+						editor.putBoolean(PREFS_HAS_SAVED_FILE, true);
+						editor.commit();
+					} catch (IOException e) {
+						Log.d("Serializing Exception",e.toString());
+						e.printStackTrace();
+					}
 				}
 				return false;
 			}
@@ -111,6 +162,14 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 			encodedShoppingList.add(element.encodeObject());
 		}
 		outState.putStringArrayList("encodedShoppingList", encodedShoppingList);
+	}
+	
+	
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		shoppingListAdapter=null;
 	}
 
 	public void showAddProductDialog() {
