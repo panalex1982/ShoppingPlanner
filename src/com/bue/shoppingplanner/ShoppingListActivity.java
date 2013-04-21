@@ -7,8 +7,11 @@ import java.util.Set;
 import com.bue.shoppingplanner.utilities.SPSharedPrefrences;
 import com.bue.shoppingplanner.utilities.SerializeObject;
 import com.bue.shoppingplanner.views.AddProductDialogFragment;
+import com.bue.shoppingplanner.views.AddShopDialogFragment;
 import com.bue.shoppingplanner.views.ShoppingListElementArrayAdapter;
+import com.bue.shoppingplanner.helpers.ShopElementHelper;
 import com.bue.shoppingplanner.helpers.ShoppingListElementHelper;
+import com.shoppingplanner.controllers.BoughtController;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -26,17 +29,22 @@ import android.annotation.TargetApi;
 import android.content.SharedPreferences;
 import android.os.Build;
 
-public class ShoppingListActivity extends FragmentActivity implements AddProductDialogFragment.AddProductDialogListener,SPSharedPrefrences{
+public class ShoppingListActivity extends FragmentActivity implements AddProductDialogFragment.AddProductDialogListener, AddShopDialogFragment.AddShopDialogListener, SPSharedPrefrences{
 	
 	private ImageButton addProductButton;
 	private ImageButton saveProductButton;
+	private ImageButton addShopButton;
+	private ImageButton persistShoppingListButton;
 	
 	private ListView shoppingListView;
 	private ShoppingListElementArrayAdapter shoppingListAdapter;
-	//private Set<String> shoppingListSet;
 	private ArrayList<ShoppingListElementHelper> shoppingListArrayList;
+	private ShopElementHelper shopElement;
 	
 	private SharedPreferences savedShoppingList;
+	
+	private final String SAVED_STATE_SL="encodedShoppingList";
+	private final String SAVED_STATE_STORE="encodedStore";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,22 +53,23 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 		savedShoppingList=getSharedPreferences(PREFS_NAME, 0);
 		boolean hasList=savedShoppingList.getBoolean(PREFS_HAS_SAVED_FILE, false);
 		shoppingListArrayList=new ArrayList<ShoppingListElementHelper>();
+		shopElement=new ShopElementHelper();
 		if(savedInstanceState!=null){
-			ArrayList<String> savedList=savedInstanceState.getStringArrayList("encodedShoppingList");
+			//Get saved shopping list
+			ArrayList<String> savedList=savedInstanceState.getStringArrayList(SAVED_STATE_SL);
 			for(String element:savedList){
 				ShoppingListElementHelper objectElement=new ShoppingListElementHelper();
 				objectElement.decode(element);
 				shoppingListArrayList.add(objectElement);
 			}
-		}else if(hasList){//shoppingListSet!=null){
-			//String[] shoppingListArray=(String[]) shoppingListSet.toArray();
-//			for(String elementshoppingListArray){
-//				ShoppingListElementHelper objectElement=new ShoppingListElementHelper();
-//				objectElement.decode(element);
-//				shoppingListArrayList.add(objectElement);
-//			}
+			//Get saved shop
+			shopElement.decode(savedInstanceState.getString(SAVED_STATE_STORE));
+		}else if(hasList){
 			try {
+				//Get saved shopping list
 				shoppingListArrayList=(ArrayList<ShoppingListElementHelper>)SerializeObject.read(this, "savedSP.sl");
+				//Get saved shop
+				shopElement=(ShopElementHelper) SerializeObject.read(this, "savedShop.sl");
 			} catch (IOException e) {
 				Log.d("Serializing Exception",e.toString());
 				e.printStackTrace();
@@ -97,7 +106,11 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 //						shoppingListArrayList.add(new ShoppingListElementHelper("product"+i,"brand"+i,i,i,"test","test",true));
 //					}
 					try {
+						//Save shopping list
 						SerializeObject.write(v.getContext(), (Object)shoppingListArrayList,"savedSP.sl");
+						//Save shop
+						SerializeObject.write(v.getContext(), (Object)shopElement, "savedShop.sl");
+						//Tell that saved objects exist
 						SharedPreferences.Editor editor=savedShoppingList.edit();
 						editor.putBoolean(PREFS_HAS_SAVED_FILE, true);
 						editor.commit();
@@ -107,6 +120,35 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 					}
 				}
 				return false;
+			}
+		});
+		
+		//addShopButton initialize and listener
+		addShopButton=(ImageButton) findViewById(R.id.addShopButton);
+		addShopButton.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if(event.getAction()==MotionEvent.ACTION_UP){
+					showAddShopDialog();
+				}	
+				return false;				
+			}
+		});
+		
+		//persistShoppingListButton initialize and listener
+		persistShoppingListButton=(ImageButton) findViewById(R.id.persistShoppingListButton);
+		persistShoppingListButton.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if(event.getAction()==MotionEvent.ACTION_UP){
+					BoughtController controller=new BoughtController();
+					controller.setContext(v.getContext());
+					controller.setShop(shopElement);
+					controller.persistBought();
+				}	
+				return false;				
 			}
 		});
 		
@@ -161,7 +203,8 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 		for(ShoppingListElementHelper element:shoppingListArrayList){
 			encodedShoppingList.add(element.encodeObject());
 		}
-		outState.putStringArrayList("encodedShoppingList", encodedShoppingList);
+		outState.putStringArrayList(SAVED_STATE_SL, encodedShoppingList);
+		outState.putString(SAVED_STATE_STORE, shopElement.encodeObject());
 	}
 	
 	
@@ -171,39 +214,70 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 		super.onPause();
 		shoppingListAdapter=null;
 	}
-
+	
+	/**
+	 * Opens dialog fragment to add new product to the list.
+	 */
 	public void showAddProductDialog() {
         // Create an instance of the dialog fragment and show it
 		DialogFragment dialog = new AddProductDialogFragment();
         dialog.show(getSupportFragmentManager(), "AddProductDialogFragment");        
     }
-
+	
+	/**
+	 * Opens dialog fragment to add the shop of the current buy.
+	 */
+	public void showAddShopDialog() {
+        // Create an instance of the dialog fragment and show it
+		DialogFragment dialog = new AddShopDialogFragment();
+        dialog.show(getSupportFragmentManager(), "AddShopDialogFragment");        
+    }
+	
+	
+	/**
+	 * Used to return values from any attached dialog fragment, when the user press OK on the dialog.
+	 */
 	@Override
 	public void onDialogPositiveClick(DialogFragment dialog) {
-		AddProductDialogFragment addProductDialog=(AddProductDialogFragment) dialog;
-		shoppingListArrayList.add(addProductDialog.getListElement());
-		addNewElementToShoppingListAdapter();
-	}
-
-	@Override
-	public void onDialogNegativeClick(DialogFragment dialog) {
-		// TODO Do Nothing
 		
-	}
-	
-	public void addAllElementsOfShoppingListAdapter(){
-		for(ShoppingListElementHelper element:shoppingListArrayList){
-			//shoppingListAdapter.add(element.getProduct()+" "+element.getPrice()+" x"+element.getQuantity());
-			shoppingListAdapter.add(element);
+		if(dialog.getClass().getSimpleName().equalsIgnoreCase("AddProductDialogFragment")){
+			AddProductDialogFragment addProductDialog=(AddProductDialogFragment) dialog;
+			shoppingListArrayList.add(addProductDialog.getListElement());
+			addNewElementToShoppingListAdapter();
+		}else if(dialog.getClass().getSimpleName().equalsIgnoreCase("AddShopDialogFragment")){
+			AddShopDialogFragment addShopDialog=(AddShopDialogFragment)dialog;
+			shopElement=addShopDialog.getShopElement();
+			
 		}
 	}
 	
+	
+	/**
+	 * Used to return values from any attached dialog fragment, when the user press Cancel on the dialog.
+	 */
+	@Override
+	public void onDialogNegativeClick(DialogFragment dialog) {
+		// TODO Do Nothing		
+	}
+	
+	/**
+	 * Adds all the Shopping list elements of the ArrayList to the ArrayAdapter
+	 * @deprecated
+	 */
+	public void addAllElementsOfShoppingListAdapter(){
+		for(ShoppingListElementHelper element:shoppingListArrayList){
+			shoppingListAdapter.add(element);			
+		}
+	}
+	
+	/**
+	 * Adds new element to the ShoppingListArrayAdapter.
+	 */
 	public void addNewElementToShoppingListAdapter(){
-		//ShoppingListElementHelper element=shoppingListArrayList.get(shoppingListArrayList.size()-1);
-		//shoppingListAdapter.add(element.getProduct()+" "+element.getPrice()+" x"+element.getQuantity());
-		//shoppingListAdapter.add(element);
 		shoppingListAdapter.notifyDataSetChanged();
 	}
+
+	
 	
 	
 	

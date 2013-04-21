@@ -12,4 +12,12 @@
     <string name="product_kind">Product kind:</string>
     <string name="price">Price:</string>
     <string name="brand">Brand:</string>
+    <string name="name">Name:</string>
+    <string name="existing">Existing:</string>
+    <string name="type">Type:</string>
+    <string name="address">Address:</string>
+    <string name="area">Area:</string>
+    <string name="country">Country:</string>
+    <string name="city">City</string>
+    <string name="zip">Zip</string>
 </resources>

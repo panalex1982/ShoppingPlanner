@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.bue.shoppingplanner.R;
 import com.bue.shoppingplanner.helpers.ShoppingListElementHelper;
+import com.bue.shoppingplanner.helpers.SpinnerBuilder;
 import com.bue.shoppingplanner.model.DatabaseHandler;
 import com.bue.shoppingplanner.model.ProductGroup;
 import com.bue.shoppingplanner.model.ProductKind;
@@ -62,12 +63,12 @@ public class AddProductDialogFragment extends DialogFragment {
 		for(ProductGroup group:db.getAllProductGroup()){
 			productGroupSpinnerList.add(group.getName());
 		}
-		productGroupAddDialogSpinner=getSpinnerFromDatabase(getActivity(),dialogMainView, R.id.productGroupAddDialogSpinner, productGroupSpinnerList, android.R.layout.simple_spinner_item,android.R.layout.simple_spinner_dropdown_item);
+		productGroupAddDialogSpinner=SpinnerBuilder.createSpinnerFromArrayList(getActivity(),dialogMainView, R.id.productGroupAddDialogSpinner, productGroupSpinnerList, android.R.layout.simple_spinner_item,android.R.layout.simple_spinner_dropdown_item);
 		ArrayList<CharSequence> productKindSpinnerList=new ArrayList<CharSequence>();
 		for(ProductKind kind:db.getAllProductKind()){
 			productKindSpinnerList.add(kind.getName());
 		}
-		productKindAddDialogSpinner=getSpinnerFromDatabase(getActivity(),dialogMainView, R.id.productKindAddDialogSpinner, productKindSpinnerList, android.R.layout.simple_spinner_item,android.R.layout.simple_spinner_dropdown_item);
+		productKindAddDialogSpinner=SpinnerBuilder.createSpinnerFromArrayList(getActivity(),dialogMainView, R.id.productKindAddDialogSpinner, productKindSpinnerList, android.R.layout.simple_spinner_item,android.R.layout.simple_spinner_dropdown_item);
 		
 		//ImageButtons initialize
 		numberAddAddDialogImageButton=(ImageButton) dialogMainView.findViewById(R.id.numberAddAddDialogImageButton);
@@ -165,25 +166,6 @@ public class AddProductDialogFragment extends DialogFragment {
 
 
 
-	/**
-	 * Method to create Spinner object getting values from the database.
-	 * 
-	 * @param context
-	 * @param view
-	 * @param spinnerId
-	 * @param spinnerList
-	 * @param textViewResourceId
-	 * @param resource
-	 * @return spinner
-	 */
-	public Spinner getSpinnerFromDatabase(Context context, View view, int spinnerId, ArrayList<CharSequence> spinnerList, int textViewResourceId, int resource){
-		Spinner spinner=(Spinner) view.findViewById(spinnerId);
-		ArrayAdapter<CharSequence> arrayAdapter=new ArrayAdapter<CharSequence>(context,textViewResourceId,spinnerList);
-		arrayAdapter.setDropDownViewResource(resource);
-		spinner.setAdapter(arrayAdapter);
-		return spinner;
-	}
-	
 	/** The activity that creates an instance of this dialog fragment must
      * implement this interface in order to receive event callbacks.
      * Each method passes the DialogFragment in case the host needs to query it. */

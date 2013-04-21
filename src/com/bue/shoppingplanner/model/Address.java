@@ -2,31 +2,31 @@ package com.bue.shoppingplanner.model;
 
 public class Address {
 	private int id;
-	private String streetName, number, area, city, county, country;
+	private String streetName, number, area, city, zip, country;
 	public Address() {
 		super();
 	}
 	public Address(int id, String streetName, String number, String area,
-			String city, String county, String country) {
+			String city, String zip, String country) {
 		super();
 		this.id = id;
 		this.streetName = streetName;
 		this.number = number;
 		this.area = area;
 		this.city = city;
-		this.county = county;
+		this.zip = zip;
 		this.country = country;
 	}
 	
 	
 	public Address(String streetName, String number, String area, String city,
-			String county, String country) {
+			String zip, String country) {
 		super();
 		this.streetName = streetName;
 		this.number = number;
 		this.area = area;
 		this.city = city;
-		this.county = county;
+		this.zip = zip;
 		this.country = country;
 	}
 	public int getId() {
@@ -59,11 +59,11 @@ public class Address {
 	public void setCity(String city) {
 		this.city = city;
 	}
-	public String getCounty() {
-		return county;
+	public String getZip() {
+		return zip;
 	}
-	public void setCounty(String county) {
-		this.county = county;
+	public void setZip(String zip) {
+		this.zip = zip;
 	}
 	public String getCountry() {
 		return country;

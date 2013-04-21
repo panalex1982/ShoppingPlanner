@@ -11,26 +11,25 @@ public class Product {
 	private String name;
 	private String barcode;//Can ignored
 	private int kind;
-	private int group;
+	
 	public Product() {
 		super();
 	}
 	
-	public Product(String name, String barcode, int kind, int group) {
+	public Product(String name, String barcode, int kind) {
 		super();
 		this.name = name;
 		this.barcode = barcode;
 		this.kind = kind;
-		this.group=group;
+		
 	}
 
-	public Product(int id, String name, String barcode, int kind, int group) {
+	public Product(int id, String name, String barcode, int kind) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.barcode = barcode;
 		this.kind = kind;
-		this.group=group;
 	}
 	public int getId() {
 		return id;
@@ -56,18 +55,4 @@ public class Product {
 	public void setKind(int kind) {
 		this.kind = kind;
 	}
-
-	public int getGroup() {
-		return group;
-	}
-
-	public void setGroup(int group) {
-		this.group = group;
-	}
-	
-	
-	
-	
-	
-	
 }

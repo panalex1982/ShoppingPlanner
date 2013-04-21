@@ -5,12 +5,13 @@ public class Buys {
 	private int product, shop, user;//User not used in first version
 	private double unitPrice;
 	private int amount;
+	private int group;
 	private String date; //Not sure for the package, i used android package I may change it to sql
 	
 	public Buys() {
 		super();
 	}
-	public Buys(int id, int product, int shop, int user, double unit_price, int amount, String date) {
+	public Buys(int id, int product, int shop, int user, double unit_price, int amount, String date, int group) {
 		super();
 		this.product = product;
 		this.shop = shop;
@@ -19,9 +20,10 @@ public class Buys {
 		this.amount = amount;
 		this.date = date;
 		this.id=id;
+		this.group=group;
 	}
 	
-	public Buys(int id, int product, int shop, double unitPrice, int amount, String date) {
+	public Buys(int id, int product, int shop, double unitPrice, int amount, String date, int group) {
 		super();
 		this.id = id;
 		this.product = product;
@@ -29,6 +31,7 @@ public class Buys {
 		this.unitPrice = unitPrice;
 		this.amount = amount;
 		this.date = date;
+		this.group=group;
 		user=-1;
 	}
 	
@@ -74,5 +77,13 @@ public class Buys {
 	public void setDate(String date) {
 		this.date = date;
 	}
+	public int getGroup() {
+		return group;
+	}
+
+	public void setGroup(int group) {
+		this.group = group;
+	}
+	
 	
 }
