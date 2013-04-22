@@ -1,38 +1,81 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainMenuActivity" >
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+	android:layout_height="match_parent" android:paddingTop="@dimen/activity_vertical_margin"
+	tools:context=".MainMenuActivity">
 
-    <ImageButton
-        android:id="@+id/shoppingListImageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_pencil" />
+	<ImageButton
+	    android:id="@+id/imageButton3"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignBottom="@+id/imageButton4"
+	    android:layout_marginBottom="18dp"
+	    android:layout_toLeftOf="@+id/imageButton4"
+	    android:src="@drawable/ic_expenses_icon" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent" >
+	<ImageButton
+	    android:id="@+id/imageButton2"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignTop="@+id/imageButton3"
+	    android:layout_toLeftOf="@+id/imageButton3"
+	    android:src="@drawable/ic_shopping_cart" />
 
-        <ImageButton
-            android:id="@+id/imageButton2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_shopping_cart" />
+	<ImageButton
+	    android:id="@+id/shoppingListImageButton"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignTop="@+id/imageButton2"
+	    android:layout_toLeftOf="@+id/imageButton2"
+	    android:src="@drawable/ic_pencil" />
 
-    </LinearLayout>
+	<ImageButton
+	    android:id="@+id/imageButton4"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentRight="true"
+	    android:layout_alignParentTop="true"
+	    android:layout_marginTop="27dp"
+	    android:src="@drawable/ic_settings" />
 
-    <ImageButton
-        android:id="@+id/imageButton3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_expenses_icon" />
+	<TextView
+	    android:id="@+id/textView1"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignLeft="@+id/shoppingListImageButton"
+	    android:layout_below="@+id/imageButton3"
+	    android:layout_marginTop="89dp"
+	    android:text="@string/total_spending"
+	    android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <ImageButton
-        android:id="@+id/imageButton4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_settings" />
+	<TextView
+	    android:id="@+id/spendingMainTextView"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignBaseline="@+id/textView1"
+	    android:layout_alignBottom="@+id/textView1"
+	    android:layout_marginLeft="22dp"
+	    android:layout_toRightOf="@+id/textView1"
+	    android:text="Medium Text"
+	    android:textAppearance="?android:attr/textAppearanceMedium" />
 
-</LinearLayout>
+	<TextView
+	    android:id="@+id/textView4"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignBottom="@+id/textView3"
+	    android:layout_alignRight="@+id/spendingMainTextView"
+	    android:text="Medium Text"
+	    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+	<TextView
+	    android:id="@+id/textView3"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignLeft="@+id/textView1"
+	    android:layout_below="@+id/textView1"
+	    android:layout_marginTop="30dp"
+	    android:text="Large Text"
+	    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+</RelativeLayout>

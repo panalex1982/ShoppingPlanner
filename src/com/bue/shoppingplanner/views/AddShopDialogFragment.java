@@ -50,6 +50,8 @@ public class AddShopDialogFragment extends DialogFragment {
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		db=new DatabaseHandler(getActivity());
+		//Shop tmpShop=new Shop();
+		//ShopDescription tmpDesc=new ShopDescription();
 		existingShopsArrayList=new ArrayList<CharSequence>();
 		shopTypeArrayList=new ArrayList<CharSequence>();
 		
@@ -68,12 +70,12 @@ public class AddShopDialogFragment extends DialogFragment {
 		zipAddShopEditText=(EditText) dialogMainView.findViewById(R.id.zipAddShopEditText);
 		
 		//Spinners Initialize
-		for(Shop shop:db.getAllShop()){
+		for(Shop shop:Shop.getAllShop(db)){
 			existingShopsArrayList.add(shop.getName());
 		}
 		existingAddShopSpinner=SpinnerBuilder.createSpinnerFromArrayList(getActivity(), dialogMainView, R.id.existingAddShopSpinner, 
 				existingShopsArrayList, android.R.layout.simple_spinner_item,android.R.layout.simple_spinner_dropdown_item);
-		for(ShopDescription desc:db.getAllShopDescription()){
+		for(ShopDescription desc:ShopDescription.getAllShopDescription(db)){
 			shopTypeArrayList.add(desc.getName());
 		}
 		typeAddShopSpinner=SpinnerBuilder.createSpinnerFromArrayList(getActivity(), dialogMainView, R.id.typeAddShopSpinner,

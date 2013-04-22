@@ -9,9 +9,9 @@ import com.bue.shoppingplanner.utilities.SerializeObject;
 import com.bue.shoppingplanner.views.AddProductDialogFragment;
 import com.bue.shoppingplanner.views.AddShopDialogFragment;
 import com.bue.shoppingplanner.views.ShoppingListElementArrayAdapter;
+import com.bue.shoppingplanner.controllers.BoughtController;
 import com.bue.shoppingplanner.helpers.ShopElementHelper;
 import com.bue.shoppingplanner.helpers.ShoppingListElementHelper;
-import com.shoppingplanner.controllers.BoughtController;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -146,7 +146,29 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 					BoughtController controller=new BoughtController();
 					controller.setContext(v.getContext());
 					controller.setShop(shopElement);
-					controller.persistBought();
+					controller.setProducts(shoppingListArrayList);
+					//If everything persisted I clear the saved list and the shop
+					if(controller.persistBought()!=-1){
+						SharedPreferences.Editor editor=savedShoppingList.edit();
+						editor.putBoolean(PREFS_HAS_SAVED_FILE, false);
+						editor.commit();
+						try {
+							shoppingListArrayList.clear();
+							shopElement=new ShopElementHelper();
+							//Save shopping list
+							SerializeObject.write(v.getContext(), (Object)shoppingListArrayList,"savedSP.sl");
+							//Save shop
+							SerializeObject.write(v.getContext(), (Object)shopElement, "savedShop.sl");
+							//Tell that saved objects exist
+							SharedPreferences.Editor editorClear=savedShoppingList.edit();
+							editorClear.putBoolean(PREFS_HAS_SAVED_FILE, true);
+							editorClear.commit();
+						} catch (IOException e) {
+							Log.d("Serializing Exception",e.toString());
+							e.printStackTrace();
+						}
+					}
+					
 				}	
 				return false;				
 			}

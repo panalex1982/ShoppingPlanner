@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
@@ -29,6 +30,7 @@ import android.os.Build;
 
 public class MainMenuActivity extends FragmentActivity {
 	private ImageButton shoppingListImageButton;
+	private TextView spendingMainTextView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,9 @@ public class MainMenuActivity extends FragmentActivity {
 			}
 			
 		});
+		DatabaseHandler db=new DatabaseHandler(this);
+		spendingMainTextView=(TextView) findViewById(R.id.spendingMainTextView);
+		spendingMainTextView.setText(Double.toString(Buys.getTotalSpending(db)));
         
 	}
 

@@ -60,12 +60,12 @@ public class AddProductDialogFragment extends DialogFragment {
 		
 		//Spinners initialize
 		ArrayList<CharSequence> productGroupSpinnerList=new ArrayList<CharSequence>();
-		for(ProductGroup group:db.getAllProductGroup()){
+		for(ProductGroup group:ProductGroup.getAllProductGroup(db)){
 			productGroupSpinnerList.add(group.getName());
 		}
 		productGroupAddDialogSpinner=SpinnerBuilder.createSpinnerFromArrayList(getActivity(),dialogMainView, R.id.productGroupAddDialogSpinner, productGroupSpinnerList, android.R.layout.simple_spinner_item,android.R.layout.simple_spinner_dropdown_item);
 		ArrayList<CharSequence> productKindSpinnerList=new ArrayList<CharSequence>();
-		for(ProductKind kind:db.getAllProductKind()){
+		for(ProductKind kind:ProductKind.getAllProductKind(db)){
 			productKindSpinnerList.add(kind.getName());
 		}
 		productKindAddDialogSpinner=SpinnerBuilder.createSpinnerFromArrayList(getActivity(),dialogMainView, R.id.productKindAddDialogSpinner, productKindSpinnerList, android.R.layout.simple_spinner_item,android.R.layout.simple_spinner_dropdown_item);

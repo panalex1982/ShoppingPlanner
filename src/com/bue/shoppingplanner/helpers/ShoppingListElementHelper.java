@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class ShoppingListElementHelper implements Serializable {
 	private String product;
 	private String brand;
+	private String barcode;
 	private double price;
 	private int quantity;
 	private String group;
@@ -13,6 +14,7 @@ public class ShoppingListElementHelper implements Serializable {
 	
 	public ShoppingListElementHelper() {
 		super();
+		barcode="-999";
 	}
 	
 	public ShoppingListElementHelper(String product, String brand,
@@ -25,6 +27,20 @@ public class ShoppingListElementHelper implements Serializable {
 		this.group = group;
 		this.kind = kind;
 		this.isChecked=isChecked;
+		barcode="-999";
+	}
+	
+	public ShoppingListElementHelper(String product, String brand, String barcode,
+			double price, int quantity, String group, String kind, boolean isChecked) {
+		super();
+		this.product = product;
+		this.brand = brand;
+		this.price = price;
+		this.quantity = quantity;
+		this.group = group;
+		this.kind = kind;
+		this.isChecked=isChecked;
+		this.barcode=barcode;
 	}
 
 	public String getProduct() {
@@ -75,6 +91,16 @@ public class ShoppingListElementHelper implements Serializable {
 		this.kind = kind;
 	}
 	
+	
+	
+	public String getBarcode() {
+		return barcode;
+	}
+
+	public void setBarcode(String barcode) {
+		this.barcode = barcode;
+	}
+
 	public boolean isChecked() {
 		return isChecked;
 	}
@@ -82,9 +108,11 @@ public class ShoppingListElementHelper implements Serializable {
 	public void setChecked(boolean isChecked) {
 		this.isChecked = isChecked;
 	}
+	
+	
 
 	public String encodeObject(){
-		String encode=product+"\n\t\t"+brand+"\n\t\t"+price+"\n\t\t"+quantity+"\n\t\t"+group+"\n\t\t"+kind+"\n\t\t"+Boolean.toString(isChecked);		
+		String encode=product+"\n\t\t"+brand+"\n\t\t"+price+"\n\t\t"+quantity+"\n\t\t"+group+"\n\t\t"+kind+"\n\t\t"+barcode+"\n\t\t"+Boolean.toString(isChecked);		
 		return encode;
 	}
 	
@@ -97,13 +125,19 @@ public class ShoppingListElementHelper implements Serializable {
 		quantity=Integer.parseInt(splitted[3]);
 		group=splitted[4];
 		kind=splitted[5];
-		isChecked=Boolean.parseBoolean(splitted[6]);
+		barcode=splitted[6];
+		isChecked=Boolean.parseBoolean(splitted[7]);
 	}
 
 	@Override
 	public String toString() {
-		return "ShoppingListeElementHelper["+isChecked+" : "+product+", "+brand+",\n"+price+", "+quantity+",\n"+group+", "+kind+"]";
+		return "ShoppingListElementHelper [product=" + product + ", brand="
+				+ brand + ", barcode=" + barcode + ", price=" + price
+				+ ", quantity=" + quantity + ", group=" + group + ", kind="
+				+ kind + ", isChecked=" + isChecked + "]";
 	}
+	
+	
 	
 	
 }
