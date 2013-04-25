@@ -89,4 +89,13 @@ public class MainMenuActivity extends FragmentActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		DatabaseHandler db=new DatabaseHandler(this);
+		spendingMainTextView.setText(Double.toString(Buys.getTotalSpending(db)));
+	}
+	
+	
 }

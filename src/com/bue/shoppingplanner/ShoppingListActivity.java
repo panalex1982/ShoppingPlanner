@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
@@ -35,6 +36,8 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 	private ImageButton saveProductButton;
 	private ImageButton addShopButton;
 	private ImageButton persistShoppingListButton;
+	
+	private TextView shopNameTextView;
 	
 	private ListView shoppingListView;
 	private ShoppingListElementArrayAdapter shoppingListAdapter;
@@ -81,6 +84,9 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 		setContentView(R.layout.activity_shopping_list);
 		// Show the Up button in the action bar.
 		setupActionBar();
+		
+		//Shop Name Initialize
+		shopNameTextView=(TextView) findViewById(R.id.shopNameTextView);
 		
 		//addProductButton initialize and listener 
 		addProductButton=(ImageButton) findViewById(R.id.addProductButton);		
@@ -131,6 +137,7 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 			public boolean onTouch(View v, MotionEvent event) {
 				if(event.getAction()==MotionEvent.ACTION_UP){
 					showAddShopDialog();
+					shopNameTextView.setText(shopElement.getName()+"@"+shopElement.getCity());
 				}	
 				return false;				
 			}
@@ -163,6 +170,7 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 							SharedPreferences.Editor editorClear=savedShoppingList.edit();
 							editorClear.putBoolean(PREFS_HAS_SAVED_FILE, true);
 							editorClear.commit();
+							refreshElements();
 						} catch (IOException e) {
 							Log.d("Serializing Exception",e.toString());
 							e.printStackTrace();
@@ -179,7 +187,10 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 		shoppingListAdapter=new ShoppingListElementArrayAdapter(this,R.layout.shopping_list_element_view, shoppingListArrayList);
 		shoppingListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		shoppingListView.setAdapter(shoppingListAdapter);
-		//addAllElementsOfShoppingListAdapter();		
+		//addAllElementsOfShoppingListAdapter();	
+		
+		//Set values to elements
+		refreshElements();
 	}
 
 	/**
@@ -265,12 +276,12 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 		if(dialog.getClass().getSimpleName().equalsIgnoreCase("AddProductDialogFragment")){
 			AddProductDialogFragment addProductDialog=(AddProductDialogFragment) dialog;
 			shoppingListArrayList.add(addProductDialog.getListElement());
-			addNewElementToShoppingListAdapter();
 		}else if(dialog.getClass().getSimpleName().equalsIgnoreCase("AddShopDialogFragment")){
 			AddShopDialogFragment addShopDialog=(AddShopDialogFragment)dialog;
 			shopElement=addShopDialog.getShopElement();
-			
+			shopNameTextView.setText(shopElement.getName()+" @ "+shopElement.getCity());
 		}
+		refreshElements();
 	}
 	
 	
@@ -293,10 +304,19 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 	}
 	
 	/**
-	 * Adds new element to the ShoppingListArrayAdapter.
+	 * Notify element changes to the ShoppingListArrayAdapter.
 	 */
-	public void addNewElementToShoppingListAdapter(){
+	public void notifyElementCahngesOnShoppingListAdapter(){
 		shoppingListAdapter.notifyDataSetChanged();
+	}
+	
+	protected void refreshElements(){
+		if(shopElement.getName()!=null){
+			shopNameTextView.setText(shopElement.getName()+" @ "+shopElement.getCity());
+		}else{
+			shopNameTextView.setText(R.string.no_shop);
+		}
+		notifyElementCahngesOnShoppingListAdapter();
 	}
 
 	

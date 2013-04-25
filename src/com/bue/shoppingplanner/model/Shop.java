@@ -103,6 +103,23 @@ public class Shop {
 
 		return shop;
 	}
+	
+	public void getShopByName(DatabaseHandler handler) {
+		SQLiteDatabase db = handler.getReadableDatabase();
+
+		Cursor cursor = db.query(DatabaseHandler.TABLE_SHOP, new String[] { DatabaseHandler.SHOP_ID,
+				DatabaseHandler.SHOP_ADDRESS, DatabaseHandler.SHOP_DESCRIPTION, }, DatabaseHandler.SHOP_NAME + "=?",
+				new String[] { String.valueOf(name) }, null, null, null, null);
+		if (cursor != null)
+			cursor.moveToFirst();
+
+		id=cursor.getInt(0);
+		address=cursor.getInt(1);
+		shopDescription=cursor.getInt(2);
+		
+		cursor.close();
+		db.close();
+	}
 
 	// Getting All Shop
 	public static List<Shop> getAllShop(DatabaseHandler handler) {

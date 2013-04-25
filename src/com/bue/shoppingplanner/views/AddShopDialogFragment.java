@@ -3,9 +3,11 @@ package com.bue.shoppingplanner.views;
 import java.util.ArrayList;
 
 import com.bue.shoppingplanner.R;
+import com.bue.shoppingplanner.controllers.ShopController;
 import com.bue.shoppingplanner.helpers.ShopElementHelper;
 import com.bue.shoppingplanner.helpers.ShoppingListElementHelper;
 import com.bue.shoppingplanner.helpers.SpinnerBuilder;
+import com.bue.shoppingplanner.model.Address;
 import com.bue.shoppingplanner.model.DatabaseHandler;
 import com.bue.shoppingplanner.model.Shop;
 import com.bue.shoppingplanner.model.ShopDescription;
@@ -21,6 +23,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -46,6 +50,9 @@ public class AddShopDialogFragment extends DialogFragment {
 								shopTypeArrayList;
 	
 	private ShopElementHelper shopElement;
+	
+	//preview position of the existingAddShopSpinner
+	protected int exAddShopPrvPosition;
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -54,6 +61,7 @@ public class AddShopDialogFragment extends DialogFragment {
 		//ShopDescription tmpDesc=new ShopDescription();
 		existingShopsArrayList=new ArrayList<CharSequence>();
 		shopTypeArrayList=new ArrayList<CharSequence>();
+		exAddShopPrvPosition=-1;
 		
 		//Create main dialog
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -80,6 +88,49 @@ public class AddShopDialogFragment extends DialogFragment {
 		}
 		typeAddShopSpinner=SpinnerBuilder.createSpinnerFromArrayList(getActivity(), dialogMainView, R.id.typeAddShopSpinner,
 				shopTypeArrayList, android.R.layout.simple_spinner_item,android.R.layout.simple_spinner_dropdown_item);
+		
+		//Spinner existingAddShopSpinner, Adapters Listener
+		//ArrayAdapter existingAddShopAdapterView=(ArrayAdapter) existingAddShopSpinner.getAdapter();
+		existingAddShopSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long arg3) {
+				if(position!=0){
+					
+					String shopName=((Spinner)parent).getItemAtPosition(position).toString();
+					ShopController shop=new ShopController();
+					
+					nameAddShopEditText.setText(shopName);
+					shop.selectShopElementHelperByShopName(db, shopName);
+					addressAddShopEditText.setText(shop.getAddress());
+					numberAddShopEditText.setText(shop.getNumber());
+					cityAddShopEditText.setText(shop.getCity());
+					areaAddShopEditText.setText(shop.getArea());
+					countryAddShopEditText.setText(shop.getCountry());
+					zipAddShopEditText.setText(shop.getZip());					
+					typeAddShopSpinner.setSelection(shopTypeArrayList.indexOf(shop.getName()));
+				}else if(position==0&&exAddShopPrvPosition!=0){
+					nameAddShopEditText.setText("");
+					addressAddShopEditText.setText("");
+					numberAddShopEditText.setText("");
+					cityAddShopEditText.setText("");
+					areaAddShopEditText.setText("");
+					countryAddShopEditText.setText("");
+					zipAddShopEditText.setText("");
+			    	typeAddShopSpinner.setSelection(0);
+				}
+				exAddShopPrvPosition=position;
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		
 		
 		
 		builder.setTitle("Add Shop")
@@ -137,6 +188,17 @@ public class AddShopDialogFragment extends DialogFragment {
     public interface AddShopDialogListener {
         public void onDialogPositiveClick(DialogFragment dialog);
         public void onDialogNegativeClick(DialogFragment dialog);
+    }
+    
+    protected void refreshElements(){    	
+    	nameAddShopEditText.setText(shopElement.getName()); 
+		addressAddShopEditText.setText(shopElement.getName());
+		numberAddShopEditText.setText(shopElement.getName());
+		cityAddShopEditText.setText(shopElement.getName());
+		areaAddShopEditText.setText(shopElement.getName());
+		countryAddShopEditText.setText(shopElement.getName());
+		zipAddShopEditText.setText(shopElement.getName());
+    	typeAddShopSpinner.setSelection(1);
     }
 	
 

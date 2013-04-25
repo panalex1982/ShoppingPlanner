@@ -38,6 +38,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="MainMenuActivity" />
         </activity>
+        <activity
+            android:name="com.bue.shoppingplanner.StatsActivity"
+            android:label="@string/title_activity_stats"
+            android:parentActivityName="com.bue.shoppingplanner.MainMenuActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bue.shoppingplanner.MainMenuActivity" />
+        </activity>
     </application>
 
 </manifest>

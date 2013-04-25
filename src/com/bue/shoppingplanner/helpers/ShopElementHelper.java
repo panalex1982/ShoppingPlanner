@@ -2,6 +2,10 @@ package com.bue.shoppingplanner.helpers;
 
 import java.io.Serializable;
 
+import com.bue.shoppingplanner.model.Address;
+import com.bue.shoppingplanner.model.Shop;
+import com.bue.shoppingplanner.model.ShopDescription;
+
 public class ShopElementHelper implements Serializable{
 	private String name,
 					address,
@@ -23,6 +27,17 @@ public class ShopElementHelper implements Serializable{
 		this.country = country;
 		this.zip = zip;
 		this.type = type;
+	}
+	
+	public ShopElementHelper(Shop shop, Address address, ShopDescription sDesc){
+		name=shop.getName();
+		this.address = address.getStreetName();
+		this.number = address.getNumber();
+		this.city = address.getCity();
+		this.area = address.getArea();
+		this.country = address.getCountry();
+		this.zip = address.getZip();
+		this.type = sDesc.getName();
 	}
 
 	public ShopElementHelper() {
