@@ -26,5 +26,6 @@
     <string name="no_shop">no shop provided</string>
     <string name="title_activity_stats">StatsActivity</string>
     <string name="euro">Euro</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

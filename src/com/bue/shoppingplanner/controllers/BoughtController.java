@@ -174,5 +174,9 @@ public class BoughtController {
 		return 0;		
 	}
 	
+	public ArrayList<String[]> getTotalByGroup(){
+		return Buys.getTotalGroupByGroup(db);		
+	}
+	
 	
 }

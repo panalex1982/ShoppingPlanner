@@ -1,17 +1,15 @@
 package com.bue.shoppingplanner;
 
+import com.bue.shoppingplanner.fragments.StatsContentFragment;
 import android.os.Bundle;
-import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
 import android.os.Build;
 
 public class StatsActivity extends FragmentActivity {
-	private ListView groupStatsListView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -19,10 +17,10 @@ public class StatsActivity extends FragmentActivity {
 		setContentView(R.layout.activity_stats);
 		// Show the Up button in the action bar.
 		setupActionBar();
-		groupStatsListView=(ListView) findViewById(R.id.groupStatsListView);
-		//TODO: Create method in a new Controller class which return List<String[]>
-		//(GroupName, summary of group, currency)
-		
+		StatsContentFragment statsContent = new StatsContentFragment();
+
+		getSupportFragmentManager().beginTransaction()
+				.add(R.id.statsContentFragmentList, statsContent).commit();
 	}
 
 	/**

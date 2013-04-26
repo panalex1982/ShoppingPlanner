@@ -30,6 +30,7 @@ import android.os.Build;
 
 public class MainMenuActivity extends FragmentActivity {
 	private ImageButton shoppingListImageButton;
+	private ImageButton statsImageButton;
 	private TextView spendingMainTextView;
 
 	@Override
@@ -38,6 +39,7 @@ public class MainMenuActivity extends FragmentActivity {
 		setContentView(R.layout.activity_main_menu);
 		// Show the Up button in the action bar.
 		setupActionBar();
+		//Shopping List Button
 		shoppingListImageButton=(ImageButton) findViewById(R.id.shoppingListImageButton);
 		shoppingListImageButton.setOnTouchListener(new View.OnTouchListener(){
 
@@ -50,6 +52,21 @@ public class MainMenuActivity extends FragmentActivity {
 			}
 			
 		});
+		
+		//Stats Button
+		statsImageButton=(ImageButton) findViewById(R.id.statsImageButton);
+		statsImageButton.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if(event.getAction()==MotionEvent.ACTION_UP){
+					startActivity(new Intent(MainMenuActivity.this, StatsActivity.class));
+				}
+				return false;
+			}
+		});
+		
+		//Main menu stats
 		DatabaseHandler db=new DatabaseHandler(this);
 		spendingMainTextView=(TextView) findViewById(R.id.spendingMainTextView);
 		spendingMainTextView.setText(Double.toString(Buys.getTotalSpending(db)));
