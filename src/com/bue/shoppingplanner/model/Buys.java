@@ -286,7 +286,7 @@ public class Buys {
 	ORDER BY sumresult DESC
 	 */
 	/**
-	 * Returns the total spending in every Group.
+	 * Returns the total spending in every Product.
 	 * @param handler
 	 * @return
 	 */
@@ -314,4 +314,82 @@ public class Buys {
 		db.close();
 		return productTotal;
 	}
+	
+	/*
+    SELECT b.name, sum(a.unitPrice*a.amount) AS sumresult
+	FROM Buys a, Shop b
+	WHERE a.shopId=b.id
+	GROUP BY b.name
+	ORDER BY sumresult DESC
+	 */
+	/**
+	 * Returns the total spending in every Shop.
+	 * @param handler
+	 * @return
+	 */
+	public static ArrayList<String[]> getTotalGroupByShop(DatabaseHandler handler){
+		ArrayList<String[]> shopTotal=new ArrayList<String[]>();
+		
+		String query="SELECT b."+DatabaseHandler.SHOP_NAME+", sum(a."+DatabaseHandler.BUYS_UNIT_PRICE+"*a."
+				+DatabaseHandler.BUYS_AMOUNT+") AS sumresult FROM "
+				+DatabaseHandler.TABLE_BUYS+" a, "+DatabaseHandler.TABLE_SHOP+" b"
+				+" WHERE a."+DatabaseHandler.BUYS_SHOP+"=b."+DatabaseHandler.SHOP_ID
+				+" GROUP BY b."+DatabaseHandler.SHOP_NAME
+				+" ORDER BY sumresult DESC";
+		SQLiteDatabase db = handler.getReadableDatabase();
+		Cursor cursor = db.rawQuery(query, null);
+
+		if (cursor != null)
+			while(cursor.moveToNext()){
+				String[] row=new String[3];
+				row[2]="Euro";
+				row[0] = cursor.getString(0);
+				row[1]=String.valueOf(cursor.getDouble(1));
+				shopTotal.add(row);
+			}
+		cursor.close();
+		db.close();
+		return shopTotal;
+	}
+	
+	/*
+    SELECT c.name, sum(a.unitPrice*a.amount) AS sumresult
+	FROM Buys a, Product b, ProductKind c
+	WHERE a.productId=b.id AND b.kindId=c.id
+	GROUP BY c.name
+	ORDER BY sumresult DESC
+	 */
+	/**
+	 * Returns the total spending in every Shop.
+	 * @param handler
+	 * @return
+	 */
+	public static ArrayList<String[]> getTotalGroupByKind(DatabaseHandler handler){
+		//TODO: Unimplemented method
+		ArrayList<String[]> shopTotal=new ArrayList<String[]>();
+		
+		String query="SELECT c."+DatabaseHandler.PRODUCT_KIND_NAME+", sum(a."+DatabaseHandler.BUYS_UNIT_PRICE+"*a."
+				+DatabaseHandler.BUYS_AMOUNT+") AS sumresult FROM "
+				+DatabaseHandler.TABLE_BUYS+" a, "+DatabaseHandler.TABLE_PRODUCT+" b, "+DatabaseHandler.TABLE_PRODUCT_KIND+" c"
+				+" WHERE a."+DatabaseHandler.BUYS_PRODUCT+"=b."+DatabaseHandler.PRODUCT_ID+" AND c."+DatabaseHandler.PRODUCT_KIND_ID+" = b."+DatabaseHandler.PRODUCT_KIND
+				+" GROUP BY c."+DatabaseHandler.PRODUCT_KIND_NAME
+				+" ORDER BY sumresult DESC";
+		SQLiteDatabase db = handler.getReadableDatabase();
+		Cursor cursor = db.rawQuery(query, null);
+
+		if (cursor != null)
+			while(cursor.moveToNext()){
+				String[] row=new String[3];
+				row[2]="Euro";
+				row[0] = cursor.getString(0);
+				row[1]=String.valueOf(cursor.getDouble(1));
+				shopTotal.add(row);
+			}
+		cursor.close();
+		db.close();
+		return shopTotal;
+	}
+	
+	//getTotalGroupByShopDescription
+	
 }

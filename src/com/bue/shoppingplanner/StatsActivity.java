@@ -17,10 +17,10 @@ public class StatsActivity extends FragmentActivity {
 		setContentView(R.layout.activity_stats);
 		// Show the Up button in the action bar.
 		setupActionBar();
-		StatsContentFragment statsContent = new StatsContentFragment();
+		/*StatsContentFragment statsContent = new StatsContentFragment();
 
 		getSupportFragmentManager().beginTransaction()
-				.add(R.id.statsContentFragmentList, statsContent).commit();
+				.add(R.id.statsContentFragmentList, statsContent).commit();*/
 	}
 
 	/**

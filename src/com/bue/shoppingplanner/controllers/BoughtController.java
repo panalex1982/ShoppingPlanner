@@ -178,5 +178,17 @@ public class BoughtController {
 		return Buys.getTotalGroupByGroup(db);		
 	}
 	
+	public ArrayList<String[]> getTotalByProduct(){
+		return Buys.getTotalGroupByProduct(db);		
+	}
+	
+	public ArrayList<String[]> getTotalByShop(){
+		return Buys.getTotalGroupByShop(db)	;	
+	}
+	
+	public ArrayList<String[]> getTotalByKind(){
+		return Buys.getTotalGroupByKind(db)	;	
+	}
+	
 	
 }
