@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTabHost;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 public class StatsCategoriesFragment extends Fragment {
 	private FragmentTabHost mTabHost;
@@ -37,7 +38,6 @@ public class StatsCategoriesFragment extends Fragment {
         		StatsContentFragment.class, tab3Bundle);
         mTabHost.addTab(mTabHost.newTabSpec("throttle").setIndicator("Kind"),
         		StatsContentFragment.class, tab4Bundle);
-
         return view;
 	}
 

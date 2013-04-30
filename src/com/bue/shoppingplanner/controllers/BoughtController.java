@@ -190,5 +190,9 @@ public class BoughtController {
 		return Buys.getTotalGroupByKind(db)	;	
 	}
 	
+	public ArrayList<String[]> getGroupSpendingByProduct(String groupName){
+		return Buys.getGroupSpendingByProduct(db, groupName);
+	}
+	
 	
 }
