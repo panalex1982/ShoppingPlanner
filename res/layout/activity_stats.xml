@@ -15,13 +15,14 @@
         android:layout_alignParentTop="true" >
     </fragment>
 
-    <FrameLayout
+    <fragment
+        class="com.bue.shoppingplanner.fragments.StatsContentFragment"
         android:id="@+id/statsContent2FragmentList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/statsContentFragmentList"
         android:layout_below="@+id/statsContentFragmentList"
         android:layout_marginTop="50dp" >
-    </FrameLayout>
+    </fragment>
     
 </RelativeLayout>

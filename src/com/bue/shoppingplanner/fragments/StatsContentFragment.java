@@ -77,7 +77,7 @@ public class StatsContentFragment extends ListFragment {
 		headerLayout.addView(headerText);
 		this.getListView().addHeaderView(headerLayout);
 		groupStatsListAdapter=new StatsArrayAdapter(getActivity(),R.layout.stats_element_view,totalsBy);
-		setListAdapter(groupStatsListAdapter);
+		setListAdapter(groupStatsListAdapter);		
 	}
 
 
@@ -85,18 +85,19 @@ public class StatsContentFragment extends ListFragment {
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		Log.d("Item Selected", totalsBy.get(position)[0]);
+		Log.d("Item Selected", totalsBy.get(position-1)[0]);
 		Bundle bundle=new Bundle();
 		bundle.putInt("chosenTab", listGroup);
-		bundle.putString("listKey", totalsBy.get(position)[0]);
+		bundle.putString("listKey", totalsBy.get(position-1)[0]);
 		FragmentManager fragmentManager = getFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		StatsContentFragment fragment=new StatsContentFragment();
 		fragment.setArguments(bundle);
 		fragmentTransaction.replace(this.getId(), fragment);
+		fragmentTransaction.addToBackStack(null);
 		fragmentTransaction.commit();
-		//Errors: gets Wrong Item and has problem when I change tab
-	}
+		//Errors:has problem when I change tab
+}
 	
 	
 	

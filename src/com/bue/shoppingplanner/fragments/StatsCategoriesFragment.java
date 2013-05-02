@@ -28,7 +28,7 @@ public class StatsCategoriesFragment extends Fragment {
 		
 		mTabHost = (FragmentTabHost) view.findViewById(android.R.id.tabhost);
 		
-        mTabHost.setup(getActivity(), getChildFragmentManager(),R.id.realtabcontent);
+        mTabHost.setup(getActivity(), getFragmentManager(),R.id.realtabcontent);
 
         mTabHost.addTab(mTabHost.newTabSpec("group").setIndicator("Group"),
                 StatsContentFragment.class,tab1Bundle);
