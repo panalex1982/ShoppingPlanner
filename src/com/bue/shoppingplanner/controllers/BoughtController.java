@@ -19,6 +19,7 @@ import com.bue.shoppingplanner.model.ProductGroup;
 import com.bue.shoppingplanner.model.ProductKind;
 import com.bue.shoppingplanner.model.Shop;
 import com.bue.shoppingplanner.model.ShopDescription;
+import com.bue.shoppingplanner.utilities.Utilities;
 
 public class BoughtController {
 	private ArrayList<ShoppingListElementHelper> products;

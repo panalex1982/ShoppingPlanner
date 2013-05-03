@@ -9,12 +9,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
 	// All public static variables
 	// Database Version
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 2;
 
 	// Database Name
 	public static final String DATABASE_NAME = "shoppingPlannerDB";
@@ -147,7 +148,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ " INTEGER PRIMARY KEY AUTOINCREMENT ," + BUYS_PRODUCT
 				+ " INTEGER NOT NULL," + BUYS_SHOP + " INTEGER NOT NULL,"
 				+ BUYS_UNIT_PRICE + " REAL NOT NULL," + BUYS_AMOUNT
-				+ " INTEGER NOT NULL," + BUYS_DATE + " TEXT NOT NULL,"
+				+ " INTEGER NOT NULL," + BUYS_DATE + " TIMESTAMP NOT NULL,"
 				+ BUYS_PRODUCT_GROUP_ID + " INTEGER NOT NULL,"
 				+ "FOREIGN KEY(" + BUYS_PRODUCT + ") REFERENCES "
 				+ TABLE_PRODUCT + "(" + PRODUCT_ID + ")," + "FOREIGN KEY("
@@ -155,6 +156,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ ")" + "FOREIGN KEY(" + BUYS_PRODUCT_GROUP_ID
 				+ ") REFERENCES " + TABLE_PRODUCT_GROUP + "("
 				+ PRODUCT_GROUP_ID + ")" + ")";
+		Log.d("Query", CREATE_TABLE_BUYS);
 
 		// Create all tables
 		db.execSQL(CREATE_TABLE_PRODUCT_GROUP);

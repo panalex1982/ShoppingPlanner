@@ -3,6 +3,8 @@ package com.bue.shoppingplanner.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bue.shoppingplanner.utilities.Utilities;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
