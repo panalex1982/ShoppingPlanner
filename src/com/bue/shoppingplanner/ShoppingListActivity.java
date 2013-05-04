@@ -38,6 +38,7 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 	private ImageButton persistShoppingListButton;
 	
 	private TextView shopNameTextView;
+	private TextView totalCostTextView;
 	
 	private ListView shoppingListView;
 	private ShoppingListElementArrayAdapter shoppingListAdapter;
@@ -87,6 +88,9 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 		
 		//Shop Name Initialize
 		shopNameTextView=(TextView) findViewById(R.id.shopNameTextView);
+		
+		//Total Cost Initialize
+		totalCostTextView=(TextView) findViewById(R.id.totalCostTextView);
 		
 		//addProductButton initialize and listener 
 		addProductButton=(ImageButton) findViewById(R.id.addProductButton);		
@@ -305,9 +309,11 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 	
 	/**
 	 * Notify element changes to the ShoppingListArrayAdapter.
+	 * It also changes the total cost field value.
 	 */
 	public void notifyElementCahngesOnShoppingListAdapter(){
 		shoppingListAdapter.notifyDataSetChanged();
+		totalCostTextView.setText(String.valueOf(shoppingListAdapter.getTotalCost()));
 	}
 	
 	protected void refreshElements(){

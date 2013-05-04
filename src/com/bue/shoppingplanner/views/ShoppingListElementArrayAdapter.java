@@ -85,6 +85,37 @@ public class ShoppingListElementArrayAdapter extends ArrayAdapter<ShoppingListEl
 			}
         	
         });
+        holder.listElementAddImageView.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				/** Getting the view position in the ListView */
+	            ListView parent = (ListView)(v.getParent()).getParent();
+	            int pos = parent.getPositionForView(v);
+	            
+				listElement.setQuantity(listElement.getQuantity()+1);
+				data.remove(pos);
+				data.add(pos,listElement);
+				notifyDataSetChanged();
+			}
+		});
+       holder.listElementRemoveImageView.setOnClickListener(new View.OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			/** Getting the view position in the ListView */
+            ListView parent = (ListView)(v.getParent()).getParent();
+            int pos = parent.getPositionForView(v);
+            
+            int newQuantity=listElement.getQuantity()-1;
+            if(newQuantity<1)
+            	newQuantity=1;
+			listElement.setQuantity(newQuantity);
+			data.remove(pos);
+			data.add(pos,listElement);
+			notifyDataSetChanged();
+		}
+       });
        
         return row;
     }
@@ -96,6 +127,14 @@ public class ShoppingListElementArrayAdapter extends ArrayAdapter<ShoppingListEl
 		super.add(element);
 		data.add(element);
 	}
+    
+    public double getTotalCost(){
+    	double total=0.0;
+    	for(ShoppingListElementHelper element:data){
+    		total=total+element.getPrice()*element.getQuantity();
+    	}
+    	return total;
+    }
 
 
 
@@ -106,5 +145,7 @@ public class ShoppingListElementArrayAdapter extends ArrayAdapter<ShoppingListEl
         CheckBox listElementCheckBox;
         
     }
+	
+	
 
 }
