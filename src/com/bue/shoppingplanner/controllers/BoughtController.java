@@ -195,5 +195,17 @@ public class BoughtController {
 		return Buys.getGroupSpendingByProduct(db, groupName);
 	}
 	
+	public ArrayList<String[]> getProductSpedingByShop(String productName){
+		return Buys.getProductSpedingByShop(db, productName);
+	}
+	
+	public ArrayList<String[]> getShopSpedingByProduct(String shopName){
+		return Buys.getShopSpedingByProduct(db,shopName);
+	}
+	
+	public ArrayList<String[]> getKindSpendingByProduct(String kindName){
+		return Buys.getKindSpendingByProduct(db, kindName);
+	}
+	
 	
 }

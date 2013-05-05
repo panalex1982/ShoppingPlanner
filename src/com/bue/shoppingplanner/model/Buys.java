@@ -406,13 +406,129 @@ public class Buys {
 	 * @return
 	 */
 	public static ArrayList<String[]> getGroupSpendingByProduct(DatabaseHandler handler, String groupName){
-		ArrayList<String[]> shopTotal=new ArrayList<String[]>();
+		ArrayList<String[]> total=new ArrayList<String[]>();
 		
 		String query="SELECT c."+DatabaseHandler.PRODUCT_NAME+", sum(a."+DatabaseHandler.BUYS_UNIT_PRICE+"*a."
 				+DatabaseHandler.BUYS_AMOUNT+") AS sumresult FROM "
 				+DatabaseHandler.TABLE_BUYS+" a, "+DatabaseHandler.TABLE_PRODUCT_GROUP+" b, "+DatabaseHandler.TABLE_PRODUCT+" c"
 				+" WHERE a."+DatabaseHandler.BUYS_PRODUCT_GROUP_ID+"=b."+DatabaseHandler.PRODUCT_GROUP_ID
 				+" AND b."+DatabaseHandler.PRODUCT_NAME+" = \""+groupName+"\" AND a."+DatabaseHandler.BUYS_PRODUCT+" = c."+DatabaseHandler.PRODUCT_ID
+				+" GROUP BY c."+DatabaseHandler.PRODUCT_NAME
+				+" ORDER BY sumresult DESC";
+		SQLiteDatabase db = handler.getReadableDatabase();
+		Cursor cursor = db.rawQuery(query, null);
+
+		if (cursor != null)
+			while(cursor.moveToNext()){
+				String[] row=new String[3];
+				row[2]="Euro";
+				row[0] = cursor.getString(0);
+				row[1]=String.valueOf(cursor.getDouble(1));
+				total.add(row);
+			}
+		cursor.close();
+		db.close();
+		return total;
+	}
+	
+	/*
+    SELECT c.name, sum(a.unitPrice*a.amount) AS sumresult
+	FROM Buys a, Product b, Shop c
+	WHERE a.product=b.id AND a.shop=c.id AND b.name="productName"
+	GROUP BY c.name
+	ORDER BY sumresult DESC
+	 */
+	/**
+	 * Returns the total spending of a Product in the shops that someone bought it.
+	 * @param handler
+	 * @return
+	 */
+	public static ArrayList<String[]> getProductSpedingByShop(DatabaseHandler handler, String productName){
+		ArrayList<String[]> total=new ArrayList<String[]>();
+		
+		String query="SELECT c."+DatabaseHandler.SHOP_NAME+", sum(a."+DatabaseHandler.BUYS_UNIT_PRICE+"*a."
+				+DatabaseHandler.BUYS_AMOUNT+") AS sumresult FROM "
+				+DatabaseHandler.TABLE_BUYS+" a, "+DatabaseHandler.TABLE_PRODUCT+" b, "+DatabaseHandler.TABLE_SHOP+" c"
+				+" WHERE a."+DatabaseHandler.BUYS_PRODUCT+"=b."+DatabaseHandler.PRODUCT_ID+" AND a."
+				+DatabaseHandler.BUYS_SHOP+" = c."+DatabaseHandler.SHOP_ID+" AND b."+DatabaseHandler.PRODUCT_NAME
+				+" = \""+productName+"\""
+				+" GROUP BY c."+DatabaseHandler.SHOP_NAME
+				+" ORDER BY sumresult DESC";
+		SQLiteDatabase db = handler.getReadableDatabase();
+		Cursor cursor = db.rawQuery(query, null);
+
+		if (cursor != null)
+			while(cursor.moveToNext()){
+				String[] row=new String[3];
+				row[2]="Euro";
+				row[0] = cursor.getString(0);
+				row[1]=String.valueOf(cursor.getDouble(1));
+				total.add(row);
+			}
+		cursor.close();
+		db.close();
+		return total;
+	}
+	
+	/*
+    SELECT c.name, sum(a.unitPrice*a.amount) AS sumresult
+	FROM Buys a, Product b, Shop c
+	WHERE a.product=b.id AND a.shop=c.id AND c.name="shopName"
+	GROUP BY c.name
+	ORDER BY sumresult DESC
+	 */
+	/**
+	 * Returns the total spending of in shop by product he bought.
+	 * @param handler
+	 * @return
+	 */
+	public static ArrayList<String[]> getShopSpedingByProduct(DatabaseHandler handler, String shopName){
+		ArrayList<String[]> total=new ArrayList<String[]>();
+		
+		String query="SELECT b."+DatabaseHandler.PRODUCT_NAME+", sum(a."+DatabaseHandler.BUYS_UNIT_PRICE+"*a."
+				+DatabaseHandler.BUYS_AMOUNT+") AS sumresult FROM "
+				+DatabaseHandler.TABLE_BUYS+" a, "+DatabaseHandler.TABLE_PRODUCT+" b, "+DatabaseHandler.TABLE_SHOP+" c"
+				+" WHERE a."+DatabaseHandler.BUYS_PRODUCT+"=b."+DatabaseHandler.PRODUCT_ID+" AND a."
+				+DatabaseHandler.BUYS_SHOP+" = c."+DatabaseHandler.SHOP_ID+" AND c."+DatabaseHandler.SHOP_NAME
+				+" = \""+shopName+"\""
+				+" GROUP BY b."+DatabaseHandler.PRODUCT_NAME
+				+" ORDER BY sumresult DESC";
+		SQLiteDatabase db = handler.getReadableDatabase();
+		Cursor cursor = db.rawQuery(query, null);
+
+		if (cursor != null)
+			while(cursor.moveToNext()){
+				String[] row=new String[3];
+				row[2]="Euro";
+				row[0] = cursor.getString(0);
+				row[1]=String.valueOf(cursor.getDouble(1));
+				total.add(row);
+			}
+		cursor.close();
+		db.close();
+		return total;
+	}
+	
+	/*
+    SELECT c.name, sum(a.unitPrice*a.amount) AS sumresult
+	FROM Buys a, ProductKind b, Product c
+	WHERE b.name="kindName" AND c.productKindId=b.id AND a.product=c.id
+	GROUP BY c.name
+	ORDER BY sumresult DESC
+	 */
+	/**
+	 * Returns the spending to all products of a specific kind.
+	 * @param handler
+	 * @return
+	 */
+	public static ArrayList<String[]> getKindSpendingByProduct(DatabaseHandler handler, String kindName){
+		ArrayList<String[]> shopTotal=new ArrayList<String[]>();
+		
+		String query="SELECT c."+DatabaseHandler.PRODUCT_NAME+", sum(a."+DatabaseHandler.BUYS_UNIT_PRICE+"*a."
+				+DatabaseHandler.BUYS_AMOUNT+") AS sumresult FROM "
+				+DatabaseHandler.TABLE_BUYS+" a, "+DatabaseHandler.TABLE_PRODUCT_KIND+" b, "+DatabaseHandler.TABLE_PRODUCT+" c"
+				+" WHERE c."+DatabaseHandler.PRODUCT_KIND+"=b."+DatabaseHandler.PRODUCT_KIND_ID
+				+" AND b."+DatabaseHandler.PRODUCT_KIND_NAME+" = \""+kindName+"\" AND a."+DatabaseHandler.BUYS_PRODUCT+" = c."+DatabaseHandler.PRODUCT_ID
 				+" GROUP BY c."+DatabaseHandler.PRODUCT_NAME
 				+" ORDER BY sumresult DESC";
 		SQLiteDatabase db = handler.getReadableDatabase();

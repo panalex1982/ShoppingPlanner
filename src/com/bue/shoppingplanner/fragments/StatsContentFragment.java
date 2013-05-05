@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.bue.shoppingplanner.R;
 import com.bue.shoppingplanner.controllers.BoughtController;
-import com.bue.shoppingplanner.views.StatsArrayAdapter;
+import com.bue.shoppingplanner.views.StatsExpandableListAdapter;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,18 +16,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class StatsContentFragment extends ListFragment {
+public class StatsContentFragment extends Fragment {
 	
-	//private ListView groupStatsListView;
-	private StatsArrayAdapter groupStatsListAdapter;
+	private ExpandableListView statsItemsExpandableListView;
+	private StatsExpandableListAdapter groupStatsListAdapter;
+	
 	
 	private ArrayList<String[]> totalsBy;
+	private ArrayList<ArrayList<String[]>> childTotalsBy;
 	
-	private int listGroup;
 	private String listKey;
 
 	@Override
@@ -35,32 +37,46 @@ public class StatsContentFragment extends ListFragment {
 		super.onCreate(savedInstanceState);
 		//View statsContentView=getActivity().findViewById(R.id.statsContentFragmentList);
 		Bundle chosenTab=getArguments();
+		childTotalsBy=new ArrayList<ArrayList<String[]>>();
 		BoughtController boughtController=new BoughtController(getActivity());
-		listKey=chosenTab.getString("listKey","");
 		switch(chosenTab.getInt("chosenTab")){
 		case 1:
 			totalsBy=boughtController.getTotalByGroup();
-			listGroup=5;
+			for(String[] total:totalsBy){
+				ArrayList<String[]> tmpList=boughtController.getGroupSpendingByProduct(total[0]);
+				childTotalsBy.add(tmpList);
+			}
 			break;
 		case 2:
 			totalsBy=boughtController.getTotalByProduct();
-			listGroup=6;
+			for(String[] total:totalsBy){
+				ArrayList<String[]> tmpList=boughtController.getProductSpedingByShop(total[0]);
+				childTotalsBy.add(tmpList);
+			}
 			break;
 		case 3:
 			totalsBy=boughtController.getTotalByShop();
-			listGroup=7;
+			for(String[] total:totalsBy){
+				ArrayList<String[]> tmpList=new ArrayList<String[]>();
+				tmpList=boughtController.getShopSpedingByProduct(total[0]);
+				childTotalsBy.add(tmpList);
+			}
 			break;
 		case 4:
 			totalsBy=boughtController.getTotalByKind();
-			listGroup=8;
-			break;
-		case 5:
-			totalsBy=boughtController.getGroupSpendingByProduct(listKey);
-			listGroup=8;
+			for(String[] total:totalsBy){
+				ArrayList<String[]> tmpList=new ArrayList<String[]>();
+				tmpList=boughtController.getKindSpendingByProduct(total[0]);
+				childTotalsBy.add(tmpList);
+			}
 			break;
 		default:
 			totalsBy=boughtController.getTotalByGroup();
-			listGroup=chosenTab.getInt("chosenTab");
+			for(String[] total:totalsBy){
+				ArrayList<String[]> tmpList=new ArrayList<String[]>();
+				tmpList=boughtController.getGroupSpendingByProduct(total[0]);
+				childTotalsBy.add(tmpList);
+			}
 		}
 		
 		//return statsContentView;
@@ -69,20 +85,31 @@ public class StatsContentFragment extends ListFragment {
 	
 	
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		View view=inflater.inflate(R.layout.fragment_stats_content, container,false);
+		statsItemsExpandableListView=(ExpandableListView) view.findViewById(R.id.statsItemsExpandableListView);
 		LinearLayout headerLayout=new LinearLayout(getActivity());
 		TextView headerText=new TextView(getActivity());
 		headerText.setText(listKey);
 		headerLayout.addView(headerText);
-		this.getListView().addHeaderView(headerLayout);
-		groupStatsListAdapter=new StatsArrayAdapter(getActivity(),R.layout.stats_element_view,totalsBy);
-		setListAdapter(groupStatsListAdapter);		
+		statsItemsExpandableListView.addHeaderView(headerLayout);
+		groupStatsListAdapter=new StatsExpandableListAdapter(getActivity(),R.layout.stats_element_view,totalsBy, childTotalsBy);
+		statsItemsExpandableListView.setAdapter(groupStatsListAdapter);	
+		return view;
 	}
 
 
 
-	@Override
+//	@Override
+//	public void onActivityCreated(Bundle savedInstanceState) {
+//		super.onActivityCreated(savedInstanceState);
+//			
+//	}
+
+
+
+	/*@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 		Log.d("Item Selected", totalsBy.get(position-1)[0]);
@@ -97,7 +124,7 @@ public class StatsContentFragment extends ListFragment {
 		fragmentTransaction.addToBackStack(null);
 		fragmentTransaction.commit();
 		//Errors:has problem when I change tab
-}
+}*/
 	
 	
 	
