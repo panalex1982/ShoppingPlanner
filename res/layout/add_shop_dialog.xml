@@ -17,7 +17,7 @@
 
         <Spinner
             android:id="@+id/existingAddShopSpinner"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
@@ -36,9 +36,10 @@
 
         <EditText
             android:id="@+id/nameAddShopEditText"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:freezesText="true"
             android:ems="10" >
 
             <requestFocus />
@@ -81,13 +82,14 @@
 
         <EditText
             android:id="@+id/addressAddShopEditText"
-            android:layout_width="168dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="2"
             android:ems="10" />
 
         <EditText
             android:id="@+id/numberAddShopEditText"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
@@ -127,7 +129,7 @@
 
         <EditText
             android:id="@+id/areaAddShopEditText"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10" />
@@ -153,7 +155,7 @@
 
         <EditText
             android:id="@+id/countryAddShopEditText"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10" />
@@ -173,7 +175,7 @@
 
         <EditText
             android:id="@+id/zipAddShopEditText"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10" />

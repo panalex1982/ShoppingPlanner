@@ -31,6 +31,8 @@ import android.os.Build;
 public class MainMenuActivity extends FragmentActivity {
 	private ImageButton shoppingListImageButton;
 	private ImageButton statsImageButton;
+	private ImageButton shopsImageButton;
+	
 	private TextView spendingMainTextView;
 
 	@Override
@@ -61,6 +63,19 @@ public class MainMenuActivity extends FragmentActivity {
 			public boolean onTouch(View v, MotionEvent event) {
 				if(event.getAction()==MotionEvent.ACTION_UP){
 					startActivity(new Intent(MainMenuActivity.this, StatsActivity.class));
+				}
+				return false;
+			}
+		});
+		
+		//Shops ImageButton
+		shopsImageButton=(ImageButton) findViewById(R.id.shopsImageButton);
+		shopsImageButton.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if(event.getAction()==MotionEvent.ACTION_UP){
+					startActivity(new Intent(MainMenuActivity.this, SetListsActivity.class));
 				}
 				return false;
 			}

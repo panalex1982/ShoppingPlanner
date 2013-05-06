@@ -8,13 +8,16 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 /**
- * Commercial firm and name of the product
- * @author Panagiotis
+ * Commercial firm and name of the product.
+ * @author Panagiotis Alexandropoulos
  *
  */
 public class CommercialProduct {
 	private String barcode;
-	private String commercialName, companyBrand;
+	private String commercialName,//this field is for future use, 
+								  //if i distinguish between product name 
+								  //and commercial product name
+					companyBrand;
 	public CommercialProduct() {
 		super();
 	}

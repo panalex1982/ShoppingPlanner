@@ -8,7 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 /**
- *  @author Panagiotis
+ *  @author Panagiotis Alexandropoulos
  *  ProductGroup categorizes ProductGroup in similar general groups
  *  eg. Food, drinks etc. can be first need products,
  *  Electricity, water, telephone etc. necessary payments

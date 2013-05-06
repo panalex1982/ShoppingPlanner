@@ -3,24 +3,25 @@ package com.bue.shoppingplanner.views;
 import java.util.ArrayList;
 
 import com.bue.shoppingplanner.R;
+import com.bue.shoppingplanner.controllers.BoughtController;
 import com.bue.shoppingplanner.helpers.ShoppingListElementHelper;
 import com.bue.shoppingplanner.helpers.SpinnerBuilder;
 import com.bue.shoppingplanner.model.DatabaseHandler;
+import com.bue.shoppingplanner.model.Product;
 import com.bue.shoppingplanner.model.ProductGroup;
 import com.bue.shoppingplanner.model.ProductKind;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -31,7 +32,7 @@ public class AddProductDialogFragment extends DialogFragment {
 	// Use this instance of the interface to deliver action events
     private AddProductDialogListener mListener;
 	
-	private EditText productAddDialogEditText;
+	private AutoCompleteTextView productAddDialogEditText;
 	private EditText brandAddDialogEditText;
 	private EditText priceAddDialogEditText;
 	private EditText numberAddDialogEditText;
@@ -53,10 +54,19 @@ public class AddProductDialogFragment extends DialogFragment {
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		View dialogMainView=inflater.inflate(R.layout.add_product_dialog, null);
 		//EditTexts initialize
-		productAddDialogEditText=(EditText) dialogMainView.findViewById(R.id.productAddDialogEditText);
+		productAddDialogEditText=(AutoCompleteTextView) dialogMainView.findViewById(R.id.productAddDialogEditText);
 		brandAddDialogEditText=(EditText) dialogMainView.findViewById(R.id.brandAddDialogEditText);
 		priceAddDialogEditText=(EditText) dialogMainView.findViewById(R.id.priceAddDialogEditText);
 		numberAddDialogEditText=(EditText) dialogMainView.findViewById(R.id.numberAddDialogEditText);
+		
+		//Add Adapters to auto-complete text views
+		BoughtController bcontroller=new BoughtController(getActivity());
+		ArrayList<String> productNames=new ArrayList<String>();
+		for(Product product:bcontroller.getProductList()){
+			productNames.add(product.getName());
+		}
+		ArrayAdapter productAdapter=new ArrayAdapter(getActivity(),android.R.layout.simple_dropdown_item_1line, productNames);
+		productAddDialogEditText.setAdapter(productAdapter);
 		
 		//Spinners initialize
 		ArrayList<CharSequence> productGroupSpinnerList=new ArrayList<CharSequence>();
@@ -106,7 +116,8 @@ public class AddProductDialogFragment extends DialogFragment {
                 	listElement.setGroup(productGroupAddDialogSpinner.getSelectedItem().toString());
                 	listElement.setKind(productKindAddDialogSpinner.getSelectedItem().toString());
                 	listElement.setChecked(true);
-                	//TODO: Debug Log.d("listElement.toString(): ",listElement.toString());
+                	listElement.setBarcode("unknown");//TODO: When I add barcodes I will present
+                								//the barcode or "unknown" for not known barcodes
                 	// Send the positive button event back to the host activity
                     mListener.onDialogPositiveClick(AddProductDialogFragment.this);
                 }

@@ -19,6 +19,7 @@ import com.bue.shoppingplanner.model.ProductGroup;
 import com.bue.shoppingplanner.model.ProductKind;
 import com.bue.shoppingplanner.model.Shop;
 import com.bue.shoppingplanner.model.ShopDescription;
+import com.bue.shoppingplanner.model.UnknownBarcode;
 import com.bue.shoppingplanner.utilities.Utilities;
 
 public class BoughtController {
@@ -118,13 +119,17 @@ public class BoughtController {
 		int buysId=0;
 		for(ShoppingListElementHelper element : products){
 			if(element.isChecked()){
-				String barcode="-999";
+				String barcode=element.getBarcode();
 				String productName="";
 				
 				//Set the commercial
 				//Does not have Barcode
-				if(element.getBarcode().equalsIgnoreCase("-999")){
-					productName=element.getProduct()+" "+element.getBrand();
+				if(element.getBarcode().equalsIgnoreCase("unknown")){
+					productName=element.getProduct();
+					UnknownBarcode unBarcode=new UnknownBarcode(db);
+					CommercialProduct commercial=new CommercialProduct(String.valueOf(unBarcode.getBarcode()-1),element.getProduct(),element.getBrand());
+					unBarcode.updateUnknownBarcode(db);
+					barcode=commercial.addCommercialProduct(db);
 				//Has Barcode
 				}else{
 					CommercialProduct commercial=new CommercialProduct(element.getBarcode(),element.getProduct(),element.getBrand());
@@ -205,6 +210,10 @@ public class BoughtController {
 	
 	public ArrayList<String[]> getKindSpendingByProduct(String kindName){
 		return Buys.getKindSpendingByProduct(db, kindName);
+	}
+	
+	public ArrayList<Product> getProductList(){
+		return (ArrayList<Product>) Product.getAllProduct(db);
 	}
 	
 	

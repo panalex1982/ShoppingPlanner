@@ -15,7 +15,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	// All public static variables
 	// Database Version
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 3;
 
 	// Database Name
 	public static final String DATABASE_NAME = "shoppingPlannerDB";
@@ -29,6 +29,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public static final String TABLE_SHOP_DESCRIPTION = "shopDescription";
 	public static final String TABLE_ADDRESS = "address";
 	public static final String TABLE_BUYS = "buys";
+	public static final String TABLE_UNKNOWN_BARCODE="unknownBarcode";
 
 	// Column Names
 	// Product Group
@@ -79,6 +80,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public static final String BUYS_UNIT_PRICE = "unitPrice";
 	public static final String BUYS_AMOUNT = "amount";
 	public static final String BUYS_DATE = "date";
+	
+	// UnknownBarcodes
+	public static final String UNKNOWN_BARCODE_ID="id";
+	public static final String UNKNOWN_BARCODE_VALUE="barcode";
 
 	public DatabaseHandler(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -156,7 +161,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ ")" + "FOREIGN KEY(" + BUYS_PRODUCT_GROUP_ID
 				+ ") REFERENCES " + TABLE_PRODUCT_GROUP + "("
 				+ PRODUCT_GROUP_ID + ")" + ")";
-		Log.d("Query", CREATE_TABLE_BUYS);
+		
+		//UNKNOWN_BARCODE
+		String CREATE_TABLE_UNKNOWN_BARCODE="CREATE TABLE " + TABLE_UNKNOWN_BARCODE + "(" + UNKNOWN_BARCODE_ID
+				+ " INTEGER PRIMARY KEY AUTOINCREMENT, " 
+				+ UNKNOWN_BARCODE_VALUE+" INTEGER NOT NULL)";
 
 		// Create all tables
 		db.execSQL(CREATE_TABLE_PRODUCT_GROUP);
@@ -167,6 +176,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.execSQL(CREATE_TABLE_ADDRESS);
 		db.execSQL(CREATE_TABLE_SHOP);
 		db.execSQL(CREATE_TABLE_BUYS);
+		db.execSQL(CREATE_TABLE_UNKNOWN_BARCODE);
 	}
 
 	// Upgrading database
@@ -181,9 +191,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS " +TABLE_ADDRESS);
 		db.execSQL("DROP TABLE IF EXISTS " +TABLE_SHOP);
 		db.execSQL("DROP TABLE IF EXISTS " +TABLE_BUYS);
-		//
-		// // Create tables again
-		// onCreate(db);
+		db.execSQL("DROP TABLE IF EXISTS " +TABLE_UNKNOWN_BARCODE);
+		
+		// Create tables again
+		onCreate(db);
 	}
 	
 //	public SQLiteDatabase getWritableDatabase() {

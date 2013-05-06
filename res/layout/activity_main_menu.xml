@@ -5,7 +5,7 @@
 	tools:context=".MainMenuActivity">
 
 	<ImageButton
-	    android:id="@+id/imageButton3"
+	    android:id="@+id/shopsImageButton"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_alignBottom="@+id/imageButton4"
@@ -17,8 +17,8 @@
 	    android:id="@+id/statsImageButton"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:layout_alignTop="@+id/imageButton3"
-	    android:layout_toLeftOf="@+id/imageButton3"
+	    android:layout_alignTop="@+id/shopsImageButton"
+	    android:layout_toLeftOf="@+id/shopsImageButton"
 	    android:src="@drawable/ic_stats_icon" />
 
 	<ImageButton

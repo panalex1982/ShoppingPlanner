@@ -46,6 +46,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bue.shoppingplanner.MainMenuActivity" />
         </activity>
+        <activity
+            android:name="com.bue.shoppingplanner.SetListsActivity"
+            android:label="@string/title_activity_set_lists"
+            android:parentActivityName="com.bue.shoppingplanner.MainMenuActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bue.shoppingplanner.MainMenuActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -29,5 +29,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="total_cost">Total Cost:</string>
     <string name="zero">0</string>
+    <string name="title_activity_set_lists">Set Lists</string>
 
 </resources>

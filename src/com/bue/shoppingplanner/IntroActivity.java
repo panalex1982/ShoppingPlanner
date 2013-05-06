@@ -10,6 +10,7 @@ import com.bue.shoppingplanner.model.ProductGroup;
 import com.bue.shoppingplanner.model.ProductKind;
 import com.bue.shoppingplanner.model.Shop;
 import com.bue.shoppingplanner.model.ShopDescription;
+import com.bue.shoppingplanner.model.UnknownBarcode;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -136,8 +137,10 @@ public class IntroActivity extends Activity {
 				kind.setName("Other");//26		
 				kind.addProductKind(db);
 				//Insert Unknown/No Specified barcode
-				CommercialProduct cp=new CommercialProduct("-999","Unknown", "Unknown");
+				CommercialProduct cp=new CommercialProduct("-1","Unknown", "Unknown");
 				cp.addCommercialProduct(db);
+				UnknownBarcode ub=new UnknownBarcode(-1);
+				ub.addUnknownBarcode(db);				
 				//Insert Shop Description
 				ShopDescription desc=new ShopDescription();
 				desc.setName("Unknown");
@@ -148,7 +151,7 @@ public class IntroActivity extends Activity {
 				desc.addShopDescription(db);//3
 				desc.setName("Specialized Store");
 				desc.addShopDescription(db);//4
-				desc.setName("Local Store");
+				desc.setName("Mini Market");
 				desc.addShopDescription(db);//5
 				desc.setName("Official Store");
 				desc.addShopDescription(db);//6
