@@ -159,15 +159,15 @@ public class IntroActivity extends Activity {
 				desc.addShopDescription(db);//7
 				//Insert Address
 				Address address=new Address();
-				address.setStreetName("not specified");
+				address.setStreetName("Unknown");
 				address.setNumber("0");
-				address.setCity("not specified");
-				address.setArea("not specified");
-				address.setZip("not specified");
-				address.setCountry("not specified");
+				address.setCity("Unknown");
+				address.setArea("Unknown");
+				address.setZip("Unknown");
+				address.setCountry("Unknown");
 				address.addAddress(db);//1
 				Shop shop=new Shop();
-				shop.setName("not specified");
+				shop.setName("Unknown");
 				shop.setAddress(1);
 				shop.setShopDescription(1);
 				shop.addShop(db);//1				

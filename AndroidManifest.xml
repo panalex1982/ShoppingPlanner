@@ -47,7 +47,7 @@
                 android:value="com.bue.shoppingplanner.MainMenuActivity" />
         </activity>
         <activity
-            android:name="com.bue.shoppingplanner.SetListsActivity"
+            android:name="com.bue.shoppingplanner.ShopsActivity"
             android:label="@string/title_activity_set_lists"
             android:parentActivityName="com.bue.shoppingplanner.MainMenuActivity" >
             <meta-data

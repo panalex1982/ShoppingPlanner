@@ -42,6 +42,14 @@ public class ShopElementHelper implements Serializable{
 
 	public ShopElementHelper() {
 		super();
+		name=null;
+		address=null;
+		number=null;
+		city=null;
+		area=null;
+		country=null;
+		zip=null;
+		type=null;
 	}
 
 	public String getName() {
@@ -134,6 +142,21 @@ public class ShopElementHelper implements Serializable{
 				+ ", country=" + country + ", zip=" + zip + ", type=" + type
 				+ "]";
 	}
+	
+	/**
+	 * @deprecated
+	 * @return
+	 */
+	public boolean isNull(){
+		return (name==null && address==null && number==null && 
+				city==null && area==null && country==null 
+				&& zip==null && type==null);
+	}
+
+	public boolean hasName(){
+		return name!=null;
+	}
+	
 	
 	
 }

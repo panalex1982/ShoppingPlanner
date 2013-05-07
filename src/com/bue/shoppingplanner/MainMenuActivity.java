@@ -75,7 +75,7 @@ public class MainMenuActivity extends FragmentActivity {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if(event.getAction()==MotionEvent.ACTION_UP){
-					startActivity(new Intent(MainMenuActivity.this, SetListsActivity.class));
+					startActivity(new Intent(MainMenuActivity.this, ShopsActivity.class));
 				}
 				return false;
 			}

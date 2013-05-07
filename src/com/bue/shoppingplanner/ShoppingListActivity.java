@@ -156,6 +156,9 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 				if(event.getAction()==MotionEvent.ACTION_UP){
 					BoughtController controller=new BoughtController();
 					controller.setContext(v.getContext());
+					if(!shopElement.hasName()){
+						shopElement=new ShopElementHelper("Unknown","Unknown","0","Unknown","Unknown","Unknown","Unknown", "Unknown");
+					}
 					controller.setShop(shopElement);
 					controller.setProducts(shoppingListArrayList);
 					//If everything persisted I clear the saved list and the shop
@@ -170,10 +173,6 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 							SerializeObject.write(v.getContext(), (Object)shoppingListArrayList,"savedSP.sl");
 							//Save shop
 							SerializeObject.write(v.getContext(), (Object)shopElement, "savedShop.sl");
-							//Tell that saved objects exist
-							SharedPreferences.Editor editorClear=savedShoppingList.edit();
-							editorClear.putBoolean(PREFS_HAS_SAVED_FILE, true);
-							editorClear.commit();
 							refreshElements();
 						} catch (IOException e) {
 							Log.d("Serializing Exception",e.toString());

@@ -15,17 +15,17 @@ import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
 import android.os.Build;
 
-public class SetListsActivity extends FragmentActivity implements AddShopDialogFragment.AddShopDialogListener{
+public class ShopsActivity extends FragmentActivity implements AddShopDialogFragment.AddShopDialogListener{
 	ImageButton addShopSetImageButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_set_lists);
+		setContentView(R.layout.activity_shops);
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
-		addShopSetImageButton=(ImageButton) findViewById(R.id.addShopSetImageButton);
+		addShopSetImageButton=(ImageButton) findViewById(R.id.addShopShopsImageButton);
 		addShopSetImageButton.setOnTouchListener(new View.OnTouchListener() {
 			
 			@Override

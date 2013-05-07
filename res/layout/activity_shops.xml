@@ -6,16 +6,23 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".SetListsActivity" >
+    tools:context=".ShopsActivity" >
 
     <ImageButton
-        android:id="@+id/addShopSetImageButton"
+        android:id="@+id/addShopShopsImageButton"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/ic_shop" />
+
+    <ListView
+        android:id="@+id/shopsShopsListView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="68dp"
-        android:layout_marginTop="51dp"
-        android:src="@drawable/ic_shop" />
+        android:layout_above="@id/addShopShopsImageButton" >
+    </ListView>
 
 </RelativeLayout>
