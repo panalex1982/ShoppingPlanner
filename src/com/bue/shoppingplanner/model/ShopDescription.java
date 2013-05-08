@@ -70,18 +70,19 @@ public class ShopDescription {
 		return this.getShopDescriptionId(handler);
 	}
 
-	public ShopDescription getShopDescription(DatabaseHandler handler, int id) {
+	public static ShopDescription getShopDescription(DatabaseHandler handler, int id) {
 		SQLiteDatabase db = handler.getReadableDatabase();
 
 		Cursor cursor = db.query(DatabaseHandler.TABLE_SHOP_DESCRIPTION,
 				new String[] { DatabaseHandler.SHOP_DESCRIPTION_NAME, }, DatabaseHandler.SHOP_DESCRIPTION_ID
 						+ "=?", new String[] { String.valueOf(id) }, null,
 				null, null, null);
+		ShopDescription shopDescription=new ShopDescription();
 		if (cursor != null)
-			cursor.moveToFirst();
-
-		ShopDescription shopDescription = new ShopDescription(id,
+			if(cursor.moveToFirst()){
+				shopDescription = new ShopDescription(id,
 				cursor.getString(0));
+			}
 		cursor.close();
 		db.close();
 

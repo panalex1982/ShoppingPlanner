@@ -13,6 +13,7 @@ public class Address {
 	public Address() {
 		super();
 	}
+
 	public Address(int id, String streetName, String number, String area,
 			String city, String zip, String country) {
 		super();
@@ -113,7 +114,7 @@ public class Address {
 		return getAddressId(handler);
 	}
 
-	public Address getAddress(DatabaseHandler handler,int id) {
+	public static Address getAddress(DatabaseHandler handler,int id) {
 		SQLiteDatabase db = handler.getReadableDatabase();
 
 		Cursor cursor = db.query(DatabaseHandler.TABLE_ADDRESS, new String[] {
@@ -122,12 +123,13 @@ public class Address {
 				DatabaseHandler.ADDRESS_ID
 				+ "=?", new String[] { String.valueOf(id) }, null, null, null,
 				null);
+		Address address=new Address();
 		if (cursor != null)
-			cursor.moveToFirst();
-
-		Address address = new Address(id, cursor.getString(0),
-				cursor.getString(1), cursor.getString(1), cursor.getString(2),
-				cursor.getString(3), cursor.getString(4));
+			if(cursor.moveToFirst()){
+				address = new Address(id, cursor.getString(0),
+					cursor.getString(1), cursor.getString(2), cursor.getString(3),
+					cursor.getString(4), cursor.getString(5));
+			}
 		cursor.close();
 		db.close();
 

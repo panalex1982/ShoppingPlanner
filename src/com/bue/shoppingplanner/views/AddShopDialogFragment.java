@@ -98,10 +98,10 @@ public class AddShopDialogFragment extends DialogFragment {
 					if(position!=0){
 						
 						String shopName=((Spinner)parent).getItemAtPosition(position).toString();
-						ShopController shop=new ShopController();
+						ShopController shop=new ShopController(getActivity());
 						
 						nameAddShopEditText.setText(shopName);
-						shop.selectShopElementHelperByShopName(db, shopName);
+						shop.selectShopElementHelperByShopName(shopName);
 						addressAddShopEditText.setText(shop.getAddress());
 						numberAddShopEditText.setText(shop.getNumber());
 						cityAddShopEditText.setText(shop.getCity());

@@ -16,10 +16,28 @@ public class Buys {
 	private int amount;
 	private int group;
 	private String date; //Not sure for the package, i used android package I may change it to sql
+	private String listName;
 	
 	public Buys() {
 		super();
 	}
+	
+	
+	public Buys(int id, int product, int shop, int user, double unitPrice,
+			int amount, int group, String date, String listName) {
+		super();
+		this.id = id;
+		this.product = product;
+		this.shop = shop;
+		this.user = user;
+		this.unitPrice = unitPrice;
+		this.amount = amount;
+		this.group = group;
+		this.date = date;
+		this.listName = listName;
+	}
+
+
 	public Buys(int id, int product, int shop, int user, double unit_price, int amount, String date, int group) {
 		super();
 		this.product = product;
@@ -47,7 +65,7 @@ public class Buys {
 	
 	
 	public Buys(int product, int shop, double unitPrice, int amount, int group,
-			String date) {
+			String date, String listName) {
 		super();
 		this.product = product;
 		this.shop = shop;
@@ -56,6 +74,20 @@ public class Buys {
 		this.group = group;
 		this.date = date;
 		user=-1;
+		this.listName=listName;
+	}
+	
+	public Buys(int product, int shop, int user, double unitPrice, int amount,
+			int group, String date, String listName) {
+		super();
+		this.product = product;
+		this.shop = shop;
+		this.user = user;
+		this.unitPrice = unitPrice;
+		this.amount = amount;
+		this.group = group;
+		this.date = date;
+		this.listName = listName;
 	}
 	public int getId() {
 		return id;
@@ -107,6 +139,8 @@ public class Buys {
 		this.group = group;
 	}
 	
+	
+	
 	/*
 	 * "CREATE TABLE "+ TABLE_BUYS +"("+ BUYS_ID+
 	 * " INTEGER PRIMARY KEY AUTOINCREMENT ," + BUYS_PRODUCT +
@@ -122,6 +156,26 @@ public class Buys {
 	 * Buys
 	 */
 
+	public double getUnitPrice() {
+		return unitPrice;
+	}
+
+
+	public void setUnitPrice(double unitPrice) {
+		this.unitPrice = unitPrice;
+	}
+
+
+	public String getListName() {
+		return listName;
+	}
+
+
+	public void setListName(String listName) {
+		this.listName = listName;
+	}
+
+
 	public int addBuys(DatabaseHandler handler) {
 		SQLiteDatabase db = handler.getWritableDatabase();
 
@@ -132,6 +186,7 @@ public class Buys {
 		values.put(DatabaseHandler.BUYS_AMOUNT, getAmount());
 		values.put(DatabaseHandler.BUYS_DATE, getDate());
 		values.put(DatabaseHandler.BUYS_PRODUCT_GROUP_ID, getGroup());
+		values.put(DatabaseHandler.BUYS_LIST_NAME, listName);
 
 		// Inserting Row
 		int tmp=(int) db.insert(DatabaseHandler.TABLE_BUYS, null, values);
@@ -144,7 +199,8 @@ public class Buys {
 
 		Cursor cursor = db.query(DatabaseHandler.TABLE_BUYS, new String[] { DatabaseHandler.BUYS_PRODUCT,
 				DatabaseHandler.BUYS_SHOP, DatabaseHandler.BUYS_UNIT_PRICE, DatabaseHandler.BUYS_AMOUNT, 
-				DatabaseHandler.BUYS_DATE, DatabaseHandler.BUYS_PRODUCT_GROUP_ID, }, DatabaseHandler.BUYS_ID + "=?",
+				DatabaseHandler.BUYS_DATE, DatabaseHandler.BUYS_PRODUCT_GROUP_ID, }, DatabaseHandler.BUYS_ID + "=? AND "
+				+DatabaseHandler.BUYS_LIST_NAME+" = \"-1\"",
 				new String[] { String.valueOf(id) }, null, null, null, null);
 		if (cursor != null)
 			cursor.moveToFirst();
@@ -157,12 +213,26 @@ public class Buys {
 
 		return buys;
 	}
-
-	// Getting All Buys
-	public static List<Buys> getAllBuys(DatabaseHandler handler) {
+	
+	
+	/**
+	 * Getting All Buys.
+	 * @param handler
+	 * @param itemType if equals 0 means that result are items has been bought
+	 * 			else if equals 1 are items belonging to a shopping list
+	 * @return
+	 */
+	public static List<Buys> getAllBuys(DatabaseHandler handler, int itemType) {
 		List<Buys> buysList = new ArrayList<Buys>();
 		// Select All Query
-		String selectQuery = "SELECT  * FROM " + DatabaseHandler.TABLE_BUYS;
+		String selectQuery="";
+		if(itemType==0)
+			selectQuery = "SELECT  * FROM " + DatabaseHandler.TABLE_BUYS
+				+" WHERE "+DatabaseHandler.BUYS_LIST_NAME+" = \"-1\"";
+		else if(itemType==1)
+			selectQuery = "SELECT  * FROM " + DatabaseHandler.TABLE_BUYS
+			+" WHERE "+DatabaseHandler.BUYS_LIST_NAME+" != \"-1\"";
+			
 
 		SQLiteDatabase db = handler.getWritableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
@@ -178,6 +248,7 @@ public class Buys {
 				buys.setAmount(cursor.getInt(4));
 				buys.setDate(cursor.getString(5));
 				buys.setGroup(cursor.getInt(6));
+				buys.setListName(cursor.getString(7));
 
 				// Adding contact to list
 				buysList.add(buys);
@@ -262,6 +333,7 @@ public class Buys {
 				+DatabaseHandler.BUYS_AMOUNT+") AS sumresult FROM "
 				+DatabaseHandler.TABLE_BUYS+" a, "+DatabaseHandler.TABLE_PRODUCT_GROUP+" b"
 				+" WHERE a."+DatabaseHandler.BUYS_PRODUCT_GROUP_ID+"=b."+DatabaseHandler.PRODUCT_GROUP_ID
+				+" AND a."+DatabaseHandler.BUYS_LIST_NAME+" =\"-1\""
 				+" GROUP BY b."+DatabaseHandler.PRODUCT_GROUP_NAME
 				+" ORDER BY sumresult DESC";
 		SQLiteDatabase db = handler.getReadableDatabase();
@@ -299,6 +371,7 @@ public class Buys {
 				+DatabaseHandler.BUYS_AMOUNT+") AS sumresult FROM "
 				+DatabaseHandler.TABLE_BUYS+" a, "+DatabaseHandler.TABLE_PRODUCT+" b"
 				+" WHERE a."+DatabaseHandler.BUYS_PRODUCT+"=b."+DatabaseHandler.PRODUCT_ID
+				+" AND a."+DatabaseHandler.BUYS_LIST_NAME+" =\"-1\""
 				+" GROUP BY b."+DatabaseHandler.PRODUCT_NAME
 				+" ORDER BY sumresult DESC";
 		SQLiteDatabase db = handler.getReadableDatabase();
@@ -336,6 +409,7 @@ public class Buys {
 				+DatabaseHandler.BUYS_AMOUNT+") AS sumresult FROM "
 				+DatabaseHandler.TABLE_BUYS+" a, "+DatabaseHandler.TABLE_SHOP+" b"
 				+" WHERE a."+DatabaseHandler.BUYS_SHOP+"=b."+DatabaseHandler.SHOP_ID
+				+" AND a."+DatabaseHandler.BUYS_LIST_NAME+" =\"-1\""
 				+" GROUP BY b."+DatabaseHandler.SHOP_NAME
 				+" ORDER BY sumresult DESC";
 		SQLiteDatabase db = handler.getReadableDatabase();
@@ -372,7 +446,10 @@ public class Buys {
 		String query="SELECT c."+DatabaseHandler.PRODUCT_KIND_NAME+", sum(a."+DatabaseHandler.BUYS_UNIT_PRICE+"*a."
 				+DatabaseHandler.BUYS_AMOUNT+") AS sumresult FROM "
 				+DatabaseHandler.TABLE_BUYS+" a, "+DatabaseHandler.TABLE_PRODUCT+" b, "+DatabaseHandler.TABLE_PRODUCT_KIND+" c"
-				+" WHERE a."+DatabaseHandler.BUYS_PRODUCT+"=b."+DatabaseHandler.PRODUCT_ID+" AND c."+DatabaseHandler.PRODUCT_KIND_ID+" = b."+DatabaseHandler.PRODUCT_KIND
+				+" WHERE a."+DatabaseHandler.BUYS_PRODUCT+"=b."+DatabaseHandler.PRODUCT_ID
+				+" AND c."+DatabaseHandler.PRODUCT_KIND_ID
+				+" = b."+DatabaseHandler.PRODUCT_KIND
+				+" AND a."+DatabaseHandler.BUYS_LIST_NAME+" =\"-1\""
 				+" GROUP BY c."+DatabaseHandler.PRODUCT_KIND_NAME
 				+" ORDER BY sumresult DESC";
 		SQLiteDatabase db = handler.getReadableDatabase();
@@ -413,6 +490,7 @@ public class Buys {
 				+DatabaseHandler.TABLE_BUYS+" a, "+DatabaseHandler.TABLE_PRODUCT_GROUP+" b, "+DatabaseHandler.TABLE_PRODUCT+" c"
 				+" WHERE a."+DatabaseHandler.BUYS_PRODUCT_GROUP_ID+"=b."+DatabaseHandler.PRODUCT_GROUP_ID
 				+" AND b."+DatabaseHandler.PRODUCT_NAME+" = \""+groupName+"\" AND a."+DatabaseHandler.BUYS_PRODUCT+" = c."+DatabaseHandler.PRODUCT_ID
+				+" AND a."+DatabaseHandler.BUYS_LIST_NAME+" =\"-1\""
 				+" GROUP BY c."+DatabaseHandler.PRODUCT_NAME
 				+" ORDER BY sumresult DESC";
 		SQLiteDatabase db = handler.getReadableDatabase();
@@ -451,7 +529,7 @@ public class Buys {
 				+DatabaseHandler.TABLE_BUYS+" a, "+DatabaseHandler.TABLE_PRODUCT+" b, "+DatabaseHandler.TABLE_SHOP+" c"
 				+" WHERE a."+DatabaseHandler.BUYS_PRODUCT+"=b."+DatabaseHandler.PRODUCT_ID+" AND a."
 				+DatabaseHandler.BUYS_SHOP+" = c."+DatabaseHandler.SHOP_ID+" AND b."+DatabaseHandler.PRODUCT_NAME
-				+" = \""+productName+"\""
+				+" = \""+productName+"\""+" AND a."+DatabaseHandler.BUYS_LIST_NAME+" =\"-1\""
 				+" GROUP BY c."+DatabaseHandler.SHOP_NAME
 				+" ORDER BY sumresult DESC";
 		SQLiteDatabase db = handler.getReadableDatabase();
@@ -490,7 +568,7 @@ public class Buys {
 				+DatabaseHandler.TABLE_BUYS+" a, "+DatabaseHandler.TABLE_PRODUCT+" b, "+DatabaseHandler.TABLE_SHOP+" c"
 				+" WHERE a."+DatabaseHandler.BUYS_PRODUCT+"=b."+DatabaseHandler.PRODUCT_ID+" AND a."
 				+DatabaseHandler.BUYS_SHOP+" = c."+DatabaseHandler.SHOP_ID+" AND c."+DatabaseHandler.SHOP_NAME
-				+" = \""+shopName+"\""
+				+" = \""+shopName+"\""+" AND a."+DatabaseHandler.BUYS_LIST_NAME+" =\"-1\""
 				+" GROUP BY b."+DatabaseHandler.PRODUCT_NAME
 				+" ORDER BY sumresult DESC";
 		SQLiteDatabase db = handler.getReadableDatabase();
@@ -528,7 +606,9 @@ public class Buys {
 				+DatabaseHandler.BUYS_AMOUNT+") AS sumresult FROM "
 				+DatabaseHandler.TABLE_BUYS+" a, "+DatabaseHandler.TABLE_PRODUCT_KIND+" b, "+DatabaseHandler.TABLE_PRODUCT+" c"
 				+" WHERE c."+DatabaseHandler.PRODUCT_KIND+"=b."+DatabaseHandler.PRODUCT_KIND_ID
-				+" AND b."+DatabaseHandler.PRODUCT_KIND_NAME+" = \""+kindName+"\" AND a."+DatabaseHandler.BUYS_PRODUCT+" = c."+DatabaseHandler.PRODUCT_ID
+				+" AND b."+DatabaseHandler.PRODUCT_KIND_NAME+" = \""+kindName
+				+"\" AND a."+DatabaseHandler.BUYS_PRODUCT+" = c."+DatabaseHandler.PRODUCT_ID
+				+" AND a."+DatabaseHandler.BUYS_LIST_NAME+" =\"-1\""
 				+" GROUP BY c."+DatabaseHandler.PRODUCT_NAME
 				+" ORDER BY sumresult DESC";
 		SQLiteDatabase db = handler.getReadableDatabase();
@@ -545,6 +625,27 @@ public class Buys {
 		cursor.close();
 		db.close();
 		return shopTotal;
+	}
+	
+	/**
+	 * Returns the names of the existing shopping lists.
+	 * @param handler
+	 * @return
+	 */
+	public static ArrayList<String> getShoppingListNames(DatabaseHandler handler){
+		ArrayList<String> listNames=new ArrayList<String>();
+		String query="SELECT DISTINCT "+DatabaseHandler.BUYS_LIST_NAME+" FROM "+DatabaseHandler.TABLE_BUYS
+				+" WHERE "+DatabaseHandler.BUYS_LIST_NAME+" != \"-1\"";
+		SQLiteDatabase db = handler.getReadableDatabase();
+		Cursor cursor = db.rawQuery(query, null);
+
+		if (cursor != null)
+			while(cursor.moveToNext()){
+				listNames.add(cursor.getString(0));
+			}
+		cursor.close();
+		db.close();
+		return listNames;
 	}
 	
 }

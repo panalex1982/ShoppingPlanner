@@ -11,10 +11,12 @@ public class ShoppingListElementHelper implements Serializable {
 	private String group;
 	private String kind;
 	private boolean isChecked;
+	private String listName;
 	
 	public ShoppingListElementHelper() {
 		super();
-		barcode="-999";
+		barcode="-1";
+		listName="-1";
 	}
 	
 	public ShoppingListElementHelper(String product, String brand,
@@ -27,7 +29,8 @@ public class ShoppingListElementHelper implements Serializable {
 		this.group = group;
 		this.kind = kind;
 		this.isChecked=isChecked;
-		barcode="-999";
+		barcode="-1";
+		listName="-1";
 	}
 	
 	public ShoppingListElementHelper(String product, String brand, String barcode,
@@ -41,7 +44,9 @@ public class ShoppingListElementHelper implements Serializable {
 		this.kind = kind;
 		this.isChecked=isChecked;
 		this.barcode=barcode;
+		listName="-1";
 	}
+	
 
 	public String getProduct() {
 		return product;
@@ -110,9 +115,18 @@ public class ShoppingListElementHelper implements Serializable {
 	}
 	
 	
+	
+
+	public String getListName() {
+		return listName;
+	}
+
+	public void setListName(String listName) {
+		this.listName = listName;
+	}
 
 	public String encodeObject(){
-		String encode=product+"\n\t\t"+brand+"\n\t\t"+price+"\n\t\t"+quantity+"\n\t\t"+group+"\n\t\t"+kind+"\n\t\t"+barcode+"\n\t\t"+Boolean.toString(isChecked);		
+		String encode=product+"\n\t\t"+brand+"\n\t\t"+price+"\n\t\t"+quantity+"\n\t\t"+group+"\n\t\t"+kind+"\n\t\t"+barcode+"\n\t\t"+Boolean.toString(isChecked)+listName;		
 		return encode;
 	}
 	
@@ -127,6 +141,7 @@ public class ShoppingListElementHelper implements Serializable {
 		kind=splitted[5];
 		barcode=splitted[6];
 		isChecked=Boolean.parseBoolean(splitted[7]);
+		listName=splitted[8];
 	}
 
 	@Override

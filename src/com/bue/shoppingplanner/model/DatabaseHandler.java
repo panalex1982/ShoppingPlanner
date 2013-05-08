@@ -15,7 +15,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	// All public static variables
 	// Database Version
-	private static final int DATABASE_VERSION = 3;
+	private static final int DATABASE_VERSION = 4;
 
 	// Database Name
 	public static final String DATABASE_NAME = "shoppingPlannerDB";
@@ -30,6 +30,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public static final String TABLE_ADDRESS = "address";
 	public static final String TABLE_BUYS = "buys";
 	public static final String TABLE_UNKNOWN_BARCODE="unknownBarcode";
+	//public static final String TABLE_LIST="list";
 
 	// Column Names
 	// Product Group
@@ -46,7 +47,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public static final String PRODUCT_NAME = "name";
 	public static final String PRODUCT_BARCODE = "barcode";
 	public static final String PRODUCT_KIND = "kind";
-	public static final String BUYS_PRODUCT_GROUP_ID = "productGroupId";
 
 	// Commercial Product
 	public static final String COMMERCIAL_PRODUCT_BARCODE = "barcode";
@@ -79,11 +79,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	// user;//User not used in first version
 	public static final String BUYS_UNIT_PRICE = "unitPrice";
 	public static final String BUYS_AMOUNT = "amount";
-	public static final String BUYS_DATE = "date";
+	public static final String BUYS_PRODUCT_GROUP_ID = "productGroupId";
+	public static final String BUYS_DATE = "date";//List must not have date, but buy must have
+	public static final String BUYS_LIST_NAME="listName";//If this field is -1 means this is normal buy else means it is list
 	
 	// UnknownBarcodes
 	public static final String UNKNOWN_BARCODE_ID="id";
 	public static final String UNKNOWN_BARCODE_VALUE="barcode";
+	
+	// List
+	public static final String LIST_ID="id";
+	public static final String LIST_NAME="name";
+	public static final String LIST_PRODUCT="productId";
+	public static final String LIST_UNIT_PRICE = "unitPrice";
+	public static final String LIST_AMOUNT = "amount";
+	public static final String LIST_PRODUCT_GROUP_ID = "productGroupId";
 
 	public DatabaseHandler(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -155,6 +165,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ BUYS_UNIT_PRICE + " REAL NOT NULL," + BUYS_AMOUNT
 				+ " INTEGER NOT NULL," + BUYS_DATE + " TIMESTAMP NOT NULL,"
 				+ BUYS_PRODUCT_GROUP_ID + " INTEGER NOT NULL,"
+				+BUYS_LIST_NAME+" TEXT, "
 				+ "FOREIGN KEY(" + BUYS_PRODUCT + ") REFERENCES "
 				+ TABLE_PRODUCT + "(" + PRODUCT_ID + ")," + "FOREIGN KEY("
 				+ BUYS_SHOP + ") REFERENCES " + TABLE_SHOP + "(" + SHOP_ID
@@ -166,6 +177,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		String CREATE_TABLE_UNKNOWN_BARCODE="CREATE TABLE " + TABLE_UNKNOWN_BARCODE + "(" + UNKNOWN_BARCODE_ID
 				+ " INTEGER PRIMARY KEY AUTOINCREMENT, " 
 				+ UNKNOWN_BARCODE_VALUE+" INTEGER NOT NULL)";
+		
+		/*//LIST
+		String CREATE_TABLE_LIST="CREATE TABLE "+TABLE_LIST+"("
+				+LIST_ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "
+				+LIST_NAME+" TEXT UNIQUE NOT NULL, "
+				+LIST_PRODUCT+" INTEGER NOT NULL, "
+				+ BUYS_UNIT_PRICE + " REAL NOT NULL," + BUYS_AMOUNT
+				+ " INTEGER NOT NULL," + BUYS_DATE + " TIMESTAMP NOT NULL,"
+				+ BUYS_PRODUCT_GROUP_ID + " INTEGER NOT NULL,"
+				+ "FOREIGN KEY(" + BUYS_PRODUCT + ") REFERENCES "
+				+ TABLE_PRODUCT + "(" + PRODUCT_ID + ")," + "FOREIGN KEY("
+				+ BUYS_SHOP + ") REFERENCES " + TABLE_SHOP + "(" + SHOP_ID
+				+ ")" + "FOREIGN KEY(" + BUYS_PRODUCT_GROUP_ID
+				+ ") REFERENCES " + TABLE_PRODUCT_GROUP + "("
+				+ PRODUCT_GROUP_ID + ")" + ")"
+				 + "))";*/
+				
 
 		// Create all tables
 		db.execSQL(CREATE_TABLE_PRODUCT_GROUP);
@@ -177,6 +205,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.execSQL(CREATE_TABLE_SHOP);
 		db.execSQL(CREATE_TABLE_BUYS);
 		db.execSQL(CREATE_TABLE_UNKNOWN_BARCODE);
+		//db.execSQL(CREATE_TABLE_LIST);
 	}
 
 	// Upgrading database
@@ -192,7 +221,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS " +TABLE_SHOP);
 		db.execSQL("DROP TABLE IF EXISTS " +TABLE_BUYS);
 		db.execSQL("DROP TABLE IF EXISTS " +TABLE_UNKNOWN_BARCODE);
-		
+		//db.execSQL("DROP TABLE IF EXISTS " +TABLE_LIST);
 		// Create tables again
 		onCreate(db);
 	}

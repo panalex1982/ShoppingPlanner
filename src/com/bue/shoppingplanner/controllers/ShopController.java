@@ -1,5 +1,9 @@
 package com.bue.shoppingplanner.controllers;
 
+import java.util.ArrayList;
+
+import android.content.Context;
+
 import com.bue.shoppingplanner.helpers.ShopElementHelper;
 import com.bue.shoppingplanner.model.Address;
 import com.bue.shoppingplanner.model.DatabaseHandler;
@@ -7,23 +11,27 @@ import com.bue.shoppingplanner.model.Shop;
 import com.bue.shoppingplanner.model.ShopDescription;
 
 public class ShopController {
-	ShopElementHelper element;
+	private ShopElementHelper element;
+	private Context context;
+	private DatabaseHandler db=null;
 
 	public ShopController(ShopElementHelper element) {
 		super();
-		this.element = element;
+		this.element = element;		
 	}
 
-	public ShopController() {
+	public ShopController(Context context) {
 		super();
 		this.element=new ShopElementHelper();
+		this.context = context;
+		db=new DatabaseHandler(context);
 	}
-
+	
 	public ShopElementHelper getElement() {
 		return element;
 	}
 	
-	public void selectShopElementHelperByShopName(DatabaseHandler db, String shopName) {
+	public void selectShopElementHelperByShopName(String shopName) {
 		Shop shopModel=new Shop();
 		shopModel.setName(shopName);
 		shopModel.getShopByName(db);
@@ -102,6 +110,58 @@ public class ShopController {
 		element.setType(type);
 	}
 	
+	public ArrayList<ShopElementHelper> getAllShops(){
+		ArrayList<ShopElementHelper> shopList=new ArrayList<ShopElementHelper>();
+		ArrayList<Shop> shops=(ArrayList<Shop>) Shop.getAllShop(db);
+		for(Shop shopModel:shops){
+			ShopElementHelper shop=new ShopElementHelper();
+			shop.setName(shopModel.getName());
+			Address address=Address.getAddress(db, shopModel.getAddress());
+			shop.setAddress(address.getStreetName());
+			shop.setNumber(address.getNumber());
+			shop.setCity(address.getCity());
+			shop.setAddress(address.getArea());
+			shop.setCountry(address.getCountry());
+			shop.setZip(address.getZip());
+			ShopDescription type=new ShopDescription();
+			type=ShopDescription.getShopDescription(db,shopModel.getShopDescription());
+			shop.setType(type.getName());
+			shopList.add(shop);
+		}
+		return shopList;
+	}
 	
-
+	/**
+	 * Persist new shop with the given (from ShopElementHeleper element)
+	 * address and shop description.
+	 * Method returns the shop id that adds to the database. If the shop already
+	 * exist it return the shop id of the existing shop.
+	 *  
+	 * @return
+	 */
+	public int persistShop(){
+		//Create Shop Model and Persist shop
+				Shop shopModel=new Shop();
+				shopModel.setName(element.getName());
+				//Check if shop exist in database
+				int shopId = shopModel.getShopId(db);
+				//Log.d("SHOP_ID: ", Integer.toString(shopId));
+				if(shopId==-1){
+					Address address=new Address(element.getAddress(), element.getNumber(), element.getCity(), element.getArea(),
+							element.getCountry(), element.getZip());
+					ShopDescription shopDesc=new ShopDescription(element.getType());
+					int addressId=address.getAddressId(db);
+					int descId=shopDesc.getShopDescriptionId(db);
+					if(addressId==-1)
+						shopModel.setAddress(address.addAddress(db));
+					else
+						shopModel.setAddress(addressId);
+					if(descId==-1)
+						shopModel.setShopDescription(shopDesc.addShopDescription(db));
+					else
+						shopModel.setShopDescription(descId);
+					shopId=shopModel.addShop(db);			
+				}
+		return shopId;
+	}
 }

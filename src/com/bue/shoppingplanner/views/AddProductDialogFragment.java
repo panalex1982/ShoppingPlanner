@@ -118,6 +118,7 @@ public class AddProductDialogFragment extends DialogFragment {
                 	listElement.setChecked(true);
                 	listElement.setBarcode("unknown");//TODO: When I add barcodes I will present
                 								//the barcode or "unknown" for not known barcodes
+                	//listElement.setListName("-1"); Don't need
                 	// Send the positive button event back to the host activity
                     mListener.onDialogPositiveClick(AddProductDialogFragment.this);
                 }

@@ -32,6 +32,7 @@ public class MainMenuActivity extends FragmentActivity {
 	private ImageButton shoppingListImageButton;
 	private ImageButton statsImageButton;
 	private ImageButton shopsImageButton;
+	private ImageButton savedListsImageButton;
 	
 	private TextView spendingMainTextView;
 
@@ -76,6 +77,19 @@ public class MainMenuActivity extends FragmentActivity {
 			public boolean onTouch(View v, MotionEvent event) {
 				if(event.getAction()==MotionEvent.ACTION_UP){
 					startActivity(new Intent(MainMenuActivity.this, ShopsActivity.class));
+				}
+				return false;
+			}
+		});
+		
+		//Saved Lists ImageButton
+		savedListsImageButton=(ImageButton) findViewById(R.id.savedListsImageButton);
+		savedListsImageButton.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if(event.getAction()==MotionEvent.ACTION_UP){
+					startActivity(new Intent(MainMenuActivity.this, SavedListsActivity.class));
 				}
 				return false;
 			}

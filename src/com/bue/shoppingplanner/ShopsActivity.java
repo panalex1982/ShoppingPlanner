@@ -1,5 +1,9 @@
 package com.bue.shoppingplanner;
 
+import java.util.ArrayList;
+
+import com.bue.shoppingplanner.controllers.ShopController;
+import com.bue.shoppingplanner.helpers.ShopElementHelper;
 import com.bue.shoppingplanner.views.AddShopDialogFragment;
 
 import android.os.Bundle;
@@ -8,7 +12,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.Toast;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
@@ -16,7 +23,11 @@ import android.annotation.TargetApi;
 import android.os.Build;
 
 public class ShopsActivity extends FragmentActivity implements AddShopDialogFragment.AddShopDialogListener{
-	ImageButton addShopSetImageButton;
+	private ImageButton addShopSetImageButton;
+	private ListView shopsShopsListView;
+	
+	private ArrayAdapter<String> shopsAdapter;
+	private ArrayList<String> shopsList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +36,10 @@ public class ShopsActivity extends FragmentActivity implements AddShopDialogFrag
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
+		intitialize();
+		
+		
+		//Add Shop
 		addShopSetImageButton=(ImageButton) findViewById(R.id.addShopShopsImageButton);
 		addShopSetImageButton.setOnTouchListener(new View.OnTouchListener() {
 			
@@ -36,6 +51,22 @@ public class ShopsActivity extends FragmentActivity implements AddShopDialogFrag
 				return false;				
 			}
 		});
+		
+		//Shops List View
+		shopsShopsListView=(ListView) findViewById(R.id.shopsShopsListView);
+		ArrayList<ShopElementHelper> shops=new ArrayList<ShopElementHelper>();
+		ShopController spController=new ShopController(this);
+		shops=spController.getAllShops();
+		for(ShopElementHelper element:shops){
+			shopsList.add(element.getName()+" @ "+element.getAddress()+" "+element.getNumber()+" "+element.getCity());
+		}
+		shopsAdapter=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, shopsList);
+		shopsShopsListView.setAdapter(shopsAdapter);
+	}
+
+	private void intitialize() {
+		shopsList=new ArrayList<String>();
+		
 	}
 
 	/**
@@ -85,7 +116,26 @@ public class ShopsActivity extends FragmentActivity implements AddShopDialogFrag
 
 	@Override
 	public void onDialogPositiveClick(DialogFragment dialog) {
-		// TODO Auto-generated method stub
+		AddShopDialogFragment dialogFragment=(AddShopDialogFragment)dialog;
+		ShopElementHelper shop=dialogFragment.getShopElement();
+		ShopController shopController=new ShopController(this);
+		shopController.setElement(shop);
+		int shopId=shopController.persistShop();
+		CharSequence text = "ShopId: "+shopId+": ";
+		if(shopId==-1){
+			text=text+"Shop did't saved!\n";
+		}else{
+			text=text+shop.getType()+" "+shop.getName()+" at "+shop.getAddress()+", "
+					+shop.getNumber()+", "+shop.getCity()+" saved!\n";
+			
+			shopsList.add(shop.getName()+" @ "+shop.getAddress()+" "+shop.getNumber()+" "+shop.getCity());
+			shopsAdapter.notifyDataSetChanged();
+		}
+		
+		int duration = Toast.LENGTH_LONG;
+
+		Toast toast = Toast.makeText(this, text, duration);
+		toast.show();	
 		
 	}
 

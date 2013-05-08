@@ -162,7 +162,7 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 					controller.setShop(shopElement);
 					controller.setProducts(shoppingListArrayList);
 					//If everything persisted I clear the saved list and the shop
-					if(controller.persistBought()!=-1){
+					if(controller.persistBought(0)!=-1){
 						SharedPreferences.Editor editor=savedShoppingList.edit();
 						editor.putBoolean(PREFS_HAS_SAVED_FILE, false);
 						editor.commit();

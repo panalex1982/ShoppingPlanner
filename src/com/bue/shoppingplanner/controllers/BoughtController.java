@@ -45,7 +45,9 @@ public class BoughtController {
 	}
 
 
-
+	/**
+	 * @deprecated
+	 */
 	public BoughtController() {
 		super();
 	}
@@ -75,6 +77,8 @@ public class BoughtController {
 	public void setShop(ShopElementHelper shop) {
 		this.shop = shop;
 	}
+	
+	
 
 
 	public Context getContext() {
@@ -87,8 +91,14 @@ public class BoughtController {
 		this.context = context;
 	}
 	
-	public int persistBought() throws NullPointerException{
-		if(db==null){
+	/**
+	 * Adds entry to bought table and also on the foreign keys tables if the records does not exist.
+	 * @param persistType if it is 0 then it persist an bought, if it is 1 it persists a list.
+	 * @return
+	 * @throws NullPointerException
+	 */
+	public int persistBought(int persistType) throws NullPointerException{
+		/*if(db==null){
 			db=new DatabaseHandler(context);
 		}
 		
@@ -113,6 +123,18 @@ public class BoughtController {
 			else
 				shopModel.setShopDescription(descId);
 			shopId=shopModel.addShop(db);			
+		}*/
+		int shopId;
+		if(persistType==0){
+			ShopController shopController=new ShopController(context);
+			shopController.setElement(shop);
+			shopId=shopController.persistShop();
+		}else{
+			shopId=1;
+		}
+		
+		if(db==null){
+			db=new DatabaseHandler(context);
 		}
 		
 		//Create Product Model and persist shopping list
@@ -150,9 +172,14 @@ public class BoughtController {
 				}
 				ProductGroup group=new ProductGroup(element.getGroup());
 				int groupId=group.getProductGroupId(db);
-				SimpleDateFormat s = new SimpleDateFormat("ddMMyyyyhhmmss");
-				String timestamp = s.format(new Date());
-				Buys buys=new Buys(productId, shopId, element.getPrice(), element.getQuantity(), groupId, timestamp);
+				Buys buys=null;
+				if(persistType==0){
+					SimpleDateFormat s = new SimpleDateFormat("ddMMyyyyhhmmss");
+					String timestamp = s.format(new Date());
+					buys=new Buys(productId, shopId, element.getPrice(), element.getQuantity(), groupId, timestamp,"-1");
+				}else if(persistType==1){
+					buys=new Buys(productId, shopId, element.getPrice(), element.getQuantity(), groupId, "", element.getListName());
+				}
 				buysId=buys.addBuys(db);//TODO: Currently this method returns the records number and not the PK of buys
 				//Make a method that checks if buys stored and then count them
 					
@@ -178,6 +205,10 @@ public class BoughtController {
 			return -1;
 		}
 		return 0;		
+	}
+	
+	public ArrayList<String> getShoppingListNames(){
+		return Buys.getShoppingListNames(db);
 	}
 	
 	public ArrayList<String[]> getTotalByGroup(){
