@@ -71,7 +71,7 @@ public class CommercialProduct {
 		return getCommercialProductId(handler);
 	}
 
-	public CommercialProduct getCommercialProduct(DatabaseHandler handler, String barcode) {
+	public static CommercialProduct getCommercialProduct(DatabaseHandler handler, String barcode) {
 		SQLiteDatabase db = handler.getReadableDatabase();
 
 		Cursor cursor = db.query(DatabaseHandler.TABLE_COMMERCIAL_PRODUCT, new String[] {
@@ -79,11 +79,12 @@ public class CommercialProduct {
 				DatabaseHandler.COMMERCIAL_PRODUCT_BARCODE + "=?",
 				new String[] { String.valueOf(barcode) }, null, null, null,
 				null);
+		CommercialProduct commercialProduct=new CommercialProduct();
 		if (cursor != null)
-			cursor.moveToFirst();
-
-		CommercialProduct commercialProduct = new CommercialProduct(barcode,
+			if(cursor.moveToFirst()){
+				commercialProduct = new CommercialProduct(barcode,
 				cursor.getString(0), cursor.getString(1));
+			}
 		cursor.close();
 		db.close();
 

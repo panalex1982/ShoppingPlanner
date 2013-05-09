@@ -250,7 +250,7 @@ public class Buys {
 				buys.setGroup(cursor.getInt(6));
 				buys.setListName(cursor.getString(7));
 
-				// Adding contact to list
+				// Adding buy to list
 				buysList.add(buys);
 			} while (cursor.moveToNext());
 		}
@@ -648,4 +648,42 @@ public class Buys {
 		return listNames;
 	}
 	
+	/**
+	 * Returns the shopping list items items given the list name.
+	 * @param listName
+	 * @return
+	 */
+	public static ArrayList<Buys> getShoppingListItems(DatabaseHandler handler, String listName){
+		ArrayList<Buys> items=new ArrayList<Buys>();
+		String query="SELECT * FROM "+DatabaseHandler.TABLE_BUYS+" WHERE "
+				+DatabaseHandler.BUYS_LIST_NAME+" = \""+listName+"\"";
+		SQLiteDatabase db = handler.getReadableDatabase();
+		Cursor cursor = db.rawQuery(query, null);
+
+		if (cursor != null)
+			while(cursor.moveToNext()){
+				Buys item = new Buys();
+				item.setId(cursor.getInt(0));
+				item.setProduct(cursor.getInt(1));
+				item.setShop(cursor.getInt(2));
+				item.setUnit_price(cursor.getDouble(3));
+				item.setAmount(cursor.getInt(4));
+				item.setDate(cursor.getString(5));
+				item.setGroup(cursor.getInt(6));
+				item.setListName(cursor.getString(7));
+
+				// Adding item to list
+				items.add(item);
+			}
+		cursor.close();
+		db.close();
+		return items;
+	}
+	
+	public static void deleteShoppingList(DatabaseHandler handler, String listName){
+		SQLiteDatabase db = handler.getWritableDatabase();
+		db.delete(DatabaseHandler.TABLE_BUYS, DatabaseHandler.BUYS_LIST_NAME + " = ?",
+				new String[] { listName });
+		db.close();
+	}
 }

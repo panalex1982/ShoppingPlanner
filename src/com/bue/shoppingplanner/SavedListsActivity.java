@@ -8,10 +8,15 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.os.Build;
 
 public class SavedListsActivity extends Activity {
@@ -19,6 +24,8 @@ public class SavedListsActivity extends Activity {
 	private ListView savedShoppingListView;
 	private ArrayAdapter<String> savedListAdapter;
 	private ArrayList<String> savedListArrayList;
+	
+	private ImageButton addSavedListImageButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +39,31 @@ public class SavedListsActivity extends Activity {
 		savedListArrayList=bController.getShoppingListNames();
 		savedListAdapter=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,savedListArrayList);
 		savedShoppingListView.setAdapter(savedListAdapter);
-	}
+		savedShoppingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+					long arg3) {
+				Intent shoppingListIntent=new Intent(arg1.getContext(), ShoppingListActivity.class);
+				shoppingListIntent.putExtra("openedListName",savedShoppingListView.getItemAtPosition(position).toString());				
+				startActivity(shoppingListIntent);
+				
+			}
+		});
+		
+		//Add List Image Button
+		addSavedListImageButton=(ImageButton) findViewById(R.id.addSavedListImageButton);
+		addSavedListImageButton.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if(event.getAction()==MotionEvent.ACTION_UP){
+					
+					}	
+				return false;				
+				}
+			});
+		}
 
 	/**
 	 * Set up the {@link android.app.ActionBar}, if the API is available.

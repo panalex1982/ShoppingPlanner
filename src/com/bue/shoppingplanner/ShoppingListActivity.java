@@ -2,16 +2,17 @@ package com.bue.shoppingplanner;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Set;
 
 import com.bue.shoppingplanner.utilities.SPSharedPrefrences;
 import com.bue.shoppingplanner.utilities.SerializeObject;
 import com.bue.shoppingplanner.views.AddProductDialogFragment;
 import com.bue.shoppingplanner.views.AddShopDialogFragment;
+import com.bue.shoppingplanner.views.SetListNameDialogFragment;
 import com.bue.shoppingplanner.views.ShoppingListElementArrayAdapter;
 import com.bue.shoppingplanner.controllers.BoughtController;
 import com.bue.shoppingplanner.helpers.ShopElementHelper;
 import com.bue.shoppingplanner.helpers.ShoppingListElementHelper;
+
 
 import android.os.Bundle;
 import android.util.Log;
@@ -19,23 +20,29 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 
-public class ShoppingListActivity extends FragmentActivity implements AddProductDialogFragment.AddProductDialogListener, AddShopDialogFragment.AddShopDialogListener, SPSharedPrefrences{
+public class ShoppingListActivity extends FragmentActivity implements AddProductDialogFragment.AddProductDialogListener, 
+														AddShopDialogFragment.AddShopDialogListener,
+														SetListNameDialogFragment.SetListNameDialogListener,
+														SPSharedPrefrences{
 	
 	private ImageButton addProductButton;
 	private ImageButton saveProductButton;
 	private ImageButton addShopButton;
+	private ImageButton saveListImageButton;
 	private ImageButton persistShoppingListButton;
+	
 	
 	private TextView shopNameTextView;
 	private TextView totalCostTextView;
@@ -49,6 +56,12 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 	
 	private final String SAVED_STATE_SL="encodedShoppingList";
 	private final String SAVED_STATE_STORE="encodedStore";
+	private String listName;
+	
+	//It is true when a saved shopping list 
+	//has changed, items deleted, or something changed in the items(price, amount etc...) 
+	private boolean editList;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +69,11 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 		
 		savedShoppingList=getSharedPreferences(PREFS_NAME, 0);
 		boolean hasList=savedShoppingList.getBoolean(PREFS_HAS_SAVED_FILE, false);
-		shoppingListArrayList=new ArrayList<ShoppingListElementHelper>();
+		editList=false;
+		
 		shopElement=new ShopElementHelper();
 		if(savedInstanceState!=null){
+			shoppingListArrayList=new ArrayList<ShoppingListElementHelper>();
 			//Get saved shopping list
 			ArrayList<String> savedList=savedInstanceState.getStringArrayList(SAVED_STATE_SL);
 			for(String element:savedList){
@@ -69,6 +84,7 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 			//Get saved shop
 			shopElement.decode(savedInstanceState.getString(SAVED_STATE_STORE));
 		}else if(hasList){
+			shoppingListArrayList=new ArrayList<ShoppingListElementHelper>();
 			try {
 				//Get saved shopping list
 				shoppingListArrayList=(ArrayList<ShoppingListElementHelper>)SerializeObject.read(this, "savedSP.sl");
@@ -80,6 +96,17 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 			} catch (ClassNotFoundException e) {
 				Log.d("Serializing Exception",e.toString());
 				e.printStackTrace();
+			}
+		}else{
+			Bundle openList=getIntent().getExtras();
+			if(openList!=null){
+				listName=openList.getString("openedListName")==null?"-1":openList.getString("openedListName");
+				if(listName!="-1"){
+					BoughtController controller=new BoughtController(this);
+					shoppingListArrayList=controller.getSavedShoppingList(listName);
+				}
+			}else{
+				shoppingListArrayList=new ArrayList<ShoppingListElementHelper>();
 			}
 		}
 		setContentView(R.layout.activity_shopping_list);
@@ -154,32 +181,22 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if(event.getAction()==MotionEvent.ACTION_UP){
-					BoughtController controller=new BoughtController();
-					controller.setContext(v.getContext());
-					if(!shopElement.hasName()){
-						shopElement=new ShopElementHelper("Unknown","Unknown","0","Unknown","Unknown","Unknown","Unknown", "Unknown");
-					}
-					controller.setShop(shopElement);
-					controller.setProducts(shoppingListArrayList);
-					//If everything persisted I clear the saved list and the shop
-					if(controller.persistBought(0)!=-1){
-						SharedPreferences.Editor editor=savedShoppingList.edit();
-						editor.putBoolean(PREFS_HAS_SAVED_FILE, false);
-						editor.commit();
-						try {
-							shoppingListArrayList.clear();
-							shopElement=new ShopElementHelper();
-							//Save shopping list
-							SerializeObject.write(v.getContext(), (Object)shoppingListArrayList,"savedSP.sl");
-							//Save shop
-							SerializeObject.write(v.getContext(), (Object)shopElement, "savedShop.sl");
-							refreshElements();
-						} catch (IOException e) {
-							Log.d("Serializing Exception",e.toString());
-							e.printStackTrace();
-						}
-					}
-					
+					persistItems(v.getContext(),0);
+				}	
+				return false;				
+			}
+		});
+		
+		// saveList ImageButton
+		saveListImageButton=(ImageButton) findViewById(R.id.saveListImageButton);
+		saveListImageButton.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if(event.getAction()==MotionEvent.ACTION_UP){
+					showSetListNameDialog();
+					// shopping list is saved on the return function
+					// of the dialog
 				}	
 				return false;				
 			}
@@ -195,6 +212,8 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 		//Set values to elements
 		refreshElements();
 	}
+
+	
 
 	/**
 	 * Set up the {@link android.app.ActionBar}, if the API is available.
@@ -254,7 +273,7 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 	/**
 	 * Opens dialog fragment to add new product to the list.
 	 */
-	public void showAddProductDialog() {
+	protected void showAddProductDialog() {
         // Create an instance of the dialog fragment and show it
 		DialogFragment dialog = new AddProductDialogFragment();
         dialog.show(getSupportFragmentManager(), "AddProductDialogFragment");        
@@ -263,11 +282,22 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 	/**
 	 * Opens dialog fragment to add the shop of the current buy.
 	 */
-	public void showAddShopDialog() {
+	protected void showAddShopDialog() {
         // Create an instance of the dialog fragment and show it
 		DialogFragment dialog = new AddShopDialogFragment();
         dialog.show(getSupportFragmentManager(), "AddShopDialogFragment");        
     }
+	
+	/**
+	 * Opens dialog fragment to set shopping list name.
+	 */
+	protected void showSetListNameDialog() {
+		DialogFragment dialog = new SetListNameDialogFragment();
+		Bundle listNameBundle=new Bundle();
+		listNameBundle.putString("shoppingListName", listName);
+		dialog.setArguments(listNameBundle);
+        dialog.show(getSupportFragmentManager(), "SetListNameDialogFragment");   		
+	}
 	
 	
 	/**
@@ -279,10 +309,15 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 		if(dialog.getClass().getSimpleName().equalsIgnoreCase("AddProductDialogFragment")){
 			AddProductDialogFragment addProductDialog=(AddProductDialogFragment) dialog;
 			shoppingListArrayList.add(addProductDialog.getListElement());
+			editList=true;
 		}else if(dialog.getClass().getSimpleName().equalsIgnoreCase("AddShopDialogFragment")){
 			AddShopDialogFragment addShopDialog=(AddShopDialogFragment)dialog;
 			shopElement=addShopDialog.getShopElement();
 			shopNameTextView.setText(shopElement.getName()+" @ "+shopElement.getCity());
+		}else if(dialog.getClass().getSimpleName().equalsIgnoreCase("SetListNameDialogFragment")){
+			SetListNameDialogFragment setListNameDialogFragment=(SetListNameDialogFragment)dialog;
+			listName=setListNameDialogFragment.getListName();
+			persistItems(this,1);
 		}
 		refreshElements();
 	}
@@ -293,7 +328,13 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 	 */
 	@Override
 	public void onDialogNegativeClick(DialogFragment dialog) {
-		// TODO Do Nothing		
+		if(dialog.getClass().getSimpleName().equalsIgnoreCase("SetListNameDialogFragment")){
+			String text="Save shopping list has postponed.";
+			int duration = Toast.LENGTH_SHORT;
+
+			Toast toast = Toast.makeText(this, text, duration);
+			toast.show();
+		}	
 	}
 	
 	/**
@@ -310,7 +351,7 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 	 * Notify element changes to the ShoppingListArrayAdapter.
 	 * It also changes the total cost field value.
 	 */
-	public void notifyElementCahngesOnShoppingListAdapter(){
+	public void notifyElementChangesOnShoppingListAdapter(){
 		shoppingListAdapter.notifyDataSetChanged();
 		totalCostTextView.setText(String.valueOf(shoppingListAdapter.getTotalCost()));
 	}
@@ -321,13 +362,44 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 		}else{
 			shopNameTextView.setText(R.string.no_shop);
 		}
-		notifyElementCahngesOnShoppingListAdapter();
+		notifyElementChangesOnShoppingListAdapter();
 	}
-
 	
-	
-	
-	
-	
-
+	protected void persistItems(Context context, int persistType){	
+		BoughtController controller=new BoughtController(context);
+		controller.setProducts(shoppingListArrayList);
+		int persist=-1;
+		if(persistType==0){
+			if(!shopElement.hasName()){
+				shopElement=new ShopElementHelper("Unknown","Unknown","0","Unknown","Unknown","Unknown","Unknown", "Unknown");
+			}
+			controller.setShop(shopElement);
+			persist=controller.persistBought(0);
+			//If everything persisted I clear the saved list and the shop
+			if(persist!=-1){
+				SharedPreferences.Editor editor=savedShoppingList.edit();
+				editor.putBoolean(PREFS_HAS_SAVED_FILE, false);
+				editor.commit();
+				try {
+					shoppingListArrayList.clear();
+					shopElement=new ShopElementHelper();
+					//Save shopping list
+					SerializeObject.write(context, (Object)shoppingListArrayList,"savedSP.sl");
+					//Save shop
+					SerializeObject.write(context, (Object)shopElement, "savedShop.sl");
+					refreshElements();
+				} catch (IOException e) {
+					Log.d("Serializing Exception",e.toString());
+					e.printStackTrace();
+				}
+			}
+		}else if(persistType==1){
+			if(editList || shoppingListAdapter.isListItemChanged())
+				controller.deleteShoppingList(listName);
+			controller.setListName(listName);
+			persist=controller.persistBought(1);
+		}
+			
+		
+	}
 }

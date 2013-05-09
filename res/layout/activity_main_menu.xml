@@ -15,50 +15,6 @@
 	    android:text="Medium Text"
 	    android:textAppearance="?android:attr/textAppearanceMedium" />
 
-	<ImageButton
-	    android:id="@+id/shoppingListImageButton"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_alignBottom="@+id/statsImageButton"
-	    android:layout_alignTop="@+id/statsImageButton"
-	    android:src="@android:drawable/ic_menu_edit" />
-
-	<ImageButton
-	    android:id="@+id/statsImageButton"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_alignTop="@+id/shopsImageButton"
-	    android:layout_toRightOf="@+id/shoppingListImageButton"
-	    android:src="@drawable/ic_stats_icon" />
-
-	<ImageButton
-	    android:id="@+id/shopsImageButton"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_alignTop="@+id/savedListsImageButton"
-	    android:layout_centerHorizontal="true"
-	    android:src="@drawable/ic_shop" />
-
-	<ImageButton
-	    android:id="@+id/savedListsImageButton"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_alignParentTop="true"
-	    android:layout_alignRight="@+id/spendingMainTextView"
-	    android:layout_marginTop="20dp"
-	    android:layout_toRightOf="@+id/shopsImageButton"
-	    android:src="@android:drawable/btn_star_big_on" />
-
-	<TextView
-	    android:id="@+id/textView3"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_alignParentBottom="true"
-	    android:layout_alignParentLeft="true"
-	    android:layout_marginBottom="135dp"
-	    android:text="Large Text"
-	    android:textAppearance="?android:attr/textAppearanceLarge" />
-
 	<TextView
 	    android:id="@+id/textView1"
 	    android:layout_width="wrap_content"
@@ -76,5 +32,47 @@
 	    android:layout_alignLeft="@+id/spendingMainTextView"
 	    android:text="Medium Text"
 	    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+	<ImageButton
+	    android:id="@+id/statsImageButton"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignTop="@+id/shoppingListImageButton"
+	    android:layout_toRightOf="@+id/shoppingListImageButton"
+	    android:src="@drawable/ic_stats_icon" />
+
+	<ImageButton
+	    android:id="@+id/shopsImageButton"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignTop="@+id/statsImageButton"
+	    android:layout_toRightOf="@+id/statsImageButton"
+	    android:src="@drawable/ic_shop" />
+
+	<ImageButton
+	    android:id="@+id/savedListsImageButton"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignTop="@+id/shopsImageButton"
+	    android:layout_toRightOf="@+id/shopsImageButton"
+	    android:src="@android:drawable/btn_star_big_on" />
+
+	<TextView
+	    android:id="@+id/textView3"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentBottom="true"
+	    android:layout_alignParentLeft="true"
+	    android:layout_marginBottom="94dp"
+	    android:text="Large Text"
+	    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+	<ImageButton
+	    android:id="@+id/shoppingListImageButton"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentTop="true"
+	    android:src="@android:drawable/ic_menu_edit" />
 
 </RelativeLayout>

@@ -61,16 +61,18 @@ public class ProductKind {
 			db.close(); // Closing database connection
 		}
 
-		public ProductKind getProductKind(DatabaseHandler handler,int id) {
+		public static ProductKind getProductKind(DatabaseHandler handler,int id) {
 			SQLiteDatabase db = handler.getReadableDatabase();
 
 			Cursor cursor = db.query(DatabaseHandler.TABLE_PRODUCT_KIND,
 					new String[] { DatabaseHandler.PRODUCT_KIND_NAME, }, DatabaseHandler.PRODUCT_KIND_ID + "=?",
 					new String[] { String.valueOf(id) }, null, null, null, null);
+			ProductKind productKind = new ProductKind();
 			if (cursor != null)
-				cursor.moveToFirst();
-
-			ProductKind productKind = new ProductKind(id, cursor.getString(0));
+				if(cursor.moveToFirst()){
+					productKind = new ProductKind(id, cursor.getString(0));
+				}
+			
 			cursor.close();
 			db.close();
 

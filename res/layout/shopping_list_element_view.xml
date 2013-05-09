@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:shrinkColumns="*"
+    android:stretchColumns="*" >
 
-    <CheckBox
-        android:id="@+id/listElementCheckBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp" />
+    <TableRow
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+		   <CheckBox
+		       android:id="@+id/listElementCheckBox"
+		       android:layout_width="wrap_content"
+		       android:layout_height="wrap_content"
+		       android:layout_margin="5dp" />
+		
+		   <TextView
+		       android:id="@+id/listElementTextView"
+		       android:layout_width="wrap_content"
+		       android:layout_height="wrap_content"
+		       android:ems="5"
+		       android:text="Medium Text"
+		       android:textAppearance="?android:attr/textAppearanceMedium"
+		       android:layout_margin="10dp"  />
+		
+		   <ImageView
+		       android:id="@+id/listElementAddImageView"
+		       android:layout_width="wrap_content"
+		       android:layout_height="wrap_content"
+		       android:src="@android:drawable/ic_input_add" 
+		       android:layout_margin="10dp" />
+		
+		   <ImageView
+		       android:id="@+id/listElementRemoveImageView"
+		       android:layout_width="wrap_content"
+		       android:layout_height="wrap_content"
+		       android:src="@android:drawable/ic_delete"
+		       android:layout_margin="10dp"  />
+	   </TableRow>
+    
 
-    <TextView
-        android:id="@+id/listElementTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Medium Text"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_margin="10dp"  />
-
-    <ImageView
-        android:id="@+id/listElementAddImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_input_add" 
-        android:layout_margin="10dp" />
-
-    <ImageView
-        android:id="@+id/listElementRemoveImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_delete"
-        android:layout_margin="10dp"  />
-
-    <ImageView
-        android:id="@+id/listElementEditImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_menu_edit"
-        android:layout_margin="10dp"  />
-
-</LinearLayout>
+</TableLayout>

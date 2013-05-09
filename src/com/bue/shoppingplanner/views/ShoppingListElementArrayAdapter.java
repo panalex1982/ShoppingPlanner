@@ -24,12 +24,14 @@ public class ShoppingListElementArrayAdapter extends ArrayAdapter<ShoppingListEl
 	 protected Context context;
 	 protected int layoutResourceId;   
 	 protected List<ShoppingListElementHelper> data = null;
+	 protected boolean listItemChanged;
 
 	public ShoppingListElementArrayAdapter(Context context,	int textViewResourceId, List<ShoppingListElementHelper> data) {
 		super(context, textViewResourceId, data);
 		this.context=context;
 		this.layoutResourceId=textViewResourceId;
 		this.data=data;
+		this.listItemChanged=false;
 	}
 	
 	/*public ShoppingListElementArrayAdapter(Context context,	int textViewResourceId) {
@@ -52,7 +54,7 @@ public class ShoppingListElementArrayAdapter extends ArrayAdapter<ShoppingListEl
             holder = new ShoppingListElementHolder();
             holder.listElementAddImageView = (ImageView)row.findViewById(R.id.listElementAddImageView);
             holder.listElementRemoveImageView = (ImageView)row.findViewById(R.id.listElementRemoveImageView);
-            holder.listElementEditImageView= (ImageView)row.findViewById(R.id.listElementEditImageView);
+            //holder.listElementEditImageView= (ImageView)row.findViewById(R.id.listElementEditImageView);
             holder.listElementTextView = (TextView)row.findViewById(R.id.listElementTextView);
             holder.listElementCheckBox = (CheckBox)row.findViewById(R.id.listElementCheckBox);
            
@@ -79,6 +81,7 @@ public class ShoppingListElementArrayAdapter extends ArrayAdapter<ShoppingListEl
 					listElement.setChecked(isChecked);
 					data.remove(pos);
 					data.add(pos,listElement);
+					listItemChanged=true;
 				}catch(Exception ex){
 					Log.d("onCheckedChangedError", ex.toString());
 				}
@@ -96,6 +99,7 @@ public class ShoppingListElementArrayAdapter extends ArrayAdapter<ShoppingListEl
 				listElement.setQuantity(listElement.getQuantity()+1);
 				data.remove(pos);
 				data.add(pos,listElement);
+				listItemChanged=true;
 				notifyDataSetChanged();
 			}
 		});
@@ -113,6 +117,7 @@ public class ShoppingListElementArrayAdapter extends ArrayAdapter<ShoppingListEl
 			listElement.setQuantity(newQuantity);
 			data.remove(pos);
 			data.add(pos,listElement);
+			listItemChanged=true;
 			notifyDataSetChanged();
 		}
        });
@@ -136,11 +141,15 @@ public class ShoppingListElementArrayAdapter extends ArrayAdapter<ShoppingListEl
     	return total;
     }
 
+    public boolean isListItemChanged() {
+		return listItemChanged;
+	}
+
 
 
 	private class ShoppingListElementHolder
     {
-        ImageView listElementAddImageView, listElementRemoveImageView, listElementEditImageView;
+        ImageView listElementAddImageView, listElementRemoveImageView;//, listElementEditImageView;
         TextView listElementTextView;
         CheckBox listElementCheckBox;
         

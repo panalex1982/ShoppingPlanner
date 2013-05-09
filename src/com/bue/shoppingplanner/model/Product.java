@@ -90,17 +90,18 @@ public class Product {
 		return getProductId(handler);
 	}
 
-	public Product getProduct(DatabaseHandler handler, int id) {
+	public static Product getProduct(DatabaseHandler handler, int id) {
 		SQLiteDatabase db = handler.getReadableDatabase();
 
 		Cursor cursor = db.query(DatabaseHandler.TABLE_PRODUCT, new String[] { DatabaseHandler.PRODUCT_NAME,
 				DatabaseHandler.PRODUCT_BARCODE, DatabaseHandler.PRODUCT_KIND, }, DatabaseHandler.PRODUCT_ID + "=?",
 				new String[] { String.valueOf(id) }, null, null, null, null);
+		Product product=new Product();
 		if (cursor != null)
-			cursor.moveToFirst();
-
-		Product product = new Product(id, cursor.getString(0),
+			if(cursor.moveToFirst()){
+		 product = new Product(id, cursor.getString(0),
 				cursor.getString(1), cursor.getInt(2));
+			}
 		cursor.close();
 		db.close();
 

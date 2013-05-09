@@ -32,5 +32,7 @@
     <string name="title_activity_set_lists">Set Lists</string>
     <string name="available_shops">Available Shops</string>
     <string name="title_activity_saved_lists">Saved Lists</string>
+    <string name="list_name">List Name:</string>
+    <string name="one">1</string>
 
 </resources>

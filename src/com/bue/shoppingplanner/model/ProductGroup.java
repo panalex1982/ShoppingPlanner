@@ -61,16 +61,17 @@ public class ProductGroup {
 		db.close(); // Closing database connection
 	}
 
-	public ProductGroup getProductGroup(DatabaseHandler handler, int id) {
+	public static ProductGroup getProductGroup(DatabaseHandler handler, int id) {
 		SQLiteDatabase db = handler.getReadableDatabase();
 
 		Cursor cursor = db.query(DatabaseHandler.TABLE_PRODUCT_GROUP,
 				new String[] { DatabaseHandler.PRODUCT_GROUP_NAME, }, DatabaseHandler.PRODUCT_GROUP_ID + "=?",
 				new String[] { String.valueOf(id) }, null, null, null, null);
+		ProductGroup productGroup=new ProductGroup();
 		if (cursor != null)
-			cursor.moveToFirst();
-
-		ProductGroup productGroup = new ProductGroup(id, cursor.getString(0));
+			if(cursor.moveToFirst()){
+				productGroup = new ProductGroup(id, cursor.getString(0));
+			}
 		cursor.close();
 		db.close();
 

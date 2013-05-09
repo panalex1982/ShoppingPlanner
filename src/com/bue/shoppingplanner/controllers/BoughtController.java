@@ -27,6 +27,7 @@ public class BoughtController {
 	private ShopElementHelper shop;
 	private Context context;
 	private DatabaseHandler db=null;
+	private String listName;
 
 	public BoughtController(Context context, ArrayList<ShoppingListElementHelper> products, ShopElementHelper shop) {
 		super();
@@ -77,8 +78,17 @@ public class BoughtController {
 	public void setShop(ShopElementHelper shop) {
 		this.shop = shop;
 	}
-	
-	
+
+	public String getListName() {
+		return listName;
+	}
+
+
+
+	public void setListName(String listName) {
+		this.listName = listName;
+	}
+
 
 
 	public Context getContext() {
@@ -98,39 +108,13 @@ public class BoughtController {
 	 * @throws NullPointerException
 	 */
 	public int persistBought(int persistType) throws NullPointerException{
-		/*if(db==null){
-			db=new DatabaseHandler(context);
-		}
-		
-		//Create Shop Model and Persist shop
-		Shop shopModel=new Shop();
-		shopModel.setName(shop.getName());
-		//Check if shop exist in database
-		int shopId = shopModel.getShopId(db);
-		//Log.d("SHOP_ID: ", Integer.toString(shopId));
-		if(shopId==-1){
-			Address address=new Address(shop.getAddress(), shop.getNumber(), shop.getCity(), shop.getArea(),
-					shop.getCountry(), shop.getZip());
-			ShopDescription shopDesc=new ShopDescription(shop.getType());
-			int addressId=address.getAddressId(db);
-			int descId=shopDesc.getShopDescriptionId(db);
-			if(addressId==-1)
-				shopModel.setAddress(address.addAddress(db));
-			else
-				shopModel.setAddress(addressId);
-			if(descId==-1)
-				shopModel.setShopDescription(shopDesc.addShopDescription(db));
-			else
-				shopModel.setShopDescription(descId);
-			shopId=shopModel.addShop(db);			
-		}*/
 		int shopId;
 		if(persistType==0){
 			ShopController shopController=new ShopController(context);
 			shopController.setElement(shop);
 			shopId=shopController.persistShop();
 		}else{
-			shopId=1;
+			shopId=-2;
 		}
 		
 		if(db==null){
@@ -178,7 +162,7 @@ public class BoughtController {
 					String timestamp = s.format(new Date());
 					buys=new Buys(productId, shopId, element.getPrice(), element.getQuantity(), groupId, timestamp,"-1");
 				}else if(persistType==1){
-					buys=new Buys(productId, shopId, element.getPrice(), element.getQuantity(), groupId, "", element.getListName());
+					buys=new Buys(productId, shopId, element.getPrice(), element.getQuantity(), groupId, "", listName);
 				}
 				buysId=buys.addBuys(db);//TODO: Currently this method returns the records number and not the PK of buys
 				//Make a method that checks if buys stored and then count them
@@ -190,13 +174,16 @@ public class BoughtController {
 		CharSequence text = "ShopId: "+shopId+": ";
 		if(shopId==-1){
 			text=text+"Shop did't saved!\n";
+		}else if(shopId==-2){
+			text="Shopping list "+listName+" saved!";
 		}else{
 			text=text+shop.getType()+" "+shop.getName()+" at "+shop.getAddress()+", "
 					+shop.getNumber()+", "+shop.getCity()+" saved!\n";
+			text=text+" Total Records persisted: "+buysId;
 		}
 		
-		text=text+" Total Records persisted: "+buysId;
-		int duration = Toast.LENGTH_SHORT;
+		
+		int duration = Toast.LENGTH_LONG;
 
 		Toast toast = Toast.makeText(context, text, duration);
 		toast.show();
@@ -205,6 +192,34 @@ public class BoughtController {
 			return -1;
 		}
 		return 0;		
+	}
+	
+	/**
+	 * Returns an ArrayList with ShoppingListElementHelper
+	 * elements, that contained the information of the shopping list
+	 * of the parameter listName.
+	 * @param listName
+	 * @return
+	 */
+	public ArrayList<ShoppingListElementHelper> getSavedShoppingList(String listName){
+		ArrayList<ShoppingListElementHelper> savedShoppingList=new ArrayList<ShoppingListElementHelper>();
+		for(Buys item:Buys.getShoppingListItems(db, listName)){
+			ShoppingListElementHelper element=new ShoppingListElementHelper();
+			element.setChecked(true);
+			element.setPrice(item.getUnit_price());
+			element.setQuantity(item.getAmount());
+			Product product=Product.getProduct(db, item.getProduct());
+			element.setProduct(product.getName());
+			element.setBarcode(product.getBarcode());
+			CommercialProduct cmProduct=CommercialProduct.getCommercialProduct(db, product.getBarcode());
+			element.setBrand(cmProduct.getCompanyBrand());
+			ProductGroup group=ProductGroup.getProductGroup(db, item.getGroup());
+			element.setGroup(group.getName());
+			ProductKind kind=ProductKind.getProductKind(db, product.getKind());
+			element.setKind(kind.getName());
+			savedShoppingList.add(element);			
+		}
+		return savedShoppingList;
 	}
 	
 	public ArrayList<String> getShoppingListNames(){
@@ -245,6 +260,10 @@ public class BoughtController {
 	
 	public ArrayList<Product> getProductList(){
 		return (ArrayList<Product>) Product.getAllProduct(db);
+	}
+	
+	public void deleteShoppingList(String listName){
+		Buys.deleteShoppingList(db, listName);
 	}
 	
 	
