@@ -7,15 +7,14 @@
     
     
     <TextView
-        android:id="@+id/nameStatsElementTextView"
+        android:id="@+id/nameStatsElementChildTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Large Text"
-        android:layout_margin="10dp"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:layout_margin="10dp" />
 
     <TextView
-        android:id="@+id/amountStatsElementTextView"
+        android:id="@+id/amountStatsElementChildTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Medium Text"
@@ -23,7 +22,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
-        android:id="@+id/currencyStatsElementTextView"
+        android:id="@+id/currencyStatsElementChildTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/euro"

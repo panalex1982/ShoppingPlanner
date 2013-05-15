@@ -16,6 +16,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.support.v4.app.FragmentActivity;
 
@@ -75,8 +76,8 @@ public class ShoppingListElementArrayAdapter extends ArrayAdapter<ShoppingListEl
 					boolean isChecked) {
 				try{
 					/** Getting the view position in the ListView */
-		            ListView parent = (ListView)(buttonView.getParent()).getParent();
-		            int pos = parent.getPositionForView(buttonView);
+		           // ListView parent = (ListView)(buttonView.getParent()).getParent();
+		            int pos =getPosition(listElement);// parent.getPositionForView(buttonView);
 		            
 					listElement.setChecked(isChecked);
 					data.remove(pos);
@@ -93,8 +94,8 @@ public class ShoppingListElementArrayAdapter extends ArrayAdapter<ShoppingListEl
 			@Override
 			public void onClick(View v) {
 				/** Getting the view position in the ListView */
-	            ListView parent = (ListView)(v.getParent()).getParent();
-	            int pos = parent.getPositionForView(v);
+	            //ListView parent = (ListView)(v.getParent()).getParent();
+	            int pos = getPosition(listElement);//parent.getPositionForView(v);
 	            
 				listElement.setQuantity(listElement.getQuantity()+1);
 				data.remove(pos);
@@ -108,8 +109,8 @@ public class ShoppingListElementArrayAdapter extends ArrayAdapter<ShoppingListEl
 		@Override
 		public void onClick(View v) {
 			/** Getting the view position in the ListView */
-            ListView parent = (ListView)(v.getParent()).getParent();
-            int pos = parent.getPositionForView(v);
+            //ListView parent = (ListView)(((TableLayout)((v.getParent()).getParent())).getParent());
+            int pos = getPosition(listElement);//parent.getPositionForView(v);
             
             int newQuantity=listElement.getQuantity()-1;
             if(newQuantity<1)
@@ -127,13 +128,20 @@ public class ShoppingListElementArrayAdapter extends ArrayAdapter<ShoppingListEl
 	
 	
    
-    @Override
-	public void add(ShoppingListElementHelper element) {
-		super.add(element);
-		data.add(element);
-	}
+//    @Override
+//	public void add(ShoppingListElementHelper element) {
+//		super.add(element);
+//		data.add(element);
+//	}
     
-    public double getTotalCost(){
+    
+    
+//    @Override
+//	public int getPosition(ShoppingListElementHelper item) {
+//		return super.getPosition(item);
+//	}
+
+	public double getTotalCost(){
     	double total=0.0;
     	for(ShoppingListElementHelper element:data){
     		total=total+element.getPrice()*element.getQuantity();

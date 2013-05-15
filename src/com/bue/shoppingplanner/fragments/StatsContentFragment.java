@@ -94,7 +94,8 @@ public class StatsContentFragment extends Fragment {
 		headerText.setText(listKey);
 		headerLayout.addView(headerText);
 		statsItemsExpandableListView.addHeaderView(headerLayout);
-		groupStatsListAdapter=new StatsExpandableListAdapter(getActivity(),R.layout.stats_element_view,totalsBy, childTotalsBy);
+		groupStatsListAdapter=new StatsExpandableListAdapter(getActivity(),R.layout.stats_element_view,
+				R.layout.stats_element_child_view, totalsBy, childTotalsBy);
 		statsItemsExpandableListView.setAdapter(groupStatsListAdapter);	
 		return view;
 	}

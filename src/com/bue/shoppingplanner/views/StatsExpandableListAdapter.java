@@ -18,15 +18,17 @@ public class StatsExpandableListAdapter extends BaseExpandableListAdapter {
 	
 	protected Context context;
 	protected int layoutResourceId;
+	protected int layoutChildResourceId;
 	protected List<String[]> groupData;
 	protected List<ArrayList<String[]>> childData;
 	
 
-	public StatsExpandableListAdapter(Context context, int textViewResourceId,
+	public StatsExpandableListAdapter(Context context, int textViewResourceId, int layoutChildResourceId,
 			List<String[]> data, List<ArrayList<String[]>> childData) {
 		super();
 		this.context=context;
 		this.layoutResourceId=textViewResourceId;
+		this.layoutChildResourceId=layoutChildResourceId;
 		this.groupData=data;
 		this.childData=childData;
 	}
@@ -48,11 +50,11 @@ public class StatsExpandableListAdapter extends BaseExpandableListAdapter {
 		if(convertView == null)
         {
 			LayoutInflater inflater = ((FragmentActivity) context).getLayoutInflater();
-            convertView = inflater.inflate(layoutResourceId, parent, false);
+            convertView = inflater.inflate(layoutChildResourceId, parent, false);
         }
-            TextView group=(TextView) convertView.findViewById(R.id.nameStatsElementTextView);
-            TextView amount=(TextView) convertView.findViewById(R.id.amountStatsElementTextView);
-            TextView currency=(TextView) convertView.findViewById(R.id.currencyStatsElementTextView);
+            TextView group=(TextView) convertView.findViewById(R.id.nameStatsElementChildTextView);
+            TextView amount=(TextView) convertView.findViewById(R.id.amountStatsElementChildTextView);
+            TextView currency=(TextView) convertView.findViewById(R.id.currencyStatsElementChildTextView);
            
     		String[] rowData=(String[]) getChild(groupPosition, childPosition);
     		group.setText(rowData[0]);
