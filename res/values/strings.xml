@@ -7,12 +7,12 @@
     <string name="intro_message">Plan your needs, make Economy!</string>
     <string name="title_activity_main_menu">Main Menu</string>
     <string name="title_activity_shopping_list">Shopping List</string>
-    <string name="product">Product:</string>
-    <string name="quantity">Quantity:</string>
-    <string name="product_group">Product group:</string>
-    <string name="product_kind">Product kind:</string>
-    <string name="price">Price:</string>
-    <string name="brand">Brand:</string>
+    <string name="product">Product</string>
+    <string name="quantity">Quantity</string>
+    <string name="product_group">Product group</string>
+    <string name="product_kind">Product kind</string>
+    <string name="price">Price</string>
+    <string name="brand">Brand</string>
     <string name="name">Name:</string>
     <string name="existing">Existing:</string>
     <string name="type">Type:</string>
@@ -34,5 +34,7 @@
     <string name="title_activity_saved_lists">Saved Lists</string>
     <string name="list_name">List Name:</string>
     <string name="one">1</string>
+    <string name="street_name">street</string>
+    <string name="street_number">number</string>
 
 </resources>
