@@ -1,10 +1,10 @@
-package com.bue.shoppingplanner.fragments;
+package com.bue.shoppingplanner.views.fragments;
 
 import java.util.ArrayList;
 
 import com.bue.shoppingplanner.R;
 import com.bue.shoppingplanner.controllers.BoughtController;
-import com.bue.shoppingplanner.views.StatsExpandableListAdapter;
+import com.bue.shoppingplanner.views.adapters.StatsExpandableListAdapter;
 
 import android.content.Intent;
 import android.os.Bundle;

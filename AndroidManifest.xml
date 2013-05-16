@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.bue.shoppingplanner.MainMenuActivity"
+            android:name="com.bue.shoppingplanner.views.MainMenuActivity"
             android:label="@string/title_activity_main_menu"
             android:parentActivityName="IntroActivity" >
             <meta-data
@@ -31,7 +31,7 @@
                 android:value="IntroActivity" />
         </activity>
         <activity
-            android:name="com.bue.shoppingplanner.ShoppingListActivity"
+            android:name="com.bue.shoppingplanner.views.ShoppingListActivity"
             android:label="@string/title_activity_shopping_list"
             android:parentActivityName="MainMenuActivity" >
             <meta-data
@@ -39,25 +39,25 @@
                 android:value="MainMenuActivity" />
         </activity>
         <activity
-            android:name="com.bue.shoppingplanner.StatsActivity"
+            android:name="com.bue.shoppingplanner.views.StatsActivity"
             android:label="@string/title_activity_stats"
-            android:parentActivityName="com.bue.shoppingplanner.MainMenuActivity" >
+            android:parentActivityName="MainMenuActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bue.shoppingplanner.MainMenuActivity" />
         </activity>
         <activity
-            android:name="com.bue.shoppingplanner.ShopsActivity"
+            android:name="com.bue.shoppingplanner.views.ShopsActivity"
             android:label="@string/title_activity_set_lists"
-            android:parentActivityName="com.bue.shoppingplanner.MainMenuActivity" >
+            android:parentActivityName="MainMenuActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bue.shoppingplanner.MainMenuActivity" />
         </activity>
         <activity
-            android:name="com.bue.shoppingplanner.SavedListsActivity"
+            android:name="com.bue.shoppingplanner.views.SavedListsActivity"
             android:label="@string/title_activity_saved_lists"
-            android:parentActivityName="com.bue.shoppingplanner.MainMenuActivity" >
+            android:parentActivityName="MainMenuActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bue.shoppingplanner.MainMenuActivity" />

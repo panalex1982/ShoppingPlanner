@@ -1,7 +1,8 @@
-package com.bue.shoppingplanner;
+package com.bue.shoppingplanner.views;
 
 import java.util.ArrayList;
 
+import com.bue.shoppingplanner.R;
 import com.bue.shoppingplanner.controllers.BoughtController;
 
 import android.os.Bundle;

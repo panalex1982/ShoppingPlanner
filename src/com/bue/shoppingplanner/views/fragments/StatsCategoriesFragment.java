@@ -1,4 +1,4 @@
-package com.bue.shoppingplanner.fragments;
+package com.bue.shoppingplanner.views.fragments;
 
 import com.bue.shoppingplanner.R;
 

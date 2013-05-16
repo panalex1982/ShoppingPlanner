@@ -1,10 +1,14 @@
-package com.bue.shoppingplanner;
+package com.bue.shoppingplanner.views;
 
 import java.util.ArrayList;
 
+import com.bue.shoppingplanner.R;
+import com.bue.shoppingplanner.R.id;
+import com.bue.shoppingplanner.R.layout;
+import com.bue.shoppingplanner.R.menu;
 import com.bue.shoppingplanner.controllers.ShopController;
 import com.bue.shoppingplanner.helpers.ShopElementHelper;
-import com.bue.shoppingplanner.views.AddShopDialogFragment;
+import com.bue.shoppingplanner.views.dialogs.AddShopDialogFragment;
 
 import android.os.Bundle;
 import android.app.Activity;

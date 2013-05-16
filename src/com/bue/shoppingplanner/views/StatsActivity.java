@@ -1,6 +1,10 @@
-package com.bue.shoppingplanner;
+package com.bue.shoppingplanner.views;
 
-import com.bue.shoppingplanner.fragments.StatsContentFragment;
+import com.bue.shoppingplanner.R;
+import com.bue.shoppingplanner.R.layout;
+import com.bue.shoppingplanner.R.menu;
+import com.bue.shoppingplanner.views.fragments.StatsContentFragment;
+
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;

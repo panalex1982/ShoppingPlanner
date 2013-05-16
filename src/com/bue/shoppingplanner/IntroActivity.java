@@ -1,8 +1,6 @@
 package com.bue.shoppingplanner;
 
 import com.bue.shoppingplanner.R;
-import com.bue.shoppingplanner.R.layout;
-import com.bue.shoppingplanner.R.menu;
 import com.bue.shoppingplanner.model.Address;
 import com.bue.shoppingplanner.model.CommercialProduct;
 import com.bue.shoppingplanner.model.DatabaseHandler;
@@ -11,6 +9,7 @@ import com.bue.shoppingplanner.model.ProductKind;
 import com.bue.shoppingplanner.model.Shop;
 import com.bue.shoppingplanner.model.ShopDescription;
 import com.bue.shoppingplanner.model.UnknownBarcode;
+import com.bue.shoppingplanner.views.MainMenuActivity;
 
 import android.os.Bundle;
 import android.app.Activity;

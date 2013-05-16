@@ -1,14 +1,19 @@
-package com.bue.shoppingplanner;
+package com.bue.shoppingplanner.views;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.bue.shoppingplanner.R;
 import com.bue.shoppingplanner.utilities.SPSharedPrefrences;
 import com.bue.shoppingplanner.utilities.SerializeObject;
-import com.bue.shoppingplanner.views.AddProductDialogFragment;
-import com.bue.shoppingplanner.views.AddShopDialogFragment;
-import com.bue.shoppingplanner.views.SetListNameDialogFragment;
-import com.bue.shoppingplanner.views.ShoppingListElementArrayAdapter;
+import com.bue.shoppingplanner.views.adapters.ShoppingListElementArrayAdapter;
+import com.bue.shoppingplanner.views.dialogs.AddProductDialogFragment;
+import com.bue.shoppingplanner.views.dialogs.AddShopDialogFragment;
+import com.bue.shoppingplanner.views.dialogs.SetListNameDialogFragment;
+import com.bue.shoppingplanner.R.id;
+import com.bue.shoppingplanner.R.layout;
+import com.bue.shoppingplanner.R.menu;
+import com.bue.shoppingplanner.R.string;
 import com.bue.shoppingplanner.controllers.BoughtController;
 import com.bue.shoppingplanner.helpers.ShopElementHelper;
 import com.bue.shoppingplanner.helpers.ShoppingListElementHelper;
@@ -20,6 +25,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -207,7 +214,6 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 		shoppingListAdapter=new ShoppingListElementArrayAdapter(this,R.layout.shopping_list_element_view, shoppingListArrayList);
 		shoppingListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		shoppingListView.setAdapter(shoppingListAdapter);
-		//addAllElementsOfShoppingListAdapter();	
 		
 		//Set values to elements
 		refreshElements();

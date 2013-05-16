@@ -1,4 +1,4 @@
-package com.bue.shoppingplanner.views;
+package com.bue.shoppingplanner.views.adapters;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,43 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:shrinkColumns="*"
-    android:stretchColumns="*" >
-
-    <TableRow
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-		   <CheckBox
-		       android:id="@+id/listElementCheckBox"
-		       android:layout_width="wrap_content"
-		       android:layout_height="wrap_content"
-		       android:layout_margin="5dp" />
-		
-		   <TextView
-		       android:id="@+id/listElementTextView"
-		       android:layout_width="wrap_content"
-		       android:layout_height="wrap_content"
-		       android:ems="5"
-		       android:text="Medium Text"
-		       android:textAppearance="?android:attr/textAppearanceMedium"
-		       android:layout_margin="10dp"  />
-		
-		   <ImageView
-		       android:id="@+id/listElementAddImageView"
-		       android:layout_width="35dp"
-		       android:layout_height="35dp"
-		       android:src="@android:drawable/ic_input_add" 
-		       android:layout_margin="10dp" />
 
-		   <ImageView
-		       android:id="@+id/listElementRemoveImageView"
-		       android:layout_width="35dp"
-		       android:layout_height="35dp"
-		       android:layout_margin="10dp"
-		       android:src="@drawable/minus" />
+    <TableLayout
+        android:id="@+id/elementTableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:shrinkColumns="*"
+        android:stretchColumns="*" >
 
-	   </TableRow>
-    
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
 
-</TableLayout>
+            <CheckBox
+                android:id="@+id/listElementCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp" />
+
+            <TextView
+                android:id="@+id/listElementTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:ems="5"
+                android:text="Medium Text"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <TextView
+                android:id="@+id/priceElementTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="34,3" >
+            </TextView>
+
+            <TextView
+                android:id="@+id/quantityElementTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="x3" >
+            </TextView>
+
+            <ImageView
+                android:id="@+id/listElementAddImageView"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_margin="5dp"
+                android:src="@android:drawable/ic_input_add" />
+
+            <ImageView
+                android:id="@+id/listElementRemoveImageView"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_margin="5dp"
+                android:src="@drawable/minus" />
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>

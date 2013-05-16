@@ -1,14 +1,15 @@
-package com.bue.shoppingplanner;
+package com.bue.shoppingplanner.views;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import com.bue.shoppingplanner.R;
+import com.bue.shoppingplanner.R.id;
 import com.bue.shoppingplanner.R.layout;
 import com.bue.shoppingplanner.R.menu;
 import com.bue.shoppingplanner.model.*;
-import com.bue.shoppingplanner.views.AddProductDialogFragment;
+import com.bue.shoppingplanner.views.dialogs.AddProductDialogFragment;
 
 import android.net.Uri;
 import android.os.Bundle;

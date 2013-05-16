@@ -1,4 +1,4 @@
-package com.bue.shoppingplanner.views;
+package com.bue.shoppingplanner.views.adapters;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,14 +9,19 @@ import com.bue.shoppingplanner.helpers.ShoppingListElementHelper;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.support.v4.app.FragmentActivity;
 
@@ -46,31 +51,55 @@ public class ShoppingListElementArrayAdapter extends ArrayAdapter<ShoppingListEl
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View row=convertView;
 		ShoppingListElementHolder holder = null;
+		ImageView listElementAddImageView;
+        ImageView listElementRemoveImageView;
+        //holder.listElementEditImageView= (ImageView)row.findViewById(R.id.listElementEditImageView);
+        TextView listElementTextView;
+        CheckBox listElementCheckBox;
+        final TableRow hiddingTableRow;
+        final TableLayout elementTableLayout;
        
         if(row == null)
         {
             LayoutInflater inflater = ((FragmentActivity) context).getLayoutInflater();
             row = inflater.inflate(layoutResourceId, parent, false);
            
-            holder = new ShoppingListElementHolder();
-            holder.listElementAddImageView = (ImageView)row.findViewById(R.id.listElementAddImageView);
-            holder.listElementRemoveImageView = (ImageView)row.findViewById(R.id.listElementRemoveImageView);
-            //holder.listElementEditImageView= (ImageView)row.findViewById(R.id.listElementEditImageView);
-            holder.listElementTextView = (TextView)row.findViewById(R.id.listElementTextView);
-            holder.listElementCheckBox = (CheckBox)row.findViewById(R.id.listElementCheckBox);
+            //holder = new ShoppingListElementHolder();
            
-            row.setTag(holder);
+           
+            //row.setTag(holder);
         }
-        else
-        {
-            holder = (ShoppingListElementHolder)row.getTag();
-        }
-       
-        final ShoppingListElementHelper listElement = data.get(position);
-        holder.listElementTextView.setText(listElement.getProduct()+" "+listElement.getPrice()+" x"+listElement.getQuantity());
-        holder.listElementCheckBox.setChecked(listElement.isChecked());
+//        else
+//        {
+//            holder = (ShoppingListElementHolder)row.getTag();
+//        }
         
-        holder.listElementCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){        	
+        listElementAddImageView = (ImageView)row.findViewById(R.id.listElementAddImageView);
+        listElementRemoveImageView = (ImageView)row.findViewById(R.id.listElementRemoveImageView);
+        //holder.listElementEditImageView= (ImageView)row.findViewById(R.id.listElementEditImageView);
+        listElementTextView = (TextView)row.findViewById(R.id.listElementTextView);
+        listElementCheckBox = (CheckBox)row.findViewById(R.id.listElementCheckBox);
+        
+        //Hidding Menu
+        //LinearLayout hiddingLayout=new LinearLayout(context);
+        EditText hideText=new EditText(context);
+        Button hideOkButton=new Button(context);
+        hideOkButton.setText("OK");
+        Button hideCancelButton=new Button(context);
+        
+        hiddingTableRow=new TableRow(context);
+        hiddingTableRow.addView(hideText);
+        hiddingTableRow.addView(hideOkButton);
+        hiddingTableRow.addView(hideCancelButton);
+        
+        elementTableLayout=(TableLayout)row.findViewById(R.id.elementTableLayout);
+        
+        elementTableLayout.removeView(hiddingTableRow);
+        final ShoppingListElementHelper listElement = data.get(position);
+        listElementTextView.setText(listElement.getProduct()+" "+listElement.getPrice()+" x"+listElement.getQuantity());
+        listElementCheckBox.setChecked(listElement.isChecked());
+        
+        listElementCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){        	
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) {
@@ -89,7 +118,7 @@ public class ShoppingListElementArrayAdapter extends ArrayAdapter<ShoppingListEl
 			}
         	
         });
-        holder.listElementAddImageView.setOnClickListener(new View.OnClickListener() {
+        listElementAddImageView.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -104,7 +133,7 @@ public class ShoppingListElementArrayAdapter extends ArrayAdapter<ShoppingListEl
 				notifyDataSetChanged();
 			}
 		});
-       holder.listElementRemoveImageView.setOnClickListener(new View.OnClickListener() {
+       listElementRemoveImageView.setOnClickListener(new View.OnClickListener() {
 		
 		@Override
 		public void onClick(View v) {
@@ -122,6 +151,26 @@ public class ShoppingListElementArrayAdapter extends ArrayAdapter<ShoppingListEl
 			notifyDataSetChanged();
 		}
        });
+       
+        listElementTextView.setOnTouchListener(new View.OnTouchListener() {
+		
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+			if(event.getAction()==MotionEvent.ACTION_UP){
+				elementTableLayout.addView(hiddingTableRow);
+				Log.d("Touch","pos"+getPosition(listElement));
+			}
+			return true;
+		}
+	});
+        
+        hideOkButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				elementTableLayout.removeView(hiddingTableRow);				
+			}
+		});
        
         return row;
     }
@@ -152,7 +201,8 @@ public class ShoppingListElementArrayAdapter extends ArrayAdapter<ShoppingListEl
     public boolean isListItemChanged() {
 		return listItemChanged;
 	}
-
+    
+    
 
 
 	private class ShoppingListElementHolder
@@ -160,7 +210,8 @@ public class ShoppingListElementArrayAdapter extends ArrayAdapter<ShoppingListEl
         ImageView listElementAddImageView, listElementRemoveImageView;//, listElementEditImageView;
         TextView listElementTextView;
         CheckBox listElementCheckBox;
-        
+        TableRow hiddingTableRow;
+        TableLayout elementTableLayout;
     }
 	
 	
