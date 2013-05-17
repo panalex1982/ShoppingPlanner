@@ -29,22 +29,6 @@
                 android:text="Medium Text"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
-            <TextView
-                android:id="@+id/priceElementTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="34,3" >
-            </TextView>
-
-            <TextView
-                android:id="@+id/quantityElementTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="x3" >
-            </TextView>
-
             <ImageView
                 android:id="@+id/listElementAddImageView"
                 android:layout_width="35dp"
