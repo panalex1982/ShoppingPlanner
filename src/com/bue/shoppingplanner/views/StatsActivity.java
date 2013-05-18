@@ -1,9 +1,6 @@
 package com.bue.shoppingplanner.views;
 
 import com.bue.shoppingplanner.R;
-import com.bue.shoppingplanner.R.layout;
-import com.bue.shoppingplanner.R.menu;
-import com.bue.shoppingplanner.views.fragments.StatsContentFragment;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -21,10 +18,6 @@ public class StatsActivity extends FragmentActivity {
 		setContentView(R.layout.activity_stats);
 		// Show the Up button in the action bar.
 		setupActionBar();
-		/*StatsContentFragment statsContent = new StatsContentFragment();
-
-		getSupportFragmentManager().beginTransaction()
-				.add(R.id.statsContentFragmentList, statsContent).commit();*/
 	}
 
 	/**

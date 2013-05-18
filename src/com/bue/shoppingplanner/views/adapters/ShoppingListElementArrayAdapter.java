@@ -161,7 +161,6 @@ public class ShoppingListElementArrayAdapter extends ArrayAdapter<ShoppingListEl
 					elementTableLayout.addView(hiddingTableRow);
 					hiddingTableRow.setVisible(true);
 				}
-				Log.d("Touch","pos"+getPosition(listElement));
 			}
 			return true;
 		}

@@ -37,5 +37,6 @@
     <string name="street_name">street</string>
     <string name="street_number">number</string>
     <string name="title_activity_fool_main">FoolMainActivity</string>
+    <string name="pick_date">Pick Date</string>
 
 </resources>

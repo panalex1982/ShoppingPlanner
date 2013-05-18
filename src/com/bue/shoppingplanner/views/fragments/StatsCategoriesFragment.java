@@ -37,7 +37,7 @@ public class StatsCategoriesFragment extends Fragment {
         mTabHost.addTab(mTabHost.newTabSpec("custom").setIndicator("Shop"),
         		StatsContentFragment.class, tab3Bundle);
         mTabHost.addTab(mTabHost.newTabSpec("throttle").setIndicator("Kind"),
-        		StatsContentFragment.class, tab4Bundle);
+        		StatsContentFragment.class, tab4Bundle);        
         return view;
 	}
 
