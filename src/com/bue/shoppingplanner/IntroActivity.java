@@ -1,9 +1,32 @@
 package com.bue.shoppingplanner;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.concurrent.ExecutionException;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import com.bue.shoppingplanner.R;
+import com.bue.shoppingplanner.helpers.ExchangesAsyncTask;
 import com.bue.shoppingplanner.model.Address;
 import com.bue.shoppingplanner.model.CommercialProduct;
+import com.bue.shoppingplanner.model.Currencies;
 import com.bue.shoppingplanner.model.DatabaseHandler;
+import com.bue.shoppingplanner.model.JsonUpdate;
 import com.bue.shoppingplanner.model.ProductGroup;
 import com.bue.shoppingplanner.model.ProductKind;
 import com.bue.shoppingplanner.model.Shop;
@@ -15,17 +38,55 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MotionEvent;
 
 public class IntroActivity extends Activity {
-
+	
+	private DatabaseHandler db;
+	private JsonUpdate lastUpdate;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_intro);
+		db=new DatabaseHandler(this);
 		initializeDatabase();
+		lastUpdate=JsonUpdate.getJsonUpdate(db);
+		if(lastUpdate.getId()!=1){
+			//initializeCurrencies();
+		}else{
+			String updateDateString=lastUpdate.getDate();
+			SimpleDateFormat format=new SimpleDateFormat();
+			Date updateDate;
+			try {
+				updateDate = format.parse(updateDateString);		
+				if(updateDate.compareTo(new Date())>7){
+					ExchangesAsyncTask async=new ExchangesAsyncTask();
+					async.execute("http://openexchangerates.org/api/latest.json?app_id=");
+					try {
+						ArrayList<Currencies> result=async.get();
+						for(Currencies item:result){
+							Log.i(item.getId(),""+item.getRateToUsd());
+							item.updateCurrencies(db);
+							lastUpdate=new JsonUpdate();
+							lastUpdate.addJsonUpdate(db);
+						}
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ExecutionException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
 	}
 
 	@Override
@@ -61,8 +122,6 @@ public class IntroActivity extends Activity {
 	
 	public void initializeDatabase(){
 		try{
-			DatabaseHandler db=new DatabaseHandler(this);
-		
 			if(ProductKind.getProductKindCount(db)<=0){
 				//Insert Groups
 				ProductGroup group=new ProductGroup();
@@ -105,7 +164,7 @@ public class IntroActivity extends Activity {
 				kind.addProductKind(db);
 				kind.setName("Travel");//11		
 				kind.addProductKind(db);
-				kind.setName("Houshold");//12		
+				kind.setName("Household");//12		
 				kind.addProductKind(db);
 				kind.setName("Beauty/Personal Care");//13		
 				kind.addProductKind(db);
@@ -169,7 +228,9 @@ public class IntroActivity extends Activity {
 				shop.setName("Unknown");
 				shop.setAddress(1);
 				shop.setShopDescription(1);
-				shop.addShop(db);//1				
+				shop.addShop(db);//1
+				//Currencies
+				initializeCurrencies();
 			}
 		}catch(Exception ex){
 			Log.d("Initialize Exception", ex.toString());
@@ -177,6 +238,23 @@ public class IntroActivity extends Activity {
 		
 	}
 	
-	
+	private void initializeCurrencies(){
+		ExchangesAsyncTask async=new ExchangesAsyncTask();
+		async.execute("http://openexchangerates.org/api/latest.json?app_id=");
+		try {
+			ArrayList<Currencies> result=async.get();
+			for(Currencies item:result){
+				item.addCurrencies(db);
+			}
+			lastUpdate=new JsonUpdate();
+			lastUpdate.addJsonUpdate(db);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 }

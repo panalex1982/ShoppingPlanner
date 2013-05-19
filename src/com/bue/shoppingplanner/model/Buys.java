@@ -326,7 +326,7 @@ public class Buys {
 	 * @param handler
 	 * @return
 	 */
-	public static ArrayList<String[]> getTotalGroupByGroup(DatabaseHandler handler){
+	public static ArrayList<String[]> getTotalGroupByGroup(DatabaseHandler handler, String fromDate, String toDate){
 		ArrayList<String[]> groupTotal=new ArrayList<String[]>();
 		
 		String query="SELECT b."+DatabaseHandler.PRODUCT_GROUP_NAME+", sum(a."+DatabaseHandler.BUYS_UNIT_PRICE+"*a."
@@ -334,6 +334,8 @@ public class Buys {
 				+DatabaseHandler.TABLE_BUYS+" a, "+DatabaseHandler.TABLE_PRODUCT_GROUP+" b"
 				+" WHERE a."+DatabaseHandler.BUYS_PRODUCT_GROUP_ID+"=b."+DatabaseHandler.PRODUCT_GROUP_ID
 				+" AND a."+DatabaseHandler.BUYS_LIST_NAME+" =\"-1\""
+				+" AND a."+DatabaseHandler.BUYS_DATE+" > \""+fromDate+"\""
+				+" AND a."+DatabaseHandler.BUYS_DATE+" < \""+toDate+"\""
 				+" GROUP BY b."+DatabaseHandler.PRODUCT_GROUP_NAME
 				+" ORDER BY sumresult DESC";
 		SQLiteDatabase db = handler.getReadableDatabase();
@@ -364,7 +366,7 @@ public class Buys {
 	 * @param handler
 	 * @return
 	 */
-	public static ArrayList<String[]> getTotalGroupByProduct(DatabaseHandler handler){
+	public static ArrayList<String[]> getTotalGroupByProduct(DatabaseHandler handler, String fromDate, String toDate){
 		ArrayList<String[]> productTotal=new ArrayList<String[]>();
 		
 		String query="SELECT b."+DatabaseHandler.PRODUCT_NAME+", sum(a."+DatabaseHandler.BUYS_UNIT_PRICE+"*a."
@@ -372,6 +374,8 @@ public class Buys {
 				+DatabaseHandler.TABLE_BUYS+" a, "+DatabaseHandler.TABLE_PRODUCT+" b"
 				+" WHERE a."+DatabaseHandler.BUYS_PRODUCT+"=b."+DatabaseHandler.PRODUCT_ID
 				+" AND a."+DatabaseHandler.BUYS_LIST_NAME+" =\"-1\""
+				+" AND a."+DatabaseHandler.BUYS_DATE+" > \""+fromDate+"\""
+				+" AND a."+DatabaseHandler.BUYS_DATE+" < \""+toDate+"\""
 				+" GROUP BY b."+DatabaseHandler.PRODUCT_NAME
 				+" ORDER BY sumresult DESC";
 		SQLiteDatabase db = handler.getReadableDatabase();
@@ -402,7 +406,7 @@ public class Buys {
 	 * @param handler
 	 * @return
 	 */
-	public static ArrayList<String[]> getTotalGroupByShop(DatabaseHandler handler){
+	public static ArrayList<String[]> getTotalGroupByShop(DatabaseHandler handler, String fromDate, String toDate){
 		ArrayList<String[]> shopTotal=new ArrayList<String[]>();
 		
 		String query="SELECT b."+DatabaseHandler.SHOP_NAME+", sum(a."+DatabaseHandler.BUYS_UNIT_PRICE+"*a."
@@ -410,6 +414,8 @@ public class Buys {
 				+DatabaseHandler.TABLE_BUYS+" a, "+DatabaseHandler.TABLE_SHOP+" b"
 				+" WHERE a."+DatabaseHandler.BUYS_SHOP+"=b."+DatabaseHandler.SHOP_ID
 				+" AND a."+DatabaseHandler.BUYS_LIST_NAME+" =\"-1\""
+				+" AND a."+DatabaseHandler.BUYS_DATE+" > \""+fromDate+"\""
+				+" AND a."+DatabaseHandler.BUYS_DATE+" < \""+toDate+"\""
 				+" GROUP BY b."+DatabaseHandler.SHOP_NAME
 				+" ORDER BY sumresult DESC";
 		SQLiteDatabase db = handler.getReadableDatabase();
@@ -440,7 +446,7 @@ public class Buys {
 	 * @param handler
 	 * @return
 	 */
-	public static ArrayList<String[]> getTotalGroupByKind(DatabaseHandler handler){
+	public static ArrayList<String[]> getTotalGroupByKind(DatabaseHandler handler, String fromDate, String toDate){
 		ArrayList<String[]> shopTotal=new ArrayList<String[]>();
 		
 		String query="SELECT c."+DatabaseHandler.PRODUCT_KIND_NAME+", sum(a."+DatabaseHandler.BUYS_UNIT_PRICE+"*a."
@@ -450,6 +456,8 @@ public class Buys {
 				+" AND c."+DatabaseHandler.PRODUCT_KIND_ID
 				+" = b."+DatabaseHandler.PRODUCT_KIND
 				+" AND a."+DatabaseHandler.BUYS_LIST_NAME+" =\"-1\""
+				+" AND a."+DatabaseHandler.BUYS_DATE+" > \""+fromDate+"\""
+				+" AND a."+DatabaseHandler.BUYS_DATE+" < \""+toDate+"\""
 				+" GROUP BY c."+DatabaseHandler.PRODUCT_KIND_NAME
 				+" ORDER BY sumresult DESC";
 		SQLiteDatabase db = handler.getReadableDatabase();
@@ -482,15 +490,18 @@ public class Buys {
 	 * @param handler
 	 * @return
 	 */
-	public static ArrayList<String[]> getGroupSpendingByProduct(DatabaseHandler handler, String groupName){
+	public static ArrayList<String[]> getGroupSpendingByProduct(DatabaseHandler handler, String groupName, String fromDate, String toDate){
 		ArrayList<String[]> total=new ArrayList<String[]>();
 		
 		String query="SELECT c."+DatabaseHandler.PRODUCT_NAME+", sum(a."+DatabaseHandler.BUYS_UNIT_PRICE+"*a."
 				+DatabaseHandler.BUYS_AMOUNT+") AS sumresult FROM "
 				+DatabaseHandler.TABLE_BUYS+" a, "+DatabaseHandler.TABLE_PRODUCT_GROUP+" b, "+DatabaseHandler.TABLE_PRODUCT+" c"
 				+" WHERE a."+DatabaseHandler.BUYS_PRODUCT_GROUP_ID+"=b."+DatabaseHandler.PRODUCT_GROUP_ID
-				+" AND b."+DatabaseHandler.PRODUCT_NAME+" = \""+groupName+"\" AND a."+DatabaseHandler.BUYS_PRODUCT+" = c."+DatabaseHandler.PRODUCT_ID
+				+" AND b."+DatabaseHandler.PRODUCT_NAME+" = \""+groupName+"\" AND a."
+				+DatabaseHandler.BUYS_PRODUCT+" = c."+DatabaseHandler.PRODUCT_ID
 				+" AND a."+DatabaseHandler.BUYS_LIST_NAME+" =\"-1\""
+				+" AND a."+DatabaseHandler.BUYS_DATE+" > \""+fromDate+"\""
+				+" AND a."+DatabaseHandler.BUYS_DATE+" < \""+toDate+"\""
 				+" GROUP BY c."+DatabaseHandler.PRODUCT_NAME
 				+" ORDER BY sumresult DESC";
 		SQLiteDatabase db = handler.getReadableDatabase();
@@ -521,7 +532,7 @@ public class Buys {
 	 * @param handler
 	 * @return
 	 */
-	public static ArrayList<String[]> getProductSpedingByShop(DatabaseHandler handler, String productName){
+	public static ArrayList<String[]> getProductSpedingByShop(DatabaseHandler handler, String productName, String fromDate, String toDate){
 		ArrayList<String[]> total=new ArrayList<String[]>();
 		
 		String query="SELECT c."+DatabaseHandler.SHOP_NAME+", sum(a."+DatabaseHandler.BUYS_UNIT_PRICE+"*a."
@@ -530,6 +541,8 @@ public class Buys {
 				+" WHERE a."+DatabaseHandler.BUYS_PRODUCT+"=b."+DatabaseHandler.PRODUCT_ID+" AND a."
 				+DatabaseHandler.BUYS_SHOP+" = c."+DatabaseHandler.SHOP_ID+" AND b."+DatabaseHandler.PRODUCT_NAME
 				+" = \""+productName+"\""+" AND a."+DatabaseHandler.BUYS_LIST_NAME+" =\"-1\""
+				+" AND a."+DatabaseHandler.BUYS_DATE+" > \""+fromDate+"\""
+				+" AND a."+DatabaseHandler.BUYS_DATE+" < \""+toDate+"\""
 				+" GROUP BY c."+DatabaseHandler.SHOP_NAME
 				+" ORDER BY sumresult DESC";
 		SQLiteDatabase db = handler.getReadableDatabase();
@@ -560,7 +573,7 @@ public class Buys {
 	 * @param handler
 	 * @return
 	 */
-	public static ArrayList<String[]> getShopSpedingByProduct(DatabaseHandler handler, String shopName){
+	public static ArrayList<String[]> getShopSpedingByProduct(DatabaseHandler handler, String shopName, String fromDate, String toDate){
 		ArrayList<String[]> total=new ArrayList<String[]>();
 		
 		String query="SELECT b."+DatabaseHandler.PRODUCT_NAME+", sum(a."+DatabaseHandler.BUYS_UNIT_PRICE+"*a."
@@ -569,6 +582,8 @@ public class Buys {
 				+" WHERE a."+DatabaseHandler.BUYS_PRODUCT+"=b."+DatabaseHandler.PRODUCT_ID+" AND a."
 				+DatabaseHandler.BUYS_SHOP+" = c."+DatabaseHandler.SHOP_ID+" AND c."+DatabaseHandler.SHOP_NAME
 				+" = \""+shopName+"\""+" AND a."+DatabaseHandler.BUYS_LIST_NAME+" =\"-1\""
+				+" AND a."+DatabaseHandler.BUYS_DATE+" > \""+fromDate+"\""
+				+" AND a."+DatabaseHandler.BUYS_DATE+" < \""+toDate+"\""
 				+" GROUP BY b."+DatabaseHandler.PRODUCT_NAME
 				+" ORDER BY sumresult DESC";
 		SQLiteDatabase db = handler.getReadableDatabase();
@@ -599,7 +614,7 @@ public class Buys {
 	 * @param handler
 	 * @return
 	 */
-	public static ArrayList<String[]> getKindSpendingByProduct(DatabaseHandler handler, String kindName){
+	public static ArrayList<String[]> getKindSpendingByProduct(DatabaseHandler handler, String kindName, String fromDate, String toDate){
 		ArrayList<String[]> shopTotal=new ArrayList<String[]>();
 		
 		String query="SELECT c."+DatabaseHandler.PRODUCT_NAME+", sum(a."+DatabaseHandler.BUYS_UNIT_PRICE+"*a."
@@ -609,6 +624,8 @@ public class Buys {
 				+" AND b."+DatabaseHandler.PRODUCT_KIND_NAME+" = \""+kindName
 				+"\" AND a."+DatabaseHandler.BUYS_PRODUCT+" = c."+DatabaseHandler.PRODUCT_ID
 				+" AND a."+DatabaseHandler.BUYS_LIST_NAME+" =\"-1\""
+				+" AND a."+DatabaseHandler.BUYS_DATE+" > \""+fromDate+"\""
+				+" AND a."+DatabaseHandler.BUYS_DATE+" < \""+toDate+"\""
 				+" GROUP BY c."+DatabaseHandler.PRODUCT_NAME
 				+" ORDER BY sumresult DESC";
 		SQLiteDatabase db = handler.getReadableDatabase();

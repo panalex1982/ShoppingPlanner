@@ -34,65 +34,27 @@ public class StatsContentFragment extends Fragment {
 	private StatsExpandableListAdapter groupStatsListAdapter;
 
 	private Button fromStatsButton, toStatsButton;
-	private TextView fromStatsTextView, toStatsTextView;
-	private EditText fromStatsEditText, toStatsEditText;
 
 	private ArrayList<String[]> totalsBy;
 	private ArrayList<ArrayList<String[]>> childTotalsBy;
 
-	private String listKey;
+	private int listKey;
+
+	private SimpleDateFormat dateFormater;
+
+	private Calendar fromDate;
+	private Calendar toDate;
+	private SimpleDateFormat editTextDateFormater;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// View
-		// statsContentView=getActivity().findViewById(R.id.statsContentFragmentList);
-		Bundle chosenTab = getArguments();
-		childTotalsBy = new ArrayList<ArrayList<String[]>>();
-		BoughtController boughtController = new BoughtController(getActivity());
-		switch (chosenTab.getInt("chosenTab")) {
-		case 1:
-			totalsBy = boughtController.getTotalByGroup();
-			for (String[] total : totalsBy) {
-				ArrayList<String[]> tmpList = boughtController
-						.getGroupSpendingByProduct(total[0]);
-				childTotalsBy.add(tmpList);
-			}
-			break;
-		case 2:
-			totalsBy = boughtController.getTotalByProduct();
-			for (String[] total : totalsBy) {
-				ArrayList<String[]> tmpList = boughtController
-						.getProductSpedingByShop(total[0]);
-				childTotalsBy.add(tmpList);
-			}
-			break;
-		case 3:
-			totalsBy = boughtController.getTotalByShop();
-			for (String[] total : totalsBy) {
-				ArrayList<String[]> tmpList = new ArrayList<String[]>();
-				tmpList = boughtController.getShopSpedingByProduct(total[0]);
-				childTotalsBy.add(tmpList);
-			}
-			break;
-		case 4:
-			totalsBy = boughtController.getTotalByKind();
-			for (String[] total : totalsBy) {
-				ArrayList<String[]> tmpList = new ArrayList<String[]>();
-				tmpList = boughtController.getKindSpendingByProduct(total[0]);
-				childTotalsBy.add(tmpList);
-			}
-			break;
-		default:
-			totalsBy = boughtController.getTotalByGroup();
-			for (String[] total : totalsBy) {
-				ArrayList<String[]> tmpList = new ArrayList<String[]>();
-				tmpList = boughtController.getGroupSpendingByProduct(total[0]);
-				childTotalsBy.add(tmpList);
-			}
-		}
-
-		// return statsContentView;
+		// Initialize Dates
+		dateFormater = new SimpleDateFormat("ddMMyyyyhhmmss");
+		editTextDateFormater = new SimpleDateFormat("dd-MM-yyyy");
+		fromDate = Calendar.getInstance();
+		toDate = Calendar.getInstance();
+		fromDate.set(2012, 0, 1);
 	}
 
 	@Override
@@ -100,18 +62,34 @@ public class StatsContentFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_stats_content,
 				container, false);
+
+		// Expandable List
+		statsItemsExpandableListView = (ExpandableListView) view
+				.findViewById(R.id.statsItemsExpandableListView);
+		// LinearLayout headerLayout = new LinearLayout(getActivity());
+		// TextView headerText = new TextView(getActivity());
+		// headerText.setText(listKey);
+		// headerLayout.addView(headerText);
+		// statsItemsExpandableListView.addHeaderView(headerLayout);
+		totalsBy = new ArrayList<String[]>();
+		childTotalsBy = new ArrayList<ArrayList<String[]>>();
+		groupStatsListAdapter = new StatsExpandableListAdapter(getActivity(),
+				R.layout.stats_element_view, R.layout.stats_element_child_view,
+				totalsBy, childTotalsBy);
+		statsItemsExpandableListView.setAdapter(groupStatsListAdapter);
+		// Initialize ListView ArrayList
+		Bundle chosenTab = getArguments();
+
+		listKey = chosenTab.getInt("chosenTab");
+		updateResultList();
+
 		// Date Buttons
 		fromStatsButton = (Button) view.findViewById(R.id.fromStatsButton);
 		toStatsButton = (Button) view.findViewById(R.id.toStatsButton);
-		fromStatsEditText = (EditText) view
-				.findViewById(R.id.fromStatsEditText);
-		toStatsEditText = (EditText) view.findViewById(R.id.toStatsEditText);
-		final SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
-
-		final Calendar fromDate = Calendar.getInstance();
-		fromDate.set(2012, 0, 1);
-		fromStatsEditText.setText(String.valueOf(s.format(fromDate.getTime())));
-		fromStatsEditText.setOnClickListener(new View.OnClickListener() {
+		
+		fromStatsButton.setText(String.valueOf(editTextDateFormater
+				.format(fromDate.getTime())));
+		fromStatsButton.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -123,17 +101,19 @@ public class StatsContentFragment extends Fragment {
 							public void onDateSet(DatePicker view, int year,
 									int monthOfYear, int dayOfMonth) {
 								fromDate.set(year, monthOfYear, dayOfMonth);
-								toStatsEditText.setText(s.format(fromDate
-										.getTime()));
+								fromStatsButton.setText(editTextDateFormater
+										.format(fromDate.getTime()));
+								updateResultList();
 							}
 						}, fromDate.get(Calendar.YEAR), fromDate
-								.get(Calendar.MONTH), fromDate.get(Calendar.DATE));
+								.get(Calendar.MONTH), fromDate
+								.get(Calendar.DATE));
 				dateDialog.show();
 			}
 		});
 
-		final Calendar toDate = Calendar.getInstance();
-		toStatsEditText.setText(String.valueOf(s.format(toDate.getTime())));
+		toStatsButton.setText(String.valueOf(editTextDateFormater
+				.format(toDate.getTime())));
 		toStatsButton.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -146,27 +126,103 @@ public class StatsContentFragment extends Fragment {
 							public void onDateSet(DatePicker view, int year,
 									int monthOfYear, int dayOfMonth) {
 								toDate.set(year, monthOfYear, dayOfMonth);
-								toStatsEditText.setText(s.format(toDate
-										.getTime()));
+								toStatsButton.setText(editTextDateFormater
+										.format(toDate.getTime()));
+								updateResultList();
 							}
 						}, toDate.get(Calendar.YEAR), toDate
 								.get(Calendar.MONTH), toDate.get(Calendar.DATE));
 				dateDialog.show();
 			}
 		});
-		// Expandable List
-		statsItemsExpandableListView = (ExpandableListView) view
-				.findViewById(R.id.statsItemsExpandableListView);
-		LinearLayout headerLayout = new LinearLayout(getActivity());
-		TextView headerText = new TextView(getActivity());
-		headerText.setText(listKey);
-		headerLayout.addView(headerText);
-		statsItemsExpandableListView.addHeaderView(headerLayout);
-		groupStatsListAdapter = new StatsExpandableListAdapter(getActivity(),
-				R.layout.stats_element_view, R.layout.stats_element_child_view,
-				totalsBy, childTotalsBy);
-		statsItemsExpandableListView.setAdapter(groupStatsListAdapter);
 		return view;
+	}
+
+	private void updateResultList() {
+		BoughtController boughtController = new BoughtController(getActivity());
+		 if(!totalsBy.isEmpty())
+			 totalsBy.clear();
+		 if(!childTotalsBy.isEmpty())
+			 childTotalsBy.clear();
+		ArrayList<String[]> tmp;
+		
+		//ArrayList<ArrayList<String[]>> tmp2;
+		switch (listKey) {
+		case 1:
+			totalsBy.addAll(boughtController.getTotalByGroup(
+					dateFormater.format(fromDate.getTime()),
+					dateFormater.format(toDate.getTime())));
+			/*tmp = boughtController.getTotalByGroup(
+					dateFormater.format(fromDate.getTime()),
+					dateFormater.format(toDate.getTime()));
+			for(String parent[]:tmp)
+				totalsBy.add(parent);*/
+			for (String[] total : totalsBy) {
+				ArrayList<String[]> tmpList = boughtController
+						.getGroupSpendingByProduct(total[0],
+								dateFormater.format(fromDate.getTime()),
+								dateFormater.format(toDate.getTime()));
+				childTotalsBy.add(tmpList);
+			}
+			break;
+		case 2:
+			tmp = boughtController.getTotalByProduct(
+					dateFormater.format(fromDate.getTime()),
+					dateFormater.format(toDate.getTime()));
+			for(String parent[]:tmp)
+				totalsBy.add(parent);
+			for (String[] total : totalsBy) {
+				ArrayList<String[]> tmpList = boughtController
+						.getProductSpedingByShop(total[0],
+								dateFormater.format(fromDate.getTime()),
+								dateFormater.format(toDate.getTime()));
+				childTotalsBy.add(tmpList);
+			}
+			break;
+		case 3:
+			tmp = boughtController.getTotalByShop(
+					dateFormater.format(fromDate.getTime()),
+					dateFormater.format(toDate.getTime()));
+			for(String parent[]:tmp)
+				totalsBy.add(parent);
+			for (String[] total : totalsBy) {
+				ArrayList<String[]> tmpList = new ArrayList<String[]>();
+				tmpList = boughtController.getShopSpedingByProduct(total[0],
+						dateFormater.format(fromDate.getTime()),
+						dateFormater.format(toDate.getTime()));
+				childTotalsBy.add(tmpList);
+			}
+			break;
+		case 4:
+			tmp = boughtController.getTotalByKind(
+					dateFormater.format(fromDate.getTime()),
+					dateFormater.format(toDate.getTime()));
+			for(String parent[]:tmp)
+				totalsBy.add(parent);
+			for (String[] total : totalsBy) {
+				ArrayList<String[]> tmpList = new ArrayList<String[]>();
+				tmpList = boughtController.getKindSpendingByProduct(total[0],
+						dateFormater.format(fromDate.getTime()),
+						dateFormater.format(toDate.getTime()));
+				childTotalsBy.add(tmpList);
+			}
+			break;
+		default:
+			
+			tmp = boughtController.getTotalByGroup(
+					dateFormater.format(fromDate.getTime()),
+					dateFormater.format(toDate.getTime()));
+			for(String parent[]:tmp)
+				totalsBy.add(parent);
+			for (String[] total : totalsBy) {
+				ArrayList<String[]> tmpList = new ArrayList<String[]>();
+				tmpList = boughtController.getGroupSpendingByProduct(total[0],
+						dateFormater.format(fromDate.getTime()),
+						dateFormater.format(toDate.getTime()));
+				childTotalsBy.add(tmpList);
+			}
+		}
+		groupStatsListAdapter.notifyDataSetChanged();
 	}
 
 	// @Override

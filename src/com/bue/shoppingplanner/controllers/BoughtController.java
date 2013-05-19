@@ -226,36 +226,36 @@ public class BoughtController {
 		return Buys.getShoppingListNames(db);
 	}
 	
-	public ArrayList<String[]> getTotalByGroup(){
-		return Buys.getTotalGroupByGroup(db);		
+	public ArrayList<String[]> getTotalByGroup(String fromDate, String toDate){
+		return Buys.getTotalGroupByGroup(db, fromDate, toDate);		
 	}
 	
-	public ArrayList<String[]> getTotalByProduct(){
-		return Buys.getTotalGroupByProduct(db);		
+	public ArrayList<String[]> getTotalByProduct(String fromDate, String toDate){
+		return Buys.getTotalGroupByProduct(db, fromDate, toDate);		
 	}
 	
-	public ArrayList<String[]> getTotalByShop(){
-		return Buys.getTotalGroupByShop(db)	;	
+	public ArrayList<String[]> getTotalByShop(String fromDate, String toDate){
+		return Buys.getTotalGroupByShop(db, fromDate, toDate)	;	
 	}
 	
-	public ArrayList<String[]> getTotalByKind(){
-		return Buys.getTotalGroupByKind(db)	;	
+	public ArrayList<String[]> getTotalByKind(String fromDate, String toDate){
+		return Buys.getTotalGroupByKind(db, fromDate, toDate)	;	
 	}
 	
-	public ArrayList<String[]> getGroupSpendingByProduct(String groupName){
-		return Buys.getGroupSpendingByProduct(db, groupName);
+	public ArrayList<String[]> getGroupSpendingByProduct(String groupName, String fromDate, String toDate){
+		return Buys.getGroupSpendingByProduct(db, groupName, fromDate, toDate);
 	}
 	
-	public ArrayList<String[]> getProductSpedingByShop(String productName){
-		return Buys.getProductSpedingByShop(db, productName);
+	public ArrayList<String[]> getProductSpedingByShop(String productName, String fromDate, String toDate){
+		return Buys.getProductSpedingByShop(db, productName, fromDate, toDate);
 	}
 	
-	public ArrayList<String[]> getShopSpedingByProduct(String shopName){
-		return Buys.getShopSpedingByProduct(db,shopName);
+	public ArrayList<String[]> getShopSpedingByProduct(String shopName, String fromDate, String toDate){
+		return Buys.getShopSpedingByProduct(db,shopName, fromDate, toDate);
 	}
 	
-	public ArrayList<String[]> getKindSpendingByProduct(String kindName){
-		return Buys.getKindSpendingByProduct(db, kindName);
+	public ArrayList<String[]> getKindSpendingByProduct(String kindName, String fromDate, String toDate){
+		return Buys.getKindSpendingByProduct(db, kindName, fromDate, toDate);
 	}
 	
 	public ArrayList<Product> getProductList(){

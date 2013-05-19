@@ -20,17 +20,6 @@
                 android:layout_height="wrap_content"
                 android:text="From: " />
 
-            <EditText
-                android:id="@+id/fromStatsEditText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:inputType="date" >
-
-                <requestFocus />
-            </EditText>
-
             <Button
                 android:id="@+id/fromStatsButton"
                 style="?android:attr/buttonStyleSmall"
@@ -48,14 +37,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="To: " />
-
-            <EditText
-                android:id="@+id/toStatsEditText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:inputType="date" />
 
             <Button
                 android:id="@+id/toStatsButton"
