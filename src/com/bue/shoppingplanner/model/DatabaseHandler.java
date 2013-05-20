@@ -15,7 +15,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	// All public static variables
 	// Database Version
-	private static final int DATABASE_VERSION = 5;
+	private static final int DATABASE_VERSION = 6;
 
 	// Database Name
 	public static final String DATABASE_NAME = "shoppingPlannerDB";
@@ -81,6 +81,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	// user;//User not used in first version
 	public static final String BUYS_UNIT_PRICE = "unitPrice";
 	public static final String BUYS_AMOUNT = "amount";
+	public static final String BUYS_CURRENCY = "currency";
 	public static final String BUYS_PRODUCT_GROUP_ID = "productGroupId";
 	public static final String BUYS_DATE = "date";//List must not have date, but buy must have
 	public static final String BUYS_LIST_NAME="listName";//If this field is -1 means this is normal buy else means it is list
@@ -166,8 +167,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		String CREATE_TABLE_BUYS = "CREATE TABLE " + TABLE_BUYS + "(" + BUYS_ID
 				+ " INTEGER PRIMARY KEY AUTOINCREMENT ," + BUYS_PRODUCT
 				+ " INTEGER NOT NULL," + BUYS_SHOP + " INTEGER NOT NULL,"
-				+ BUYS_UNIT_PRICE + " REAL NOT NULL," + BUYS_AMOUNT
-				+ " INTEGER NOT NULL," + BUYS_DATE + " TIMESTAMP NOT NULL,"
+				+ BUYS_UNIT_PRICE + " REAL NOT NULL, "
+				+ BUYS_CURRENCY + " TEXT(3) NOT NULL, "
+				+ BUYS_AMOUNT + " INTEGER NOT NULL," + BUYS_DATE + " TIMESTAMP NOT NULL,"
 				+ BUYS_PRODUCT_GROUP_ID + " INTEGER NOT NULL,"
 				+BUYS_LIST_NAME+" TEXT, "
 				+ "FOREIGN KEY(" + BUYS_PRODUCT + ") REFERENCES "
@@ -211,7 +213,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		// Drop older table if existed
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCT_GROUP);
+		db.execSQL("DROP TABLE IF EXISTS " +TABLE_PRODUCT_GROUP);
 		db.execSQL("DROP TABLE IF EXISTS " +TABLE_PRODUCT_KIND);
 		db.execSQL("DROP TABLE IF EXISTS " +TABLE_COMMERCIAL_PRODUCT);
 		db.execSQL("DROP TABLE IF EXISTS " +TABLE_PRODUCT);

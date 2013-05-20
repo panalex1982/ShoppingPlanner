@@ -1,24 +1,12 @@
 package com.bue.shoppingplanner;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import com.bue.shoppingplanner.R;
 import com.bue.shoppingplanner.helpers.ExchangesAsyncTask;
@@ -37,8 +25,6 @@ import com.bue.shoppingplanner.views.MainMenuActivity;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MotionEvent;
@@ -55,38 +41,37 @@ public class IntroActivity extends Activity {
 		db=new DatabaseHandler(this);
 		initializeDatabase();
 		lastUpdate=JsonUpdate.getJsonUpdate(db);
-		if(lastUpdate.getId()!=1){
-			//initializeCurrencies();
-		}else{
-			String updateDateString=lastUpdate.getDate();
-			SimpleDateFormat format=new SimpleDateFormat();
-			Date updateDate;
-			try {
-				updateDate = format.parse(updateDateString);		
-				if(updateDate.compareTo(new Date())>7){
-					ExchangesAsyncTask async=new ExchangesAsyncTask();
-					async.execute("http://openexchangerates.org/api/latest.json?app_id=");
-					try {
-						ArrayList<Currencies> result=async.get();
-						for(Currencies item:result){
-							Log.i(item.getId(),""+item.getRateToUsd());
-							item.updateCurrencies(db);
-							lastUpdate=new JsonUpdate();
-							lastUpdate.addJsonUpdate(db);
-						}
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (ExecutionException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+		
+		String updateDateString=lastUpdate.getDate();
+		SimpleDateFormat format=new SimpleDateFormat("ddMMyyyyhhmmss");
+		Date updateDate;
+		try {
+			updateDate = format.parse(updateDateString);
+			long differnce=getDifferenceFromNow(updateDate);
+			Log.i("Days differnece: ",""+differnce);
+			if(differnce>7){
+				ExchangesAsyncTask async=new ExchangesAsyncTask();
+				async.execute("http://openexchangerates.org/api/latest.json?app_id=");
+				try {
+					ArrayList<Currencies> result=async.get();
+					for(Currencies item:result){
+						Log.i(item.getId(),""+item.getRateToUsd());
+						item.updateCurrencies(db);
+						lastUpdate=new JsonUpdate();
+						lastUpdate.addJsonUpdate(db);
 					}
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-			} catch (ParseException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
 			}
-		}
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}		
 	}
 
 	@Override
@@ -255,6 +240,17 @@ public class IntroActivity extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private long getDifferenceFromNow(Date date1){
+		long days=0;
+		Calendar cal1=Calendar.getInstance();
+		cal1.setTime(date1);
+		long mils1=cal1.getTimeInMillis();
+		Calendar cal2=Calendar.getInstance();
+		long mils2=cal2.getTimeInMillis();
+		days=(mils2-mils1)/(1000*60*60*24);
+		return days;
 	}
 
 }

@@ -36,6 +36,7 @@ public class MainMenuActivity extends FragmentActivity {
 	private ImageButton savedListsImageButton;
 	
 	private TextView spendingMainTextView;
+	private ImageButton settingsImageButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +92,19 @@ public class MainMenuActivity extends FragmentActivity {
 			public boolean onTouch(View v, MotionEvent event) {
 				if(event.getAction()==MotionEvent.ACTION_UP){
 					startActivity(new Intent(MainMenuActivity.this, SavedListsActivity.class));
+				}
+				return false;
+			}
+		});
+		
+		//Settings ImageButton
+		settingsImageButton=(ImageButton) findViewById(R.id.settingsImageButton);
+		settingsImageButton.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if(event.getAction()==MotionEvent.ACTION_UP){
+					startActivity(new Intent(MainMenuActivity.this, SettingsActivity.class));
 				}
 				return false;
 			}

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.bue.shoppingplanner.R;
 import com.bue.shoppingplanner.controllers.BoughtController;
+import com.bue.shoppingplanner.controllers.CurrencyController;
 import com.bue.shoppingplanner.helpers.ShoppingListElementHelper;
 import com.bue.shoppingplanner.helpers.SpinnerBuilder;
 import com.bue.shoppingplanner.model.DatabaseHandler;
@@ -42,6 +43,7 @@ public class AddProductDialogFragment extends DialogFragment {
 	
 	private Spinner productGroupAddDialogSpinner;
 	private Spinner productKindAddDialogSpinner;
+	private Spinner currencyAddDialogSpinner;
 	
 	private ShoppingListElementHelper listElement;
 
@@ -79,6 +81,9 @@ public class AddProductDialogFragment extends DialogFragment {
 			productKindSpinnerList.add(kind.getName());
 		}
 		productKindAddDialogSpinner=SpinnerBuilder.createSpinnerFromArrayList(getActivity(),dialogMainView, R.id.productKindAddDialogSpinner, productKindSpinnerList, android.R.layout.simple_spinner_item,android.R.layout.simple_spinner_dropdown_item);
+		currencyAddDialogSpinner=(Spinner)dialogMainView.findViewById(R.id.currencyAddDialogSpinner);
+		CurrencyController controller=new CurrencyController(getActivity());
+		currencyAddDialogSpinner.setSelection(controller.getDefaultCurrencyPosition());
 		
 		//ImageButtons initialize
 		numberAddAddDialogImageButton=(ImageButton) dialogMainView.findViewById(R.id.numberAddAddDialogImageButton);

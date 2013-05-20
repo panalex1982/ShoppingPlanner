@@ -75,4 +75,12 @@
 	    android:layout_alignParentTop="true"
 	    android:src="@android:drawable/ic_menu_edit" />
 
+	<ImageButton
+	    android:id="@+id/settingsImageButton"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignLeft="@+id/savedListsImageButton"
+	    android:layout_below="@+id/shopsImageButton"
+	    android:src="@android:drawable/ic_menu_manage" />
+
 </RelativeLayout>
