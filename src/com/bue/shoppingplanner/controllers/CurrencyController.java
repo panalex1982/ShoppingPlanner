@@ -10,6 +10,7 @@ import android.content.res.Resources;
 
 import com.bue.shoppingplanner.R;
 import com.bue.shoppingplanner.helpers.CurrencyHelper;
+import com.bue.shoppingplanner.model.Currencies;
 import com.bue.shoppingplanner.model.DatabaseHandler;
 import com.bue.shoppingplanner.utilities.SPSharedPrefrences;
 
@@ -40,7 +41,7 @@ public class CurrencyController implements SPSharedPrefrences {
 		defaultCurrency=settings.getString(SET_DEF_CURRENCY, "USD");
 		defaultCurrencyPosition=getCurrencyListPosition(defaultCurrency);
 		selectedCurrency="USD";
-		
+		db=new DatabaseHandler(context);		
 	}
 
 	public String getSelectedCurrency() {
@@ -101,6 +102,27 @@ public class CurrencyController implements SPSharedPrefrences {
 			CurrencyHelper helper=new CurrencyHelper(listIso.get(i),listNames.get(i),listSymbols.get(i));
 			currencies.add(helper);
 		}
+	}
+	
+	public boolean isDefaultCurrency(String selectedCurrency){
+		return defaultCurrency.equals(selectedCurrency);
+	}
+	
+	public double getPriceToDefaultCurrency(double price){
+		if(!isDefaultCurrency(selectedCurrency)){
+			Currencies currency=Currencies.getCurrencies(db, selectedCurrency);
+			Currencies defaultRate=Currencies.getCurrencies(db, defaultCurrency);
+			double rateToUsd=currency.getRateToUsd();
+			double rateToDef=defaultRate.getRateToUsd();
+			if(defaultCurrency.equals("USD")){
+				price = price/rateToUsd;
+			}else if(selectedCurrency.equals("USD")){				
+				price = price*rateToDef;
+			}else{
+				price=price/rateToDef;
+			}
+		}
+		return price;
 	}
 
 }

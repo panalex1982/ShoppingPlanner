@@ -9,13 +9,29 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+/**
+ * "CREATE TABLE "+ TABLE_BUYS +"("+ BUYS_ID+
+ * " INTEGER PRIMARY KEY AUTOINCREMENT ," + BUYS_PRODUCT +
+ * " INTEGER NOT NULL," + BUYS_SHOP + " INTEGER NOT NULL," + BUYS_UNIT_PRICE
+ * + " REAL NOT NULL," + BUYS_AMOUNT + " INTEGER NOT NULL," + BUYS_DATE +
+ * " TEXT NOT NULL," 
+ * + BUYS_PRODUCT_GROUP_ID + " INTEGER NOT NULL,"
+ * + BUYS_VAT + " REAL NOT NULL, "
+ * + "FOREIGN KEY("+BUYS_PRODUCT+") REFERENCES "+
+ * TABLE_PRODUCT+"("+PRODUCT_ID+"),"+
+ * "FOREIGN KEY("+BUYS_SHOP+") REFERENCES "+ TABLE_SHOP+"("+SHOP_ID+")"+
+ * ")";
+ * 
+ * Buys
+ */
 public class Buys {
 	private int id;
 	private int product, shop, user;//User not used in first version
 	private double unitPrice;
 	private int amount;
+	private double vat;
 	private int group;
-	private String date; //Not sure for the package, i used android package I may change it to sql
+	private String date; 
 	private String listName;
 	
 	public Buys() {
@@ -24,7 +40,7 @@ public class Buys {
 	
 	
 	public Buys(int id, int product, int shop, int user, double unitPrice,
-			int amount, int group, String date, String listName) {
+			int amount, int group, String date, String listName, double vat) {
 		super();
 		this.id = id;
 		this.product = product;
@@ -35,10 +51,11 @@ public class Buys {
 		this.group = group;
 		this.date = date;
 		this.listName = listName;
+		this.vat=vat;
 	}
 
 
-	public Buys(int id, int product, int shop, int user, double unit_price, int amount, String date, int group) {
+	public Buys(int id, int product, int shop, int user, double unit_price, int amount, String date, int group, double vat) {
 		super();
 		this.product = product;
 		this.shop = shop;
@@ -48,9 +65,10 @@ public class Buys {
 		this.date = date;
 		this.id=id;
 		this.group=group;
+		this.vat=vat;
 	}
 	
-	public Buys(int id, int product, int shop, double unitPrice, int amount, String date, int group) {
+	public Buys(int id, int product, int shop, double unitPrice, int amount, String date, int group, double vat) {
 		super();
 		this.id = id;
 		this.product = product;
@@ -59,13 +77,14 @@ public class Buys {
 		this.amount = amount;
 		this.date = date;
 		this.group=group;
+		this.vat=vat;
 		user=-1;
 	}
 	
 	
 	
 	public Buys(int product, int shop, double unitPrice, int amount, int group,
-			String date, String listName) {
+			String date, String listName, double vat) {
 		super();
 		this.product = product;
 		this.shop = shop;
@@ -73,12 +92,13 @@ public class Buys {
 		this.amount = amount;
 		this.group = group;
 		this.date = date;
+		this.vat=vat;
 		user=-1;
 		this.listName=listName;
 	}
 	
 	public Buys(int product, int shop, int user, double unitPrice, int amount,
-			int group, String date, String listName) {
+			int group, String date, String listName, double vat) {
 		super();
 		this.product = product;
 		this.shop = shop;
@@ -88,6 +108,7 @@ public class Buys {
 		this.group = group;
 		this.date = date;
 		this.listName = listName;
+		this.vat=vat;
 	}
 	public int getId() {
 		return id;
@@ -141,21 +162,6 @@ public class Buys {
 	
 	
 	
-	/*
-	 * "CREATE TABLE "+ TABLE_BUYS +"("+ BUYS_ID+
-	 * " INTEGER PRIMARY KEY AUTOINCREMENT ," + BUYS_PRODUCT +
-	 * " INTEGER NOT NULL," + BUYS_SHOP + " INTEGER NOT NULL," + BUYS_UNIT_PRICE
-	 * + " REAL NOT NULL," + BUYS_AMOUNT + " INTEGER NOT NULL," + BUYS_DATE +
-	 * " TEXT NOT NULL," 
-	 * + BUYS_PRODUCT_GROUP_ID + " INTEGER NOT NULL,"
-	 * + "FOREIGN KEY("+BUYS_PRODUCT+") REFERENCES "+
-	 * TABLE_PRODUCT+"("+PRODUCT_ID+"),"+
-	 * "FOREIGN KEY("+BUYS_SHOP+") REFERENCES "+ TABLE_SHOP+"("+SHOP_ID+")"+
-	 * ")";
-	 * 
-	 * Buys
-	 */
-
 	public double getUnitPrice() {
 		return unitPrice;
 	}
@@ -174,6 +180,15 @@ public class Buys {
 	public void setListName(String listName) {
 		this.listName = listName;
 	}
+	
+	public double getVat() {
+		return vat;
+	}
+
+
+	public void setVat(double vat) {
+		this.vat = vat;
+	}
 
 
 	public int addBuys(DatabaseHandler handler) {
@@ -187,6 +202,7 @@ public class Buys {
 		values.put(DatabaseHandler.BUYS_DATE, getDate());
 		values.put(DatabaseHandler.BUYS_PRODUCT_GROUP_ID, getGroup());
 		values.put(DatabaseHandler.BUYS_LIST_NAME, listName);
+		values.put(DatabaseHandler.BUYS_VAT, vat);
 
 		// Inserting Row
 		int tmp=(int) db.insert(DatabaseHandler.TABLE_BUYS, null, values);
@@ -199,7 +215,8 @@ public class Buys {
 
 		Cursor cursor = db.query(DatabaseHandler.TABLE_BUYS, new String[] { DatabaseHandler.BUYS_PRODUCT,
 				DatabaseHandler.BUYS_SHOP, DatabaseHandler.BUYS_UNIT_PRICE, DatabaseHandler.BUYS_AMOUNT, 
-				DatabaseHandler.BUYS_DATE, DatabaseHandler.BUYS_PRODUCT_GROUP_ID, }, DatabaseHandler.BUYS_ID + "=? AND "
+				DatabaseHandler.BUYS_DATE, DatabaseHandler.BUYS_PRODUCT_GROUP_ID,
+				DatabaseHandler.BUYS_VAT, }, DatabaseHandler.BUYS_ID + "=? AND "
 				+DatabaseHandler.BUYS_LIST_NAME+" = \"-1\"",
 				new String[] { String.valueOf(id) }, null, null, null, null);
 		if (cursor != null)
@@ -207,7 +224,7 @@ public class Buys {
 
 		Buys buys = new Buys(id, cursor.getInt(0), cursor.getInt(1),
 				cursor.getDouble(2), cursor.getInt(3), cursor.getString(4),
-				cursor.getInt(5));
+				cursor.getInt(5),cursor.getDouble(6));
 		cursor.close();
 		db.close();
 
@@ -249,6 +266,7 @@ public class Buys {
 				buys.setDate(cursor.getString(5));
 				buys.setGroup(cursor.getInt(6));
 				buys.setListName(cursor.getString(7));
+				buys.setVat(cursor.getDouble(8));
 
 				// Adding buy to list
 				buysList.add(buys);
@@ -271,6 +289,7 @@ public class Buys {
 		values.put(DatabaseHandler.BUYS_AMOUNT, getAmount());
 		values.put(DatabaseHandler.BUYS_DATE, getDate());
 		values.put(DatabaseHandler.BUYS_PRODUCT_GROUP_ID, getGroup());
+		values.put(DatabaseHandler.BUYS_VAT, vat);
 
 		// updating row
 		int updateMessage = db.update(DatabaseHandler.TABLE_BUYS, values, DatabaseHandler.BUYS_ID + " = ?",
@@ -302,7 +321,7 @@ public class Buys {
 	
 	public static double getTotalSpending(DatabaseHandler handler){
 		double spending=0.0;
-		String query="SELECT sum("+DatabaseHandler.BUYS_UNIT_PRICE+"*"+DatabaseHandler.BUYS_AMOUNT+") FROM "+DatabaseHandler.TABLE_BUYS;//
+		String query="SELECT sum("+DatabaseHandler.BUYS_UNIT_PRICE+"*"+DatabaseHandler.BUYS_AMOUNT+") FROM "+DatabaseHandler.TABLE_BUYS;
 		SQLiteDatabase db = handler.getReadableDatabase();
 		Cursor cursor = db.rawQuery(query, null);
 
@@ -330,7 +349,9 @@ public class Buys {
 		ArrayList<String[]> groupTotal=new ArrayList<String[]>();
 		
 		String query="SELECT b."+DatabaseHandler.PRODUCT_GROUP_NAME+", sum(a."+DatabaseHandler.BUYS_UNIT_PRICE+"*a."
-				+DatabaseHandler.BUYS_AMOUNT+") AS sumresult FROM "
+				+DatabaseHandler.BUYS_AMOUNT+") AS sumresult, "
+				+"sum(a."+DatabaseHandler.BUYS_UNIT_PRICE+" * a."
+				+DatabaseHandler.BUYS_AMOUNT+" * a."+DatabaseHandler.BUYS_VAT+") AS vatresult FROM "
 				+DatabaseHandler.TABLE_BUYS+" a, "+DatabaseHandler.TABLE_PRODUCT_GROUP+" b"
 				+" WHERE a."+DatabaseHandler.BUYS_PRODUCT_GROUP_ID+"=b."+DatabaseHandler.PRODUCT_GROUP_ID
 				+" AND a."+DatabaseHandler.BUYS_LIST_NAME+" =\"-1\""
@@ -344,7 +365,7 @@ public class Buys {
 		if (cursor != null)
 			while(cursor.moveToNext()){
 				String[] row=new String[3];
-				row[2]="Euro";
+				row[2]=String.valueOf(cursor.getDouble(2));;
 				row[0] = cursor.getString(0);
 				row[1]=String.valueOf(cursor.getDouble(1));
 				groupTotal.add(row);
@@ -510,7 +531,7 @@ public class Buys {
 		if (cursor != null)
 			while(cursor.moveToNext()){
 				String[] row=new String[3];
-				row[2]="Euro";
+				row[2]="";
 				row[0] = cursor.getString(0);
 				row[1]=String.valueOf(cursor.getDouble(1));
 				total.add(row);

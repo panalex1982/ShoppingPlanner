@@ -157,12 +157,15 @@ public class BoughtController {
 				ProductGroup group=new ProductGroup(element.getGroup());
 				int groupId=group.getProductGroupId(db);
 				Buys buys=null;
+				//Convert Price to local currency
+				CurrencyController cController=new CurrencyController(context, element.getCurrency());
+				double price=cController.getPriceToDefaultCurrency(element.getPrice());
 				if(persistType==0){
 					SimpleDateFormat s = new SimpleDateFormat("ddMMyyyyhhmmss");
 					String timestamp = s.format(new Date());
-					buys=new Buys(productId, shopId, element.getPrice(), element.getQuantity(), groupId, timestamp,"-1");
+					buys=new Buys(productId, shopId, price, element.getQuantity(), groupId, timestamp,"-1", 1);//Add vat
 				}else if(persistType==1){
-					buys=new Buys(productId, shopId, element.getPrice(), element.getQuantity(), groupId, "", listName);
+					buys=new Buys(productId, shopId, price, element.getQuantity(), groupId, "", listName, 1);//Add vat
 				}
 				buysId=buys.addBuys(db);//TODO: Currently this method returns the records number and not the PK of buys
 				//Make a method that checks if buys stored and then count them

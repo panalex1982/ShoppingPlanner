@@ -1,9 +1,11 @@
 package com.bue.shoppingplanner.views.adapters;
 
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
 
 import com.bue.shoppingplanner.R;
+import com.bue.shoppingplanner.controllers.CurrencyController;
 
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
@@ -59,7 +61,7 @@ public class StatsExpandableListAdapter extends BaseExpandableListAdapter {
     		String[] rowData=(String[]) getChild(groupPosition, childPosition);
     		group.setText(rowData[0]);
     		amount.setText(rowData[1]);
-    		currency.setText(rowData[2]);
+    		currency.setText(getCurrencySymbol());
         
         return convertView;
 	}
@@ -106,10 +108,11 @@ public class StatsExpandableListAdapter extends BaseExpandableListAdapter {
         TextView amount=(TextView) convertView.findViewById(R.id.amountStatsElementTextView);
         TextView currency=(TextView) convertView.findViewById(R.id.currencyStatsElementTextView);
         
+        
 		String[] rowData=(String[]) getGroup(groupPosition);
 		group.setText(rowData[0]);
 		amount.setText(rowData[1]);
-		currency.setText(rowData[2]);
+		currency.setText(getCurrencySymbol());
 		
 		return convertView;
 	}
@@ -126,6 +129,11 @@ public class StatsExpandableListAdapter extends BaseExpandableListAdapter {
 		return false;
 	}
 	
-	
+	public String getCurrencySymbol(){
+		CurrencyController cController=new CurrencyController(context);
+        String currencyIso=cController.getDefaultCurrency();
+        Currency currency=Currency.getInstance(currencyIso);
+        return currency.getSymbol();
+	}
 
 }

@@ -43,7 +43,7 @@ public class Currencies {
 	public Double getRateToUsd() {
 		return rateToUsd;
 	}
-
+	
 	public void setRateToUsd(Double rateToUsd) {
 		this.rateToUsd = rateToUsd;
 	}

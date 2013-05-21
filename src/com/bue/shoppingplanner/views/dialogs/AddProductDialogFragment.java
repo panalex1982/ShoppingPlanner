@@ -1,6 +1,10 @@
 package com.bue.shoppingplanner.views.dialogs;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.Currency;
+import java.util.Locale;
 
 import com.bue.shoppingplanner.R;
 import com.bue.shoppingplanner.controllers.BoughtController;
@@ -18,9 +22,12 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -60,6 +67,7 @@ public class AddProductDialogFragment extends DialogFragment {
 		brandAddDialogEditText=(EditText) dialogMainView.findViewById(R.id.brandAddDialogEditText);
 		priceAddDialogEditText=(EditText) dialogMainView.findViewById(R.id.priceAddDialogEditText);
 		numberAddDialogEditText=(EditText) dialogMainView.findViewById(R.id.numberAddDialogEditText);
+			
 		
 		//Add Adapters to auto-complete text views
 		BoughtController bcontroller=new BoughtController(getActivity());
@@ -109,6 +117,8 @@ public class AddProductDialogFragment extends DialogFragment {
 			}
 		});
 		
+		validationListeners();
+		
 		builder.setTitle("Add Product")
 			.setView(dialogMainView)
 			.setPositiveButton("ok", new DialogInterface.OnClickListener() {
@@ -123,7 +133,7 @@ public class AddProductDialogFragment extends DialogFragment {
                 	listElement.setChecked(true);
                 	listElement.setBarcode("unknown");//TODO: When I add barcodes I will present
                 								//the barcode or "unknown" for not known barcodes
-                	//listElement.setListName("-1"); Don't need
+                	listElement.setCurrency(currencyAddDialogSpinner.getSelectedItem().toString());
                 	// Send the positive button event back to the host activity
                     mListener.onDialogPositiveClick(AddProductDialogFragment.this);
                 }
@@ -189,6 +199,52 @@ public class AddProductDialogFragment extends DialogFragment {
     public interface AddProductDialogListener {
         public void onDialogPositiveClick(DialogFragment dialog);
         public void onDialogNegativeClick(DialogFragment dialog);
+    }
+    
+    private void validationListeners(){
+    	// priceAddDialogEditText
+    	priceAddDialogEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if(!priceAddDialogEditText.getText().toString().equals("")){
+						priceAddDialogEditText.setText(formatCurrecy(priceAddDialogEditText.getText().toString(),currencyAddDialogSpinner.getSelectedItem().toString()));		
+				}
+			}
+		});
+    	// currencyAddDialogSpinner
+    	currencyAddDialogSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				if(!priceAddDialogEditText.getText().toString().equals(""))
+					priceAddDialogEditText.setText(formatCurrecy(priceAddDialogEditText.getText().toString(),currencyAddDialogSpinner.getSelectedItem().toString()));
+				
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+    		
+    	});
+    }
+    
+    private String formatCurrecy(String price, String currencyIso){
+    	DecimalFormat format = new DecimalFormat();
+		Currency currency=Currency.getInstance(currencyIso);
+		//DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+		//symbols.setCurrency(currency);
+		format.setGroupingUsed(false);
+		format.setMaximumFractionDigits(currency.getDefaultFractionDigits());
+		format.setMinimumFractionDigits(currency.getDefaultFractionDigits());
+		//Log.d("Currency test: ",currency.getCurrencyCode()+" "+currency.getSymbol()+" "+currency.getDefaultFractionDigits());
+		format.setCurrency(currency);
+		//format.setDecimalFormatSymbols(symbols);
+		String formatted = format.format(Double.parseDouble(price));
+		return formatted;
     }
 	
 
