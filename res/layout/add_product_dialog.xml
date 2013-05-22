@@ -109,6 +109,20 @@
 		            android:src="@drawable/minus" />
 		
 		    </LinearLayout>
+
+		    <TextView
+		        android:id="@+id/vatAddDialogTextView"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/vat_percent"
+		        android:textStyle="bold" />
+
+		    <AutoCompleteTextView
+		        android:id="@+id/vatAddDialogAutoCompleteTextView"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:ems="10"
+		        android:text="23" />
 		
 		    <TextView
 		        android:id="@+id/productGroupAddDialogTextView"
@@ -135,6 +149,7 @@
 		         android:id="@+id/productKindAddDialogSpinner"
 		         android:layout_width="match_parent"
 		         android:layout_height="wrap_content" />
+
     	</LinearLayout>
 	</ScrollView>
 </LinearLayout>

@@ -333,6 +333,21 @@ public class Buys {
 		return spending;
 	}
 	
+	public static double getTotalVatPayments(DatabaseHandler handler){
+		double spending=0.0;
+		String query="SELECT sum("+DatabaseHandler.BUYS_UNIT_PRICE+" * "+DatabaseHandler.BUYS_AMOUNT+" * "
+		+DatabaseHandler.BUYS_VAT+") FROM "+DatabaseHandler.TABLE_BUYS;
+		SQLiteDatabase db = handler.getReadableDatabase();
+		Cursor cursor = db.rawQuery(query, null);
+
+		if (cursor != null)
+			if(cursor.moveToFirst())
+				spending = cursor.getDouble(0);
+		cursor.close();
+		db.close();
+		return spending;
+	}
+	
 	/*
     SELECT b.name, sum(a.unitPrice*a.amount) AS sumresult
 	FROM Buys a, ProductGroup b

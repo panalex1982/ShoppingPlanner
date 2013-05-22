@@ -11,6 +11,7 @@ import com.bue.shoppingplanner.controllers.BoughtController;
 import com.bue.shoppingplanner.controllers.CurrencyController;
 import com.bue.shoppingplanner.helpers.ShoppingListElementHelper;
 import com.bue.shoppingplanner.helpers.SpinnerBuilder;
+import com.bue.shoppingplanner.helpers.VatHelper;
 import com.bue.shoppingplanner.model.DatabaseHandler;
 import com.bue.shoppingplanner.model.Product;
 import com.bue.shoppingplanner.model.ProductGroup;
@@ -40,7 +41,9 @@ public class AddProductDialogFragment extends DialogFragment {
 	// Use this instance of the interface to deliver action events
     private AddProductDialogListener mListener;
 	
-	private AutoCompleteTextView productAddDialogEditText;
+	private AutoCompleteTextView productAddDialogEditText,
+								vatAddDialogAutoCompleteTextView;
+	
 	private EditText brandAddDialogEditText;
 	private EditText priceAddDialogEditText;
 	private EditText numberAddDialogEditText;
@@ -53,17 +56,23 @@ public class AddProductDialogFragment extends DialogFragment {
 	private Spinner currencyAddDialogSpinner;
 	
 	private ShoppingListElementHelper listElement;
+	
+	private VatHelper vat;
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		db=new DatabaseHandler(getActivity());
 		listElement=new ShoppingListElementHelper();
+		vat=new VatHelper(getActivity());
+		
 		//Create main dialog
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		View dialogMainView=inflater.inflate(R.layout.add_product_dialog, null);
 		//EditTexts initialize
 		productAddDialogEditText=(AutoCompleteTextView) dialogMainView.findViewById(R.id.productAddDialogEditText);
+		vatAddDialogAutoCompleteTextView=(AutoCompleteTextView) dialogMainView.findViewById(R.id.vatAddDialogAutoCompleteTextView);
+		
 		brandAddDialogEditText=(EditText) dialogMainView.findViewById(R.id.brandAddDialogEditText);
 		priceAddDialogEditText=(EditText) dialogMainView.findViewById(R.id.priceAddDialogEditText);
 		numberAddDialogEditText=(EditText) dialogMainView.findViewById(R.id.numberAddDialogEditText);
@@ -77,6 +86,11 @@ public class AddProductDialogFragment extends DialogFragment {
 		}
 		ArrayAdapter productAdapter=new ArrayAdapter(getActivity(),android.R.layout.simple_dropdown_item_1line, productNames);
 		productAddDialogEditText.setAdapter(productAdapter);
+		
+		//Vat Adapter
+		ArrayAdapter vatAdapter=new ArrayAdapter(getActivity(),android.R.layout.simple_dropdown_item_1line, vat.getVatRates());
+		vatAddDialogAutoCompleteTextView.setAdapter(vatAdapter);
+		vatAddDialogAutoCompleteTextView.setSelection(0);
 		
 		//Spinners initialize
 		ArrayList<CharSequence> productGroupSpinnerList=new ArrayList<CharSequence>();
@@ -134,6 +148,7 @@ public class AddProductDialogFragment extends DialogFragment {
                 	listElement.setBarcode("unknown");//TODO: When I add barcodes I will present
                 								//the barcode or "unknown" for not known barcodes
                 	listElement.setCurrency(currencyAddDialogSpinner.getSelectedItem().toString());
+                	listElement.setVat(Double.parseDouble(vatAddDialogAutoCompleteTextView.getText().toString())/100);
                 	// Send the positive button event back to the host activity
                     mListener.onDialogPositiveClick(AddProductDialogFragment.this);
                 }

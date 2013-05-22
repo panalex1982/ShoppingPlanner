@@ -163,9 +163,9 @@ public class BoughtController {
 				if(persistType==0){
 					SimpleDateFormat s = new SimpleDateFormat("ddMMyyyyhhmmss");
 					String timestamp = s.format(new Date());
-					buys=new Buys(productId, shopId, price, element.getQuantity(), groupId, timestamp,"-1", 1);//Add vat
+					buys=new Buys(productId, shopId, price, element.getQuantity(), groupId, timestamp,"-1", element.getVat());
 				}else if(persistType==1){
-					buys=new Buys(productId, shopId, price, element.getQuantity(), groupId, "", listName, 1);//Add vat
+					buys=new Buys(productId, shopId, price, element.getQuantity(), groupId, "", listName, element.getVat());
 				}
 				buysId=buys.addBuys(db);//TODO: Currently this method returns the records number and not the PK of buys
 				//Make a method that checks if buys stored and then count them
@@ -223,6 +223,14 @@ public class BoughtController {
 			savedShoppingList.add(element);			
 		}
 		return savedShoppingList;
+	}
+	
+	public double getTotalSpending(){
+		return Buys.getTotalSpending(db);
+	}
+	
+	public double getTotalVatPayment(){
+		return Buys.getTotalVatPayments(db);
 	}
 	
 	public ArrayList<String> getShoppingListNames(){

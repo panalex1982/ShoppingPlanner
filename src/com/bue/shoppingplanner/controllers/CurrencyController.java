@@ -12,9 +12,9 @@ import com.bue.shoppingplanner.R;
 import com.bue.shoppingplanner.helpers.CurrencyHelper;
 import com.bue.shoppingplanner.model.Currencies;
 import com.bue.shoppingplanner.model.DatabaseHandler;
-import com.bue.shoppingplanner.utilities.SPSharedPrefrences;
+import com.bue.shoppingplanner.utilities.SPSharedPreferences;
 
-public class CurrencyController implements SPSharedPrefrences {
+public class CurrencyController implements SPSharedPreferences {
 	
 	private DatabaseHandler db=null;
 	private SharedPreferences settings;

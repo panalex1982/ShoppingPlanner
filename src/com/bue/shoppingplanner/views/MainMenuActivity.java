@@ -8,6 +8,7 @@ import com.bue.shoppingplanner.R;
 import com.bue.shoppingplanner.R.id;
 import com.bue.shoppingplanner.R.layout;
 import com.bue.shoppingplanner.R.menu;
+import com.bue.shoppingplanner.controllers.BoughtController;
 import com.bue.shoppingplanner.model.*;
 import com.bue.shoppingplanner.views.dialogs.AddProductDialogFragment;
 
@@ -36,6 +37,7 @@ public class MainMenuActivity extends FragmentActivity {
 	private ImageButton savedListsImageButton;
 	
 	private TextView spendingMainTextView;
+	private TextView totalVatTextView;
 	private ImageButton settingsImageButton;
 
 	@Override
@@ -111,9 +113,12 @@ public class MainMenuActivity extends FragmentActivity {
 		});
 		
 		//Main menu stats
-		DatabaseHandler db=new DatabaseHandler(this);
+		BoughtController bController=new BoughtController(this);
 		spendingMainTextView=(TextView) findViewById(R.id.spendingMainTextView);
-		spendingMainTextView.setText(Double.toString(Buys.getTotalSpending(db)));
+		spendingMainTextView.setText(Double.toString(bController.getTotalSpending()));
+		
+		totalVatTextView=(TextView) findViewById(R.id.totalVatTextView);
+		totalVatTextView.setText(Double.toString(bController.getTotalVatPayment()));
         
 	}
 

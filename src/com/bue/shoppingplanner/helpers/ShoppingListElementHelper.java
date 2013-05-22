@@ -12,6 +12,7 @@ public class ShoppingListElementHelper implements Serializable {
 	private String kind;
 	private boolean isChecked;
 	private String currency;
+	private double vat;
 	//private String listName;
 	
 	public ShoppingListElementHelper() {
@@ -21,7 +22,8 @@ public class ShoppingListElementHelper implements Serializable {
 	}
 	
 	public ShoppingListElementHelper(String product, String brand,
-			double price, int quantity, String group, String kind, boolean isChecked, String currency) {
+			double price, int quantity, String group, String kind, boolean isChecked,
+			String currency, double vat) {
 		super();
 		this.product = product;
 		this.brand = brand;
@@ -36,7 +38,8 @@ public class ShoppingListElementHelper implements Serializable {
 	}
 	
 	public ShoppingListElementHelper(String product, String brand, String barcode,
-			double price, int quantity, String group, String kind, boolean isChecked, String currency) {
+			double price, int quantity, String group, String kind, boolean isChecked, 
+			String currency, double vat) {
 		super();
 		this.product = product;
 		this.brand = brand;
@@ -117,15 +120,13 @@ public class ShoppingListElementHelper implements Serializable {
 		this.isChecked = isChecked;
 	}
 	
-	
-	
-	/*public String getListName() {
-		return listName;
+	public double getVat() {
+		return vat;
 	}
 
-	public void setListName(String listName) {
-		this.listName = listName;
-	}*/
+	public void setVat(double vat) {
+		this.vat = vat;
+	}
 
 	public String getCurrency() {
 		return currency;
@@ -137,7 +138,7 @@ public class ShoppingListElementHelper implements Serializable {
 
 	public String encodeObject(){
 		String encode=product+"\n\t\t"+brand+"\n\t\t"+price+"\n\t\t"+quantity+"\n\t\t"+group+"\n\t\t"+kind+"\n\t\t"+barcode+"\n\t\t"+Boolean.toString(isChecked)
-				+"\n\t\t"+currency;//+listName;		
+				+"\n\t\t"+currency+"\n\t\t"+vat;//+listName;		
 		return encode;
 	}
 	
@@ -153,6 +154,7 @@ public class ShoppingListElementHelper implements Serializable {
 		barcode=splitted[6];
 		isChecked=Boolean.parseBoolean(splitted[7]);
 		currency=splitted[8];
+		vat=Double.parseDouble(splitted[9]);
 		//listName=splitted[8];
 	}
 

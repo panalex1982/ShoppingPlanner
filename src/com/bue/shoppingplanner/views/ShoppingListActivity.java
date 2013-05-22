@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import com.bue.shoppingplanner.R;
-import com.bue.shoppingplanner.utilities.SPSharedPrefrences;
+import com.bue.shoppingplanner.utilities.SPSharedPreferences;
 import com.bue.shoppingplanner.utilities.SerializeObject;
 import com.bue.shoppingplanner.views.adapters.ShoppingListElementArrayAdapter;
 import com.bue.shoppingplanner.views.dialogs.AddProductDialogFragment;
@@ -42,7 +42,7 @@ import android.os.Build;
 public class ShoppingListActivity extends FragmentActivity implements AddProductDialogFragment.AddProductDialogListener, 
 														AddShopDialogFragment.AddShopDialogListener,
 														SetListNameDialogFragment.SetListNameDialogListener,
-														SPSharedPrefrences{
+														SPSharedPreferences{
 	
 	private ImageButton addProductButton;
 	private ImageButton saveProductButton;

@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import com.bue.shoppingplanner.R;
 import com.bue.shoppingplanner.controllers.CurrencyController;
 import com.bue.shoppingplanner.helpers.CurrencyHelper;
-import com.bue.shoppingplanner.utilities.SPSharedPrefrences;
+import com.bue.shoppingplanner.helpers.VatHelper;
+import com.bue.shoppingplanner.utilities.SPSharedPreferences;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
@@ -25,8 +27,11 @@ public class SettingsActivity extends FragmentActivity {
 	
 	private Spinner currencySettingsSpinner;
 	private Button saveSettingsButton;
+	private EditText vatStandrdSettingsEditText,
+					vatReducedSettingsEditText;
 	
 	private CurrencyController cController;
+	private VatHelper vat;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,15 +40,23 @@ public class SettingsActivity extends FragmentActivity {
 		// Show the Up button in the action bar.
 		setupActionBar();
 		cController=new CurrencyController(this);
+		vat=new VatHelper(this);
 		
 		currencySettingsSpinner=(Spinner) findViewById(R.id.currencySettingsSpinner);
 		currencySettingsSpinner.setSelection(cController.getDefaultCurrencyPosition());
 		saveSettingsButton=(Button) findViewById(R.id.saveSettingsButton);
+		vatStandrdSettingsEditText=(EditText) findViewById(R.id.vatStandrdSettingsEditText);
+		vatReducedSettingsEditText=(EditText) findViewById(R.id.vatReducedSettingsEditText);
+		vatStandrdSettingsEditText.setText(vat.getStandardRate());
+		vatReducedSettingsEditText.setText(vat.getReducedRate());
 		
 		saveSettingsButton.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
 				cController.setDefaultCurrencyFromName(currencySettingsSpinner.getSelectedItem().toString());
+				vat.setRates(vatStandrdSettingsEditText.getText().toString(), 
+						vatReducedSettingsEditText.getText().toString());
+				
 			}
 		});
 	}

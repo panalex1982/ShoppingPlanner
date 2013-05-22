@@ -547,5 +547,10 @@
         <item>ZMW</item>
         <item>ZWL</item>
     </string-array>
+    <string name="standard_rate">VAT Standard Rate (%)</string>
+    <string name="reduced_rate">VAT Reduced Rate (%)</string>
+    <string name="vat">VAT</string>
+    <string name="vat_percent">VAT (%)</string>
+    <string name="total_vat_payments">VAT Payments: </string>
 
 </resources>
