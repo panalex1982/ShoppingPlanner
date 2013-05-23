@@ -149,7 +149,7 @@ public class StatsContentFragment extends Fragment {
 		//ArrayList<ArrayList<String[]>> tmp2;
 		switch (listKey) {
 		case 1:
-			totalsBy.addAll(boughtController.getTotalByGroup(
+			totalsBy.addAll(boughtController.getTotalByUser(
 					dateFormater.format(fromDate.getTime()),
 					dateFormater.format(toDate.getTime())));
 			/*tmp = boughtController.getTotalByGroup(
@@ -159,7 +159,7 @@ public class StatsContentFragment extends Fragment {
 				totalsBy.add(parent);*/
 			for (String[] total : totalsBy) {
 				ArrayList<String[]> tmpList = boughtController
-						.getGroupSpendingByProduct(total[0],
+						.getUserSpendingByProduct(total[0],
 								dateFormater.format(fromDate.getTime()),
 								dateFormater.format(toDate.getTime()));
 				childTotalsBy.add(tmpList);
@@ -209,14 +209,14 @@ public class StatsContentFragment extends Fragment {
 			break;
 		default:
 			
-			tmp = boughtController.getTotalByGroup(
+			tmp = boughtController.getTotalByUser(
 					dateFormater.format(fromDate.getTime()),
 					dateFormater.format(toDate.getTime()));
 			for(String parent[]:tmp)
 				totalsBy.add(parent);
 			for (String[] total : totalsBy) {
 				ArrayList<String[]> tmpList = new ArrayList<String[]>();
-				tmpList = boughtController.getGroupSpendingByProduct(total[0],
+				tmpList = boughtController.getUserSpendingByProduct(total[0],
 						dateFormater.format(fromDate.getTime()),
 						dateFormater.format(toDate.getTime()));
 				childTotalsBy.add(tmpList);

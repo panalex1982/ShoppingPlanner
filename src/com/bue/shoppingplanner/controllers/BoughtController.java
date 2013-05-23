@@ -15,7 +15,7 @@ import com.bue.shoppingplanner.model.Buys;
 import com.bue.shoppingplanner.model.CommercialProduct;
 import com.bue.shoppingplanner.model.DatabaseHandler;
 import com.bue.shoppingplanner.model.Product;
-import com.bue.shoppingplanner.model.ProductGroup;
+import com.bue.shoppingplanner.model.User;
 import com.bue.shoppingplanner.model.ProductKind;
 import com.bue.shoppingplanner.model.Shop;
 import com.bue.shoppingplanner.model.ShopDescription;
@@ -154,8 +154,8 @@ public class BoughtController {
 				if(productId==-1){
 					productId=product.addProduct(db);
 				}
-				ProductGroup group=new ProductGroup(element.getGroup());
-				int groupId=group.getProductGroupId(db);
+				User user=new User(element.getUser());
+				int userId=user.getUserId(db);
 				Buys buys=null;
 				//Convert Price to local currency
 				CurrencyController cController=new CurrencyController(context, element.getCurrency());
@@ -163,9 +163,9 @@ public class BoughtController {
 				if(persistType==0){
 					SimpleDateFormat s = new SimpleDateFormat("ddMMyyyyhhmmss");
 					String timestamp = s.format(new Date());
-					buys=new Buys(productId, shopId, price, element.getQuantity(), groupId, timestamp,"-1", element.getVat());
+					buys=new Buys(productId, shopId, price, element.getQuantity(), userId, timestamp,"-1", element.getVat());
 				}else if(persistType==1){
-					buys=new Buys(productId, shopId, price, element.getQuantity(), groupId, "", listName, element.getVat());
+					buys=new Buys(productId, shopId, price, element.getQuantity(), userId, "", listName, element.getVat());
 				}
 				buysId=buys.addBuys(db);//TODO: Currently this method returns the records number and not the PK of buys
 				//Make a method that checks if buys stored and then count them
@@ -209,15 +209,15 @@ public class BoughtController {
 		for(Buys item:Buys.getShoppingListItems(db, listName)){
 			ShoppingListElementHelper element=new ShoppingListElementHelper();
 			element.setChecked(true);
-			element.setPrice(item.getUnit_price());
+			element.setPrice(item.getUnitPrice());
 			element.setQuantity(item.getAmount());
 			Product product=Product.getProduct(db, item.getProduct());
 			element.setProduct(product.getName());
 			element.setBarcode(product.getBarcode());
 			CommercialProduct cmProduct=CommercialProduct.getCommercialProduct(db, product.getBarcode());
 			element.setBrand(cmProduct.getCompanyBrand());
-			ProductGroup group=ProductGroup.getProductGroup(db, item.getGroup());
-			element.setGroup(group.getName());
+			User user=User.getUser(db, item.getUser());
+			element.setUser(user.getName());
 			ProductKind kind=ProductKind.getProductKind(db, product.getKind());
 			element.setKind(kind.getName());
 			savedShoppingList.add(element);			
@@ -237,8 +237,8 @@ public class BoughtController {
 		return Buys.getShoppingListNames(db);
 	}
 	
-	public ArrayList<String[]> getTotalByGroup(String fromDate, String toDate){
-		return Buys.getTotalGroupByGroup(db, fromDate, toDate);		
+	public ArrayList<String[]> getTotalByUser(String fromDate, String toDate){
+		return Buys.getTotalGroupByUser(db, fromDate, toDate);		
 	}
 	
 	public ArrayList<String[]> getTotalByProduct(String fromDate, String toDate){
@@ -253,8 +253,8 @@ public class BoughtController {
 		return Buys.getTotalGroupByKind(db, fromDate, toDate)	;	
 	}
 	
-	public ArrayList<String[]> getGroupSpendingByProduct(String groupName, String fromDate, String toDate){
-		return Buys.getGroupSpendingByProduct(db, groupName, fromDate, toDate);
+	public ArrayList<String[]> getUserSpendingByProduct(String userName, String fromDate, String toDate){
+		return Buys.getUserSpendingByProduct(db, userName, fromDate, toDate);
 	}
 	
 	public ArrayList<String[]> getProductSpedingByShop(String productName, String fromDate, String toDate){

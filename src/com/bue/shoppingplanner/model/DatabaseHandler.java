@@ -15,13 +15,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 	// All public static variables
 	// Database Version
-	private static final int DATABASE_VERSION = 7;
+	private static final int DATABASE_VERSION = 8;
 
 	// Database Name
 	public static final String DATABASE_NAME = "shoppingPlannerDB";
 
 	// Tables name
-	public static final String TABLE_PRODUCT_GROUP = "productGroup";
+	public static final String TABLE_USER = "user";
 	public static final String TABLE_PRODUCT_KIND = "productKind";
 	public static final String TABLE_PRODUCT = "product";
 	public static final String TABLE_COMMERCIAL_PRODUCT = "commercialProduct";
@@ -35,9 +35,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	//public static final String TABLE_LIST="list";
 
 	// Column Names
-	// Product Group
-	public static final String PRODUCT_GROUP_ID = "id";
-	public static final String PRODUCT_GROUP_NAME = "name";
+	// User
+	public static final String USER_ID = "id";
+	public static final String USER_NAME = "name";
 
 	// Product Kind Table
 	public static final String PRODUCT_KIND_ID = "id";
@@ -82,7 +82,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public static final String BUYS_UNIT_PRICE = "unitPrice";
 	public static final String BUYS_AMOUNT = "amount";
 	public static final String BUYS_VAT = "vat";
-	public static final String BUYS_PRODUCT_GROUP_ID = "productGroupId";
+	public static final String BUYS_USER_ID = "productGroupId";
 	public static final String BUYS_DATE = "date";//List must not have date, but buy must have
 	public static final String BUYS_LIST_NAME="listName";//If this field is -1 means this is normal buy else means it is list
 	
@@ -107,10 +107,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	// Creating Tables
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		// Product Group
-		String CREATE_TABLE_PRODUCT_GROUP = "CREATE TABLE "
-				+ TABLE_PRODUCT_GROUP + "(" + PRODUCT_GROUP_ID
-				+ " INTEGER PRIMARY KEY AUTOINCREMENT ," + PRODUCT_GROUP_NAME
+		// User
+		String CREATE_TABLE_USER = "CREATE TABLE "
+				+ TABLE_USER + "(" + USER_ID
+				+ " INTEGER PRIMARY KEY AUTOINCREMENT ," + USER_NAME
 				+ " TEXT NOT NULL)";
 
 		// Product Kind Table
@@ -169,15 +169,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				+ " INTEGER NOT NULL," + BUYS_SHOP + " INTEGER NOT NULL,"
 				+ BUYS_UNIT_PRICE + " REAL NOT NULL, "
 				+ BUYS_AMOUNT + " INTEGER NOT NULL," + BUYS_DATE + " TIMESTAMP NOT NULL,"
-				+ BUYS_PRODUCT_GROUP_ID + " INTEGER NOT NULL,"
+				+ BUYS_USER_ID + " INTEGER NOT NULL,"
 				+ BUYS_LIST_NAME+" TEXT, "
 				+ BUYS_VAT + " REAL NOT NULL, "
 				+ "FOREIGN KEY(" + BUYS_PRODUCT + ") REFERENCES "
 				+ TABLE_PRODUCT + "(" + PRODUCT_ID + ")," + "FOREIGN KEY("
 				+ BUYS_SHOP + ") REFERENCES " + TABLE_SHOP + "(" + SHOP_ID
-				+ ")" + "FOREIGN KEY(" + BUYS_PRODUCT_GROUP_ID
-				+ ") REFERENCES " + TABLE_PRODUCT_GROUP + "("
-				+ PRODUCT_GROUP_ID + ")" + ")";
+				+ ")" + "FOREIGN KEY(" + BUYS_USER_ID
+				+ ") REFERENCES " + TABLE_USER + "("
+				+ USER_ID + ")" + ")";
 		
 		//UNKNOWN_BARCODE
 		String CREATE_TABLE_UNKNOWN_BARCODE="CREATE TABLE " + TABLE_UNKNOWN_BARCODE + "(" + UNKNOWN_BARCODE_ID
@@ -196,7 +196,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 				
 
 		// Create all tables
-		db.execSQL(CREATE_TABLE_PRODUCT_GROUP);
+		db.execSQL(CREATE_TABLE_USER);
 		db.execSQL(CREATE_TABLE_PRODUCT_KIND);
 		db.execSQL(CREATE_TABLE_COMMERCIAL_PRODUCT);
 		db.execSQL(CREATE_TABLE_PRODUCT);
@@ -213,7 +213,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		// Drop older table if existed
-		db.execSQL("DROP TABLE IF EXISTS " +TABLE_PRODUCT_GROUP);
+		db.execSQL("DROP TABLE IF EXISTS " +TABLE_USER);
 		db.execSQL("DROP TABLE IF EXISTS " +TABLE_PRODUCT_KIND);
 		db.execSQL("DROP TABLE IF EXISTS " +TABLE_COMMERCIAL_PRODUCT);
 		db.execSQL("DROP TABLE IF EXISTS " +TABLE_PRODUCT);

@@ -15,7 +15,7 @@ import com.bue.shoppingplanner.model.CommercialProduct;
 import com.bue.shoppingplanner.model.Currencies;
 import com.bue.shoppingplanner.model.DatabaseHandler;
 import com.bue.shoppingplanner.model.JsonUpdate;
-import com.bue.shoppingplanner.model.ProductGroup;
+import com.bue.shoppingplanner.model.User;
 import com.bue.shoppingplanner.model.ProductKind;
 import com.bue.shoppingplanner.model.Shop;
 import com.bue.shoppingplanner.model.ShopDescription;
@@ -109,75 +109,55 @@ public class IntroActivity extends Activity {
 		try{
 			if(ProductKind.getProductKindCount(db)<=0){
 				//Insert Groups
-				ProductGroup group=new ProductGroup();
-				group.setName("Main Need");//1
-				group.addProductGroup(db);
-				group.setName("Secondary Need");//2
-				group.addProductGroup(db);
-				group.setName("Other");//3
-				group.addProductGroup(db);
-				group.setName("Bill");//4
-				group.addProductGroup(db);
-				group.setName("Tax");//5
-				group.addProductGroup(db);
-				group.setName("Entertainment");//6
-				group.addProductGroup(db);
-				group.setName("Maintenance");//7
-				group.addProductGroup(db);
-				
+				User group=new User();
+				group.setName("Home");//1
+				group.addUser(db);
+								
 				//Insert Kinds
 				ProductKind kind=new ProductKind();
 				kind.setName("Food");//1		
 				kind.addProductKind(db);
-				kind.setName("Drinks");//2		
+				kind.setName("Drink");//2		
 				kind.addProductKind(db);
 				kind.setName("Health");//3		
 				kind.addProductKind(db);
-				kind.setName("Telecomunication");//4		
+				kind.setName("Household");//4		
 				kind.addProductKind(db);
-				kind.setName("Sports");//5		
+				kind.setName("Clothes");//5		
 				kind.addProductKind(db);
-				kind.setName("Hobbies");//6		
+				kind.setName("Entertainment");//6		
 				kind.addProductKind(db);
 				kind.setName("Technology");//7		
 				kind.addProductKind(db);
-				kind.setName("Work Equipment");//8		
+				kind.setName("Insurance");//8		
 				kind.addProductKind(db);
-				kind.setName("Games");//9		
+				kind.setName("Loan");//9		
 				kind.addProductKind(db);
 				kind.setName("Home Equipment");//10		
 				kind.addProductKind(db);
 				kind.setName("Travel");//11		
 				kind.addProductKind(db);
-				kind.setName("Household");//12		
+				kind.setName("Bills");//12		
 				kind.addProductKind(db);
-				kind.setName("Beauty/Personal Care");//13		
+				kind.setName("Personal Care");//13		
 				kind.addProductKind(db);
 				kind.setName("Children Products");//14		
 				kind.addProductKind(db);
-				kind.setName("Mobile Phone Bills");//15		
+				kind.setName("Rent");//15		
 				kind.addProductKind(db);
-				kind.setName("Phone Bills");//16		
+				kind.setName("Subscriptions");//16		
 				kind.addProductKind(db);
-				kind.setName("Energy Bills");//17		
+				kind.setName("Taxes");//17		
 				kind.addProductKind(db);
 				kind.setName("Electronics");//18		
 				kind.addProductKind(db);
-				kind.setName("Cigarettes");//19		
+				kind.setName("Tobaccos");//19		
 				kind.addProductKind(db);
-				kind.setName("Vehicles & Parts");//20		
+				kind.setName("Vehicle");//20		
 				kind.addProductKind(db);
-				kind.setName("Clothes");//21		
+				kind.setName("Pet");//21
 				kind.addProductKind(db);
-				kind.setName("Heyngine");//22		
-				kind.addProductKind(db);
-				kind.setName("Pet");//23		
-				kind.addProductKind(db);
-				kind.setName("Home Entertainment");//24		
-				kind.addProductKind(db);
-				kind.setName("Outside Entertainment");//25		
-				kind.addProductKind(db);
-				kind.setName("Other");//26		
+				kind.setName("Other");//22		
 				kind.addProductKind(db);
 				//Insert Unknown/No Specified barcode
 				CommercialProduct cp=new CommercialProduct("-1","Unknown", "Unknown");
@@ -192,14 +172,28 @@ public class IntroActivity extends Activity {
 				desc.addShopDescription(db);//2
 				desc.setName("Super Market");
 				desc.addShopDescription(db);//3
-				desc.setName("Specialized Store");
-				desc.addShopDescription(db);//4
 				desc.setName("Mini Market");
+				desc.addShopDescription(db);//4
+				desc.setName("Speciality Store");
 				desc.addShopDescription(db);//5
-				desc.setName("Official Store");
+				desc.setName("Entertainment Center");
 				desc.addShopDescription(db);//6
-				desc.setName("Other");
+				desc.setName("Medical");
 				desc.addShopDescription(db);//7
+				desc.setName("Internet Store");
+				desc.addShopDescription(db);//8
+				desc.setName("Service Station");
+				desc.addShopDescription(db);//9
+				desc.setName("Official Store");
+				desc.addShopDescription(db);//10
+				desc.setName("Bill Payment Service");
+				desc.addShopDescription(db);//11
+				desc.setName("Tax Payment Service");
+				desc.addShopDescription(db);//12
+				desc.setName("Bank");
+				desc.addShopDescription(db);//13
+				desc.setName("Other");
+				desc.addShopDescription(db);//14
 				//Insert Address
 				Address address=new Address();
 				address.setStreetName("Unknown");

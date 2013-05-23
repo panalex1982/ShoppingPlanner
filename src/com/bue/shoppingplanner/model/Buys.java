@@ -26,11 +26,11 @@ import android.database.sqlite.SQLiteDatabase;
  */
 public class Buys {
 	private int id;
-	private int product, shop, user;//User not used in first version
+	private int product, shop;
 	private double unitPrice;
 	private int amount;
 	private double vat;
-	private int group;
+	private int user;
 	private String date; 
 	private String listName;
 	
@@ -39,77 +39,46 @@ public class Buys {
 	}
 	
 	
-	public Buys(int id, int product, int shop, int user, double unitPrice,
-			int amount, int group, String date, String listName, double vat) {
+	public Buys(int id, int product, int shop, double unitPrice,
+			int amount, int user, String date, String listName, double vat) {
 		super();
 		this.id = id;
 		this.product = product;
 		this.shop = shop;
-		this.user = user;
 		this.unitPrice = unitPrice;
 		this.amount = amount;
-		this.group = group;
+		this.user = user;
 		this.date = date;
 		this.listName = listName;
 		this.vat=vat;
 	}
 
 
-	public Buys(int id, int product, int shop, int user, double unit_price, int amount, String date, int group, double vat) {
+	public Buys(int id, int product, int shop, double unit_price, int amount, String date, int user, double vat) {
 		super();
 		this.product = product;
 		this.shop = shop;
-		this.user = user;
 		this.unitPrice = unit_price;
 		this.amount = amount;
 		this.date = date;
 		this.id=id;
-		this.group=group;
+		this.user=user;
 		this.vat=vat;
 	}
 	
-	public Buys(int id, int product, int shop, double unitPrice, int amount, String date, int group, double vat) {
-		super();
-		this.id = id;
-		this.product = product;
-		this.shop = shop;
-		this.unitPrice = unitPrice;
-		this.amount = amount;
-		this.date = date;
-		this.group=group;
-		this.vat=vat;
-		user=-1;
-	}
-	
-	
-	
-	public Buys(int product, int shop, double unitPrice, int amount, int group,
+	public Buys(int product, int shop, double unitPrice, int amount, int user,
 			String date, String listName, double vat) {
 		super();
 		this.product = product;
 		this.shop = shop;
 		this.unitPrice = unitPrice;
 		this.amount = amount;
-		this.group = group;
+		this.user = user;
 		this.date = date;
 		this.vat=vat;
-		user=-1;
 		this.listName=listName;
 	}
 	
-	public Buys(int product, int shop, int user, double unitPrice, int amount,
-			int group, String date, String listName, double vat) {
-		super();
-		this.product = product;
-		this.shop = shop;
-		this.user = user;
-		this.unitPrice = unitPrice;
-		this.amount = amount;
-		this.group = group;
-		this.date = date;
-		this.listName = listName;
-		this.vat=vat;
-	}
 	public int getId() {
 		return id;
 	}
@@ -128,17 +97,11 @@ public class Buys {
 	public void setShop(int shop) {
 		this.shop = shop;
 	}
-	public int getUser() {
-		return user;
-	}
-	public void setUser(int user) {
-		this.user = user;
-	}
-	public double getUnit_price() {
+	public double getUnitPrice() {
 		return unitPrice;
 	}
-	public void setUnit_price(double unit_price) {
-		this.unitPrice = unit_price;
+	public void setUnitPrice(double unitPrice) {
+		this.unitPrice = unitPrice;
 	}
 	public int getAmount() {
 		return amount;
@@ -152,26 +115,14 @@ public class Buys {
 	public void setDate(String date) {
 		this.date = date;
 	}
-	public int getGroup() {
-		return group;
+	public int getUser() {
+		return user;
 	}
 
-	public void setGroup(int group) {
-		this.group = group;
+	public void setUser(int user) {
+		this.user = user;
 	}
 	
-	
-	
-	public double getUnitPrice() {
-		return unitPrice;
-	}
-
-
-	public void setUnitPrice(double unitPrice) {
-		this.unitPrice = unitPrice;
-	}
-
-
 	public String getListName() {
 		return listName;
 	}
@@ -197,10 +148,10 @@ public class Buys {
 		ContentValues values = new ContentValues();
 		values.put(DatabaseHandler.BUYS_PRODUCT, getProduct());
 		values.put(DatabaseHandler.BUYS_SHOP, getShop());
-		values.put(DatabaseHandler.BUYS_UNIT_PRICE, getUnit_price());
+		values.put(DatabaseHandler.BUYS_UNIT_PRICE, getUnitPrice());
 		values.put(DatabaseHandler.BUYS_AMOUNT, getAmount());
 		values.put(DatabaseHandler.BUYS_DATE, getDate());
-		values.put(DatabaseHandler.BUYS_PRODUCT_GROUP_ID, getGroup());
+		values.put(DatabaseHandler.BUYS_USER_ID, getUser());
 		values.put(DatabaseHandler.BUYS_LIST_NAME, listName);
 		values.put(DatabaseHandler.BUYS_VAT, vat);
 
@@ -215,7 +166,7 @@ public class Buys {
 
 		Cursor cursor = db.query(DatabaseHandler.TABLE_BUYS, new String[] { DatabaseHandler.BUYS_PRODUCT,
 				DatabaseHandler.BUYS_SHOP, DatabaseHandler.BUYS_UNIT_PRICE, DatabaseHandler.BUYS_AMOUNT, 
-				DatabaseHandler.BUYS_DATE, DatabaseHandler.BUYS_PRODUCT_GROUP_ID,
+				DatabaseHandler.BUYS_DATE, DatabaseHandler.BUYS_USER_ID,
 				DatabaseHandler.BUYS_VAT, }, DatabaseHandler.BUYS_ID + "=? AND "
 				+DatabaseHandler.BUYS_LIST_NAME+" = \"-1\"",
 				new String[] { String.valueOf(id) }, null, null, null, null);
@@ -261,10 +212,10 @@ public class Buys {
 				buys.setId(cursor.getInt(0));
 				buys.setProduct(cursor.getInt(1));
 				buys.setShop(cursor.getInt(2));
-				buys.setUnit_price(cursor.getDouble(3));
+				buys.setUnitPrice(cursor.getDouble(3));
 				buys.setAmount(cursor.getInt(4));
 				buys.setDate(cursor.getString(5));
-				buys.setGroup(cursor.getInt(6));
+				buys.setUser(cursor.getInt(6));
 				buys.setListName(cursor.getString(7));
 				buys.setVat(cursor.getDouble(8));
 
@@ -285,10 +236,10 @@ public class Buys {
 		ContentValues values = new ContentValues();
 		values.put(DatabaseHandler.BUYS_PRODUCT, getProduct());
 		values.put(DatabaseHandler.BUYS_SHOP, getShop());
-		values.put(DatabaseHandler.BUYS_UNIT_PRICE, getUnit_price());
+		values.put(DatabaseHandler.BUYS_UNIT_PRICE, getUnitPrice());
 		values.put(DatabaseHandler.BUYS_AMOUNT, getAmount());
 		values.put(DatabaseHandler.BUYS_DATE, getDate());
-		values.put(DatabaseHandler.BUYS_PRODUCT_GROUP_ID, getGroup());
+		values.put(DatabaseHandler.BUYS_USER_ID, getUser());
 		values.put(DatabaseHandler.BUYS_VAT, vat);
 
 		// updating row
@@ -360,19 +311,19 @@ public class Buys {
 	 * @param handler
 	 * @return
 	 */
-	public static ArrayList<String[]> getTotalGroupByGroup(DatabaseHandler handler, String fromDate, String toDate){
-		ArrayList<String[]> groupTotal=new ArrayList<String[]>();
+	public static ArrayList<String[]> getTotalGroupByUser(DatabaseHandler handler, String fromDate, String toDate){
+		ArrayList<String[]> userTotal=new ArrayList<String[]>();
 		
-		String query="SELECT b."+DatabaseHandler.PRODUCT_GROUP_NAME+", sum(a."+DatabaseHandler.BUYS_UNIT_PRICE+"*a."
+		String query="SELECT b."+DatabaseHandler.USER_NAME+", sum(a."+DatabaseHandler.BUYS_UNIT_PRICE+"*a."
 				+DatabaseHandler.BUYS_AMOUNT+") AS sumresult, "
 				+"sum(a."+DatabaseHandler.BUYS_UNIT_PRICE+" * a."
 				+DatabaseHandler.BUYS_AMOUNT+" * a."+DatabaseHandler.BUYS_VAT+") AS vatresult FROM "
-				+DatabaseHandler.TABLE_BUYS+" a, "+DatabaseHandler.TABLE_PRODUCT_GROUP+" b"
-				+" WHERE a."+DatabaseHandler.BUYS_PRODUCT_GROUP_ID+"=b."+DatabaseHandler.PRODUCT_GROUP_ID
+				+DatabaseHandler.TABLE_BUYS+" a, "+DatabaseHandler.TABLE_USER+" b"
+				+" WHERE a."+DatabaseHandler.BUYS_USER_ID+"=b."+DatabaseHandler.USER_ID
 				+" AND a."+DatabaseHandler.BUYS_LIST_NAME+" =\"-1\""
 				+" AND a."+DatabaseHandler.BUYS_DATE+" > \""+fromDate+"\""
 				+" AND a."+DatabaseHandler.BUYS_DATE+" < \""+toDate+"\""
-				+" GROUP BY b."+DatabaseHandler.PRODUCT_GROUP_NAME
+				+" GROUP BY b."+DatabaseHandler.USER_NAME
 				+" ORDER BY sumresult DESC";
 		SQLiteDatabase db = handler.getReadableDatabase();
 		Cursor cursor = db.rawQuery(query, null);
@@ -383,11 +334,11 @@ public class Buys {
 				row[2]=String.valueOf(cursor.getDouble(2));;
 				row[0] = cursor.getString(0);
 				row[1]=String.valueOf(cursor.getDouble(1));
-				groupTotal.add(row);
+				userTotal.add(row);
 			}
 		cursor.close();
 		db.close();
-		return groupTotal;
+		return userTotal;
 	}
 	
 	/*
@@ -516,8 +467,8 @@ public class Buys {
 	
 	/*
     SELECT c.name, sum(a.unitPrice*a.amount) AS sumresult
-	FROM Buys a, ProductGroup b, Product c
-	WHERE b.name="groupName" AND a.productGroupId=b.id AND a.product=c.id
+	FROM Buys a, User b, Product c
+	WHERE b.name="groupName" AND a.userId=b.id AND a.product=c.id
 	GROUP BY c.name
 	ORDER BY sumresult DESC
 	 */
@@ -526,13 +477,13 @@ public class Buys {
 	 * @param handler
 	 * @return
 	 */
-	public static ArrayList<String[]> getGroupSpendingByProduct(DatabaseHandler handler, String groupName, String fromDate, String toDate){
+	public static ArrayList<String[]> getUserSpendingByProduct(DatabaseHandler handler, String groupName, String fromDate, String toDate){
 		ArrayList<String[]> total=new ArrayList<String[]>();
 		
 		String query="SELECT c."+DatabaseHandler.PRODUCT_NAME+", sum(a."+DatabaseHandler.BUYS_UNIT_PRICE+"*a."
 				+DatabaseHandler.BUYS_AMOUNT+") AS sumresult FROM "
-				+DatabaseHandler.TABLE_BUYS+" a, "+DatabaseHandler.TABLE_PRODUCT_GROUP+" b, "+DatabaseHandler.TABLE_PRODUCT+" c"
-				+" WHERE a."+DatabaseHandler.BUYS_PRODUCT_GROUP_ID+"=b."+DatabaseHandler.PRODUCT_GROUP_ID
+				+DatabaseHandler.TABLE_BUYS+" a, "+DatabaseHandler.TABLE_USER+" b, "+DatabaseHandler.TABLE_PRODUCT+" c"
+				+" WHERE a."+DatabaseHandler.BUYS_USER_ID+"=b."+DatabaseHandler.USER_ID
 				+" AND b."+DatabaseHandler.PRODUCT_NAME+" = \""+groupName+"\" AND a."
 				+DatabaseHandler.BUYS_PRODUCT+" = c."+DatabaseHandler.PRODUCT_ID
 				+" AND a."+DatabaseHandler.BUYS_LIST_NAME+" =\"-1\""
@@ -719,10 +670,10 @@ public class Buys {
 				item.setId(cursor.getInt(0));
 				item.setProduct(cursor.getInt(1));
 				item.setShop(cursor.getInt(2));
-				item.setUnit_price(cursor.getDouble(3));
+				item.setUnitPrice(cursor.getDouble(3));
 				item.setAmount(cursor.getInt(4));
 				item.setDate(cursor.getString(5));
-				item.setGroup(cursor.getInt(6));
+				item.setUser(cursor.getInt(6));
 				item.setListName(cursor.getString(7));
 
 				// Adding item to list

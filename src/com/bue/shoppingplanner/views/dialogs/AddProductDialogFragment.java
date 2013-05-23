@@ -14,7 +14,7 @@ import com.bue.shoppingplanner.helpers.SpinnerBuilder;
 import com.bue.shoppingplanner.helpers.VatHelper;
 import com.bue.shoppingplanner.model.DatabaseHandler;
 import com.bue.shoppingplanner.model.Product;
-import com.bue.shoppingplanner.model.ProductGroup;
+import com.bue.shoppingplanner.model.User;
 import com.bue.shoppingplanner.model.ProductKind;
 
 import android.app.Activity;
@@ -94,7 +94,7 @@ public class AddProductDialogFragment extends DialogFragment {
 		
 		//Spinners initialize
 		ArrayList<CharSequence> productGroupSpinnerList=new ArrayList<CharSequence>();
-		for(ProductGroup group:ProductGroup.getAllProductGroup(db)){
+		for(User group:User.getAllUser(db)){
 			productGroupSpinnerList.add(group.getName());
 		}
 		productGroupAddDialogSpinner=SpinnerBuilder.createSpinnerFromArrayList(getActivity(),dialogMainView, R.id.productGroupAddDialogSpinner, productGroupSpinnerList, android.R.layout.simple_spinner_item,android.R.layout.simple_spinner_dropdown_item);
@@ -142,7 +142,7 @@ public class AddProductDialogFragment extends DialogFragment {
                 	listElement.setPrice(Double.parseDouble(priceAddDialogEditText.getText().toString()));
                 	listElement.setQuantity(Integer.parseInt(numberAddDialogEditText.getText().toString()));
                 	
-                	listElement.setGroup(productGroupAddDialogSpinner.getSelectedItem().toString());
+                	listElement.setUser(productGroupAddDialogSpinner.getSelectedItem().toString());
                 	listElement.setKind(productKindAddDialogSpinner.getSelectedItem().toString());
                 	listElement.setChecked(true);
                 	listElement.setBarcode("unknown");//TODO: When I add barcodes I will present

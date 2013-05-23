@@ -26,17 +26,22 @@ public class StatsCategoriesFragment extends Fragment {
 		Bundle tab4Bundle=new Bundle();
 		tab4Bundle.putInt("chosenTab", 4);
 		
+		String buyer=getResources().getString(R.string.buyer);
+		String shop=getResources().getString(R.string.shop);
+		String product=getResources().getString(R.string.product);
+		String kind=getResources().getString(R.string.product_kind);
+		
 		mTabHost = (FragmentTabHost) view.findViewById(android.R.id.tabhost);
 		
         mTabHost.setup(getActivity(), getFragmentManager(),R.id.realtabcontent);
 
-        mTabHost.addTab(mTabHost.newTabSpec("group").setIndicator("Group"),
+        mTabHost.addTab(mTabHost.newTabSpec("buyer").setIndicator(buyer),
                 StatsContentFragment.class,tab1Bundle);
-        mTabHost.addTab(mTabHost.newTabSpec("contacts").setIndicator("Product"),
+        mTabHost.addTab(mTabHost.newTabSpec("product").setIndicator(product),
         		StatsContentFragment.class, tab2Bundle);
-        mTabHost.addTab(mTabHost.newTabSpec("custom").setIndicator("Shop"),
+        mTabHost.addTab(mTabHost.newTabSpec("shop").setIndicator(shop),
         		StatsContentFragment.class, tab3Bundle);
-        mTabHost.addTab(mTabHost.newTabSpec("throttle").setIndicator("Kind"),
+        mTabHost.addTab(mTabHost.newTabSpec("kind").setIndicator(kind),
         		StatsContentFragment.class, tab4Bundle);        
         return view;
 	}

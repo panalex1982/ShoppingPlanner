@@ -128,7 +128,7 @@
 		        android:id="@+id/productGroupAddDialogTextView"
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
-		        android:text="@string/product_group"
+		        android:text="@string/buyer"
 		        android:textAppearance="?android:attr/textAppearanceSmall"
 		        android:textStyle="bold" />
 		
