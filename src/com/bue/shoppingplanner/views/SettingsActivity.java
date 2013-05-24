@@ -1,14 +1,22 @@
 package com.bue.shoppingplanner.views;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 
 import com.bue.shoppingplanner.R;
 import com.bue.shoppingplanner.controllers.CurrencyController;
 import com.bue.shoppingplanner.helpers.CurrencyHelper;
 import com.bue.shoppingplanner.helpers.VatHelper;
+import com.bue.shoppingplanner.model.DatabaseHandler;
 import com.bue.shoppingplanner.utilities.SPSharedPreferences;
 
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +24,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
@@ -26,10 +35,12 @@ import android.os.Build;
 public class SettingsActivity extends FragmentActivity {
 	
 	private Spinner currencySettingsSpinner;
-	private Button saveSettingsButton;
+	private Button saveSettingsButton,
+				saveDBButton;
 	private EditText vatStandrdSettingsEditText,
 					vatReducedSettingsEditText;
 	
+	private DatabaseHandler handler;
 	private CurrencyController cController;
 	private VatHelper vat;
 
@@ -39,16 +50,25 @@ public class SettingsActivity extends FragmentActivity {
 		setContentView(R.layout.activity_settings);
 		// Show the Up button in the action bar.
 		setupActionBar();
+		handler=new DatabaseHandler(this);
 		cController=new CurrencyController(this);
 		vat=new VatHelper(this);
 		
 		currencySettingsSpinner=(Spinner) findViewById(R.id.currencySettingsSpinner);
 		currencySettingsSpinner.setSelection(cController.getDefaultCurrencyPosition());
 		saveSettingsButton=(Button) findViewById(R.id.saveSettingsButton);
+		saveDBButton=(Button) findViewById(R.id.saveDBButton);
 		vatStandrdSettingsEditText=(EditText) findViewById(R.id.vatStandrdSettingsEditText);
 		vatReducedSettingsEditText=(EditText) findViewById(R.id.vatReducedSettingsEditText);
 		vatStandrdSettingsEditText.setText(vat.getStandardRate());
 		vatReducedSettingsEditText.setText(vat.getReducedRate());
+		
+		saveDBButton.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+					exportDB();
+			}
+		});
 		
 		saveSettingsButton.setOnClickListener(new OnClickListener(){
 			@Override
@@ -59,6 +79,8 @@ public class SettingsActivity extends FragmentActivity {
 				
 			}
 		});
+		
+		
 	}
 
 	/**
@@ -94,5 +116,39 @@ public class SettingsActivity extends FragmentActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	//exporting database 
+    private void exportDB() {
+        // TODO Auto-generated method stub
+
+        try {
+            File sd = Environment.getExternalStorageDirectory();
+            File data = Environment.getDataDirectory();
+
+            Log.d("Path SD: ",sd.getAbsolutePath());
+            if (sd.canWrite()) {
+            	Log.d("Path SD(2): ",sd.getAbsolutePath());
+                String  currentDBPath= "//data//" + "com.bue.shoppingplanner"
+                        + "//databases//" + "shoppingPlannerDB";
+                String backupDBPath  = "//ShoppingPlaner//DatabaseName.db";
+                File currentDB = new File(data, currentDBPath);
+                File backupDB = new File(sd, backupDBPath);
+
+                FileChannel src = new FileInputStream(currentDB).getChannel();
+                FileChannel dst = new FileOutputStream(backupDB).getChannel();
+                dst.transferFrom(src, 0, src.size());
+                src.close();
+                dst.close();
+                Toast.makeText(getBaseContext(), backupDB.toString(),
+                        Toast.LENGTH_LONG).show();
+
+            }
+        } catch (Exception e) {
+
+            Toast.makeText(getBaseContext(), e.toString(), Toast.LENGTH_LONG)
+                    .show();
+
+        }
+    }
 
 }

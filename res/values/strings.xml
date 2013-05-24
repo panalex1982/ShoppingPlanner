@@ -552,5 +552,6 @@
     <string name="vat_percent">VAT (%)</string>
     <string name="total_vat_payments">VAT Payments: </string>
     <string name="buyer">Buyer</string>
+    <string name="save_db">Save Database</string>
 
 </resources>
