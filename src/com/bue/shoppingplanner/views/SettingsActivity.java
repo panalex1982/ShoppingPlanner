@@ -13,6 +13,7 @@ import com.bue.shoppingplanner.helpers.CurrencyHelper;
 import com.bue.shoppingplanner.helpers.VatHelper;
 import com.bue.shoppingplanner.model.DatabaseHandler;
 import com.bue.shoppingplanner.utilities.SPSharedPreferences;
+import com.bue.shoppingplanner.utilities.fileselector.FileSelectorActivity;
 
 import android.os.Bundle;
 import android.os.Environment;
@@ -28,6 +29,7 @@ import android.widget.Toast;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Build;
@@ -66,7 +68,8 @@ public class SettingsActivity extends FragmentActivity {
 		saveDBButton.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-					exportDB();
+					//exportDB();
+				startActivity(new Intent(SettingsActivity.this,FileSelectorActivity.class));
 			}
 		});
 		
