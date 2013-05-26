@@ -18,10 +18,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
-	
-	private static String DB_FILEPATH = "/data/data/com.bue.shoppingplanner/" +
-			"databases/shoppingPlannerDB.db";
-
 	// All public static variables
 	// Database Version
 	private static final int DATABASE_VERSION = 8;
@@ -237,26 +233,4 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 		// Create tables again
 		onCreate(db);
 	}
-	
-	/**
-	 * Copies the database file at the specified location over the current
-	 * internal application database.
-	 * */
-	public boolean importDatabase(String dbPath) throws IOException {
-
-	    // Close the SQLiteOpenHelper so it will commit the created empty
-	    // database to internal storage.
-	   // close();
-	    File newDb = new File(DB_FILEPATH);
-	    File oldDb = new File(dbPath);
-	    if (newDb.exists()) {
-	        SerializeObject.copyFile(new FileInputStream(newDb), new FileOutputStream(oldDb));
-	        // Access the copied database so SQLiteHelper will cache it and mark
-	        // it as created.
-	        getWritableDatabase().close();
-	        return true;
-	    }
-	    return false;
-	}
-
 }

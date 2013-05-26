@@ -73,6 +73,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bue.shoppingplanner.views.MainMenuActivity" />
         </activity>
+        <activity
+            android:name="com.bue.shoppingplanner.utilities.fileselector.FileSelectorActivity"
+            android:label="@string/select_file"
+            android:parentActivityName="com.bue.shoppingplanner.views.SettingsActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bue.shoppingplanner.views.SettingsActivity" />
+        </activity>
     </application>
 
 </manifest>

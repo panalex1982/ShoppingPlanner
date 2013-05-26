@@ -77,7 +77,7 @@ public class FileSelector {
 		mContext = context;
 		mOnHandleFileListener = onHandleFileListener;
 
-		final File sdCard = Environment.getExternalStorageDirectory();
+		final File sdCard = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
 		if (sdCard.canRead()) {
 			mCurrentLocation = sdCard;
 		} else {

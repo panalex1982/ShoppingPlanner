@@ -1,15 +1,18 @@
 package com.bue.shoppingplanner.utilities.fileselector;
 
 import com.bue.shoppingplanner.R;
+import com.bue.shoppingplanner.utilities.SerializeObject;
+import com.bue.shoppingplanner.views.SettingsActivity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class FileSelectorActivity extends Activity {
+public class FileSelectorActivity extends FragmentActivity {
 
 	private Button mLoadButton;
 
@@ -44,13 +47,15 @@ public class FileSelectorActivity extends Activity {
 	OnHandleFileListener mLoadFileListener = new OnHandleFileListener() {
 		@Override
 		public void handleFile(final String filePath) {
+			SerializeObject.importDB(filePath, getBaseContext());
 			Toast.makeText(FileSelectorActivity.this, "Load: " + filePath, Toast.LENGTH_SHORT).show();
 		}
 	};
 
 	OnHandleFileListener mSaveFileListener = new OnHandleFileListener() {
 		@Override
-		public void handleFile(final String filePath) {
+		public void handleFile(final String filePath) {//TODO: create file
+			SerializeObject.exportDB(filePath, getBaseContext());
 			Toast.makeText(FileSelectorActivity.this, "Save: " + filePath, Toast.LENGTH_SHORT).show();
 		}
 	};

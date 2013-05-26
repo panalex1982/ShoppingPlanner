@@ -29,6 +29,7 @@ import android.widget.Toast;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -119,39 +120,5 @@ public class SettingsActivity extends FragmentActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
-	//exporting database 
-    private void exportDB() {
-        // TODO Auto-generated method stub
-
-        try {
-            File sd = Environment.getExternalStorageDirectory();
-            File data = Environment.getDataDirectory();
-
-            Log.d("Path SD: ",sd.getAbsolutePath());
-            if (sd.canWrite()) {
-            	Log.d("Path SD(2): ",sd.getAbsolutePath());
-                String  currentDBPath= "//data//" + "com.bue.shoppingplanner"
-                        + "//databases//" + "shoppingPlannerDB";
-                String backupDBPath  = "//ShoppingPlaner//DatabaseName.db";
-                File currentDB = new File(data, currentDBPath);
-                File backupDB = new File(sd, backupDBPath);
-
-                FileChannel src = new FileInputStream(currentDB).getChannel();
-                FileChannel dst = new FileOutputStream(backupDB).getChannel();
-                dst.transferFrom(src, 0, src.size());
-                src.close();
-                dst.close();
-                Toast.makeText(getBaseContext(), backupDB.toString(),
-                        Toast.LENGTH_LONG).show();
-
-            }
-        } catch (Exception e) {
-
-            Toast.makeText(getBaseContext(), e.toString(), Toast.LENGTH_LONG)
-                    .show();
-
-        }
-    }
 
 }
