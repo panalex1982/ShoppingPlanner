@@ -277,5 +277,17 @@ public class BoughtController {
 		Buys.deleteShoppingList(db, listName);
 	}
 	
+	public ArrayList<CommercialProduct> getCommercialProductByProduct(String productName){
+		return CommercialProduct.getCommercialProductByProduct(db, productName);
+	}
+	
+	public Product getProduct(String productName){
+		return Product.getProduct(db, productName);
+	}
+	
+	public double getLastPrice(int productId){
+		Buys lastBought=Buys.getLastBought(db, productId);
+		return lastBought.getUnitPrice();
+	}
 	
 }

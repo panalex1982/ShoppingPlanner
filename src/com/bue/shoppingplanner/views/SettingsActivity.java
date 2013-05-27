@@ -1,23 +1,10 @@
 package com.bue.shoppingplanner.views;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.channels.FileChannel;
-import java.util.ArrayList;
-
-import com.bue.shoppingplanner.R;
-import com.bue.shoppingplanner.controllers.CurrencyController;
-import com.bue.shoppingplanner.helpers.CurrencyHelper;
-import com.bue.shoppingplanner.helpers.VatHelper;
-import com.bue.shoppingplanner.model.DatabaseHandler;
-import com.bue.shoppingplanner.utilities.SPSharedPreferences;
-import com.bue.shoppingplanner.utilities.fileselector.FileSelectorActivity;
-
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.util.Log;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,26 +13,29 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.NavUtils;
-import android.annotation.TargetApi;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.os.Build;
+
+import com.bue.shoppingplanner.R;
+import com.bue.shoppingplanner.controllers.CurrencyController;
+import com.bue.shoppingplanner.helpers.VatHelper;
+import com.bue.shoppingplanner.utilities.SerializeObject;
+import com.bue.shoppingplanner.utilities.fileselector.FileOperation;
+import com.bue.shoppingplanner.utilities.fileselector.FileSelector;
+import com.bue.shoppingplanner.utilities.fileselector.OnHandleFileListener;
 
 public class SettingsActivity extends FragmentActivity {
 	
 	private Spinner currencySettingsSpinner;
 	private Button saveSettingsButton,
-				saveDBButton;
+				saveDBButton,
+				loadDBButton;
 	private EditText vatStandrdSettingsEditText,
 					vatReducedSettingsEditText;
 	
-	private DatabaseHandler handler;
 	private CurrencyController cController;
 	private VatHelper vat;
+	
+	/** Sample filters array */
+	final String[] mFileFilter = { "*.db"};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +43,6 @@ public class SettingsActivity extends FragmentActivity {
 		setContentView(R.layout.activity_settings);
 		// Show the Up button in the action bar.
 		setupActionBar();
-		handler=new DatabaseHandler(this);
 		cController=new CurrencyController(this);
 		vat=new VatHelper(this);
 		
@@ -61,16 +50,23 @@ public class SettingsActivity extends FragmentActivity {
 		currencySettingsSpinner.setSelection(cController.getDefaultCurrencyPosition());
 		saveSettingsButton=(Button) findViewById(R.id.saveSettingsButton);
 		saveDBButton=(Button) findViewById(R.id.saveDBButton);
+		loadDBButton=(Button) findViewById(R.id.loadDBButton);
 		vatStandrdSettingsEditText=(EditText) findViewById(R.id.vatStandrdSettingsEditText);
 		vatReducedSettingsEditText=(EditText) findViewById(R.id.vatReducedSettingsEditText);
 		vatStandrdSettingsEditText.setText(vat.getStandardRate());
 		vatReducedSettingsEditText.setText(vat.getReducedRate());
 		
-		saveDBButton.setOnClickListener(new OnClickListener(){
+		saveDBButton.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View v) {
-					//exportDB();
-				startActivity(new Intent(SettingsActivity.this,FileSelectorActivity.class));
+			public void onClick(final View v) {
+				new FileSelector(SettingsActivity.this, FileOperation.SAVE, mSaveFileListener, mFileFilter).show();
+			}
+		});
+		
+		loadDBButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(final View v) {
+				new FileSelector(SettingsActivity.this, FileOperation.LOAD, mLoadFileListener, mFileFilter).show();
 			}
 		});
 		
@@ -120,5 +116,21 @@ public class SettingsActivity extends FragmentActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	OnHandleFileListener mLoadFileListener = new OnHandleFileListener() {
+		@Override
+		public void handleFile(final String filePath) {
+			SerializeObject.importDB(filePath, getBaseContext());
+			Toast.makeText(SettingsActivity.this, "Load: " + filePath, Toast.LENGTH_SHORT).show();
+		}
+	};
+
+	OnHandleFileListener mSaveFileListener = new OnHandleFileListener() {
+		@Override
+		public void handleFile(final String filePath) {//TODO: create file
+			SerializeObject.exportDB(filePath, getBaseContext());
+			Toast.makeText(SettingsActivity.this, "Save: " + filePath, Toast.LENGTH_SHORT).show();
+		}
+	};
 
 }

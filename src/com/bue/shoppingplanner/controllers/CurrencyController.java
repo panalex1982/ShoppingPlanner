@@ -2,6 +2,8 @@ package com.bue.shoppingplanner.controllers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Currency;
+import java.util.Locale;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -62,6 +64,14 @@ public class CurrencyController implements SPSharedPreferences {
 				defaultCurrencyPosition=currencies.indexOf(helper);
 			}
 		}
+		edit.putString(SET_DEF_CURRENCY, defaultCurrency);
+		edit.commit();
+	}
+	
+	public void setDefaultCurrencyFromLocale(Locale locale){
+		Editor edit=settings.edit();	
+		Currency currency=Currency.getInstance(locale);
+		defaultCurrency=currency.getCurrencyCode();
 		edit.putString(SET_DEF_CURRENCY, defaultCurrency);
 		edit.commit();
 	}

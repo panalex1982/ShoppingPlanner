@@ -177,4 +177,30 @@ public class CommercialProduct {
 		return commercialProductId;
 	}
 	
+	/**
+	 * Search for Commercial Products that a specific product might have 
+	 * eg. Product CPU might have many commercial products: cpu 2400MHz 2 cores A, 
+	 * 														cpu 2400MHz 2 cores B etc...
+	 * @param db
+	 * @param productName
+	 * @return
+	 */
+	public static ArrayList<CommercialProduct> getCommercialProductByProduct(DatabaseHandler db, String productName){
+		ArrayList<CommercialProduct> cProducts=new ArrayList<CommercialProduct>();
+		SQLiteDatabase readable=db.getReadableDatabase();
+		String query="SELECT A.* FROM "+DatabaseHandler.TABLE_COMMERCIAL_PRODUCT+" A, "
+						+ DatabaseHandler.TABLE_PRODUCT+" B WHERE A."+DatabaseHandler.COMMERCIAL_PRODUCT_BARCODE
+						+" = B."+DatabaseHandler.PRODUCT_BARCODE+" AND B."+DatabaseHandler.PRODUCT_NAME
+						+" = \""+productName+"\"";
+		Cursor cursor =readable.rawQuery(query,null);
+		if (cursor != null)
+            	while(cursor.moveToNext()){
+            		CommercialProduct product=new CommercialProduct(cursor.getString(0),cursor.getString(1),cursor.getString(2));
+            		cProducts.add(product);
+            	}
+		cursor.close();
+		readable.close();
+		return cProducts;
+	}
+	
 }

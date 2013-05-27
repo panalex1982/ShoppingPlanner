@@ -12,6 +12,7 @@ import com.bue.shoppingplanner.controllers.CurrencyController;
 import com.bue.shoppingplanner.helpers.ShoppingListElementHelper;
 import com.bue.shoppingplanner.helpers.SpinnerBuilder;
 import com.bue.shoppingplanner.helpers.VatHelper;
+import com.bue.shoppingplanner.model.CommercialProduct;
 import com.bue.shoppingplanner.model.DatabaseHandler;
 import com.bue.shoppingplanner.model.Product;
 import com.bue.shoppingplanner.model.User;
@@ -42,22 +43,28 @@ public class AddProductDialogFragment extends DialogFragment {
     private AddProductDialogListener mListener;
 	
 	private AutoCompleteTextView productAddDialogEditText,
-								vatAddDialogAutoCompleteTextView;
-	
-	private EditText brandAddDialogEditText;
+								brandAddDialogEditText;
 	private EditText priceAddDialogEditText;
-	private EditText numberAddDialogEditText;
+	private EditText numberAddDialogEditText,
+					vatAddDialogAutoCompleteTextView;
 	
 	private ImageButton numberAddAddDialogImageButton;
 	private ImageButton numberRemoveAddDialogImageButton;
 	
 	private Spinner productGroupAddDialogSpinner;
 	private Spinner productKindAddDialogSpinner;
-	private Spinner currencyAddDialogSpinner;
+	private Spinner currencyAddDialogSpinner,
+					vatAddDialogSpinner;
+	
+	private ArrayList<CommercialProduct> commercialProductsArrayList;
 	
 	private ShoppingListElementHelper listElement;
 	
 	private VatHelper vat;
+	
+	private BoughtController bController;
+	
+	
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -71,26 +78,28 @@ public class AddProductDialogFragment extends DialogFragment {
 		View dialogMainView=inflater.inflate(R.layout.add_product_dialog, null);
 		//EditTexts initialize
 		productAddDialogEditText=(AutoCompleteTextView) dialogMainView.findViewById(R.id.productAddDialogEditText);
-		vatAddDialogAutoCompleteTextView=(AutoCompleteTextView) dialogMainView.findViewById(R.id.vatAddDialogAutoCompleteTextView);
+		vatAddDialogAutoCompleteTextView=(EditText) dialogMainView.findViewById(R.id.vatAddDialogAutoCompleteTextView);
 		
-		brandAddDialogEditText=(EditText) dialogMainView.findViewById(R.id.brandAddDialogEditText);
+		brandAddDialogEditText=(AutoCompleteTextView) dialogMainView.findViewById(R.id.brandAddDialogEditText);
 		priceAddDialogEditText=(EditText) dialogMainView.findViewById(R.id.priceAddDialogEditText);
 		numberAddDialogEditText=(EditText) dialogMainView.findViewById(R.id.numberAddDialogEditText);
 			
 		
 		//Add Adapters to auto-complete text views
-		BoughtController bcontroller=new BoughtController(getActivity());
+		bController=new BoughtController(getActivity());
 		ArrayList<String> productNames=new ArrayList<String>();
-		for(Product product:bcontroller.getProductList()){
+		for(Product product:bController.getProductList()){
 			productNames.add(product.getName());
 		}
 		ArrayAdapter productAdapter=new ArrayAdapter(getActivity(),android.R.layout.simple_dropdown_item_1line, productNames);
 		productAddDialogEditText.setAdapter(productAdapter);
 		
-		//Vat Adapter
-		ArrayAdapter vatAdapter=new ArrayAdapter(getActivity(),android.R.layout.simple_dropdown_item_1line, vat.getVatRates());
-		vatAddDialogAutoCompleteTextView.setAdapter(vatAdapter);
-		vatAddDialogAutoCompleteTextView.setSelection(0);
+		//Commercial product
+		commercialProductsArrayList=bController.getCommercialProductByProduct(productAddDialogEditText.getText().toString());		
+		ArrayAdapter commercialProductAdapter=new ArrayAdapter(getActivity(),android.R.layout.simple_dropdown_item_1line, commercialProductsArrayList);
+		brandAddDialogEditText.setAdapter(commercialProductAdapter);
+		
+		
 		
 		//Spinners initialize
 		ArrayList<CharSequence> productGroupSpinnerList=new ArrayList<CharSequence>();
@@ -106,6 +115,11 @@ public class AddProductDialogFragment extends DialogFragment {
 		currencyAddDialogSpinner=(Spinner)dialogMainView.findViewById(R.id.currencyAddDialogSpinner);
 		CurrencyController controller=new CurrencyController(getActivity());
 		currencyAddDialogSpinner.setSelection(controller.getDefaultCurrencyPosition());
+		
+		//Vat Adapter
+		vatAddDialogSpinner=(Spinner)dialogMainView.findViewById(R.id.vatAddDialogSpinner);
+		ArrayAdapter vatAdapter=new ArrayAdapter(getActivity(),android.R.layout.simple_dropdown_item_1line, vat.getVatRates());
+		vatAddDialogSpinner.setAdapter(vatAdapter);		
 		
 		//ImageButtons initialize
 		numberAddAddDialogImageButton=(ImageButton) dialogMainView.findViewById(R.id.numberAddAddDialogImageButton);
@@ -166,6 +180,23 @@ public class AddProductDialogFragment extends DialogFragment {
 	
 	
 	
+	protected void updateProductDialog() {
+		Product selectedProduct=bController.getProduct(productAddDialogEditText.getText().toString());
+		productKindAddDialogSpinner.setSelection(selectedProduct.getKind()-1);
+		priceAddDialogEditText.setText(String.valueOf(bController.getLastPrice(selectedProduct.getId())));
+		
+	}
+
+
+
+	protected void updateCommercialProductsList() {
+		commercialProductsArrayList.clear();
+		commercialProductsArrayList.addAll(bController.getCommercialProductByProduct(productAddDialogEditText.getText().toString()));
+		
+	}
+
+
+
 	protected void calculateNewQuantity(int i) {
 		if(numberAddDialogEditText.getText().toString().equalsIgnoreCase("")){
 			numberAddDialogEditText.setText(Integer.toString(0));
@@ -227,6 +258,7 @@ public class AddProductDialogFragment extends DialogFragment {
 				}
 			}
 		});
+    	
     	// currencyAddDialogSpinner
     	currencyAddDialogSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
 
@@ -245,6 +277,34 @@ public class AddProductDialogFragment extends DialogFragment {
 			}
     		
     	});
+    	
+    	// product input if exist
+    	productAddDialogEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				updateCommercialProductsList();
+				updateProductDialog();
+			}
+		});
+    	
+    	// Change vat according to Spinner
+    	vatAddDialogSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int position, long arg3) {
+				vatAddDialogAutoCompleteTextView.setText(vat.getVatRates().get(position));
+				
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+    		
+		});
     }
     
     private String formatCurrecy(String price, String currencyIso){

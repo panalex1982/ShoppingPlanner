@@ -54,11 +54,31 @@
         android:ems="10"
         android:inputType="number" />
 
-    <Button
-        android:id="@+id/saveDBButton"
+    <TextView
+        android:id="@+id/databaseSettingsTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/save_db" />
+        android:text="@string/database"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/loadDBButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/import_db" />
+
+        <Button
+            android:id="@+id/saveDBButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/export" />
+        
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

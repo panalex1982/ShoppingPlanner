@@ -1,14 +1,18 @@
 package com.bue.shoppingplanner;
 
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 import com.bue.shoppingplanner.R;
+import com.bue.shoppingplanner.controllers.CurrencyController;
 import com.bue.shoppingplanner.helpers.ExchangesAsyncTask;
 import com.bue.shoppingplanner.model.Address;
 import com.bue.shoppingplanner.model.CommercialProduct;
@@ -21,13 +25,20 @@ import com.bue.shoppingplanner.model.Shop;
 import com.bue.shoppingplanner.model.ShopDescription;
 import com.bue.shoppingplanner.model.UnknownBarcode;
 import com.bue.shoppingplanner.views.MainMenuActivity;
+import com.bue.shoppingplanner.views.SettingsActivity;
 
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MotionEvent;
+import android.widget.Toast;
 
 public class IntroActivity extends Activity {
 	
@@ -41,7 +52,6 @@ public class IntroActivity extends Activity {
 		db=new DatabaseHandler(this);
 		initializeDatabase();
 		lastUpdate=JsonUpdate.getJsonUpdate(db);
-		
 		String updateDateString=lastUpdate.getDate();
 		SimpleDateFormat format=new SimpleDateFormat("ddMMyyyyhhmmss");
 		Date updateDate;
@@ -210,6 +220,7 @@ public class IntroActivity extends Activity {
 				shop.addShop(db);//1
 				//Currencies
 				initializeCurrencies();
+				initializeDefaultCurrency();
 			}
 		}catch(Exception ex){
 			Log.d("Initialize Exception", ex.toString());
@@ -245,6 +256,18 @@ public class IntroActivity extends Activity {
 		long mils2=cal2.getTimeInMillis();
 		days=(mils2-mils1)/(1000*60*60*24);
 		return days;
+	}
+	
+	private void initializeDefaultCurrency(){
+		Locale locale;
+		TelephonyManager tm = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+		String countryCode = tm.getSimCountryIso();
+		if(countryCode!="")
+			locale=new Locale(countryCode,countryCode);
+		else
+			locale=getResources().getConfiguration().locale;
+		CurrencyController currencyController=new CurrencyController(this);
+		currencyController.setDefaultCurrencyFromLocale(locale);
 	}
 
 }

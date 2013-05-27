@@ -182,6 +182,27 @@ public class Buys {
 		return buys;
 	}
 	
+	public static Buys getLastBought(DatabaseHandler handler, int productId) {
+		SQLiteDatabase db = handler.getReadableDatabase();
+		Cursor cursor = db.query(DatabaseHandler.TABLE_BUYS, new String[] { DatabaseHandler.BUYS_USER_ID,
+				DatabaseHandler.BUYS_SHOP, DatabaseHandler.BUYS_UNIT_PRICE, DatabaseHandler.BUYS_AMOUNT, 
+				DatabaseHandler.BUYS_DATE, DatabaseHandler.BUYS_PRODUCT,
+				DatabaseHandler.BUYS_VAT, }, DatabaseHandler.BUYS_ID + "=? AND "
+				+DatabaseHandler.BUYS_LIST_NAME+" = \"-1\"",
+				new String[] { String.valueOf(productId) }, null, null, null, null);
+		Buys buys = new Buys();
+		if (cursor != null)
+			if(cursor.moveToLast()){
+				buys = new Buys(cursor.getInt(0), productId, cursor.getInt(1),
+						cursor.getDouble(2), cursor.getInt(3), cursor.getString(4),
+						cursor.getInt(5),cursor.getDouble(6));
+			}
+		cursor.close();
+		db.close();
+
+		return buys;
+	}
+	
 	
 	/**
 	 * Getting All Buys.

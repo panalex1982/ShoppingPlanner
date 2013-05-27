@@ -552,7 +552,7 @@
     <string name="vat_percent">VAT (%)</string>
     <string name="total_vat_payments">VAT Payments: </string>
     <string name="buyer">Buyer</string>
-    <string name="save_db">Save Database</string>
+    <string name="export">Export</string>
     <string name="load">Load</string>
     <string name="cancel">Cancel</string>
     <string name="enter_file_name">Enter file name</string>
@@ -561,5 +561,7 @@
     <string name="folder_created">Folder created</string>
     <string name="folder_error">Folder creation error</string>
     <string name="select_file">Select File</string>
+    <string name="import_db">Import</string>
+    <string name="database">Database</string>
 
 </resources>

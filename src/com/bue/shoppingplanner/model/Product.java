@@ -107,6 +107,24 @@ public class Product {
 
 		return product;
 	}
+	
+	public static Product getProduct(DatabaseHandler handler, String productName) {
+		SQLiteDatabase db = handler.getReadableDatabase();
+
+		Cursor cursor = db.query(DatabaseHandler.TABLE_PRODUCT, new String[] { DatabaseHandler.PRODUCT_ID,
+				DatabaseHandler.PRODUCT_BARCODE, DatabaseHandler.PRODUCT_KIND, }, DatabaseHandler.PRODUCT_NAME + "=?",
+				new String[] { productName }, null, null, null, null);
+		Product product=new Product();
+		if (cursor != null)
+			if(cursor.moveToFirst()){
+		 product = new Product(cursor.getInt(0), productName,
+				cursor.getString(1), cursor.getInt(2));
+			}
+		cursor.close();
+		db.close();
+
+		return product;
+	}
 
 	// Getting All Product
 	public static List<Product> getAllProduct(DatabaseHandler handler) {
