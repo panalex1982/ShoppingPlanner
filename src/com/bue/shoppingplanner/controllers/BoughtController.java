@@ -281,13 +281,31 @@ public class BoughtController {
 		return CommercialProduct.getCommercialProductByProduct(db, productName);
 	}
 	
+	public ArrayList<String> getCommercialProductNamesByProduct(String productName){
+		ArrayList<String> names=new ArrayList<String>();
+		ArrayList<CommercialProduct> cProducts=CommercialProduct.getCommercialProductByProduct(db, productName);
+		for(CommercialProduct cProduct:cProducts){
+			names.add(cProduct.getCompanyBrand());
+		}		
+		return names;
+	}
+	
 	public Product getProduct(String productName){
 		return Product.getProduct(db, productName);
 	}
 	
-	public double getLastPrice(int productId){
+	/**
+	 * Returns double array with 2 items: double[0] is the price
+	 * 									double[1] is the vat rate
+	 * @param productId
+	 * @return
+	 */
+	public String[] getLastPriceAndVat(int productId){
 		Buys lastBought=Buys.getLastBought(db, productId);
-		return lastBought.getUnitPrice();
-	}
+		String[] price=new String[2];
+		price[0]=String.valueOf(lastBought.getUnitPrice());
+		price[1]=String.valueOf((int)(lastBought.getVat()*100));
+		return price;
+	}	
 	
 }

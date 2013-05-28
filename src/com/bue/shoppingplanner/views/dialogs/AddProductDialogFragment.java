@@ -56,7 +56,7 @@ public class AddProductDialogFragment extends DialogFragment {
 	private Spinner currencyAddDialogSpinner,
 					vatAddDialogSpinner;
 	
-	private ArrayList<CommercialProduct> commercialProductsArrayList;
+	private ArrayList<String> commercialProductsArrayList;
 	
 	private ShoppingListElementHelper listElement;
 	
@@ -95,7 +95,7 @@ public class AddProductDialogFragment extends DialogFragment {
 		productAddDialogEditText.setAdapter(productAdapter);
 		
 		//Commercial product
-		commercialProductsArrayList=bController.getCommercialProductByProduct(productAddDialogEditText.getText().toString());		
+		commercialProductsArrayList=bController.getCommercialProductNamesByProduct(productAddDialogEditText.getText().toString());		
 		ArrayAdapter commercialProductAdapter=new ArrayAdapter(getActivity(),android.R.layout.simple_dropdown_item_1line, commercialProductsArrayList);
 		brandAddDialogEditText.setAdapter(commercialProductAdapter);
 		
@@ -183,7 +183,13 @@ public class AddProductDialogFragment extends DialogFragment {
 	protected void updateProductDialog() {
 		Product selectedProduct=bController.getProduct(productAddDialogEditText.getText().toString());
 		productKindAddDialogSpinner.setSelection(selectedProduct.getKind()-1);
-		priceAddDialogEditText.setText(String.valueOf(bController.getLastPrice(selectedProduct.getId())));
+		String[] price=bController.getLastPriceAndVat(selectedProduct.getId());
+		priceAddDialogEditText.setText(price[0]);
+		int vatAddDialogSpinnerIndex=vat.getVatRates().indexOf(price[1]);
+		if(vatAddDialogSpinnerIndex>=0)
+			vatAddDialogSpinner.setSelection(vatAddDialogSpinnerIndex);
+		else
+			vatAddDialogAutoCompleteTextView.setText(price[1]);
 		
 	}
 
@@ -191,7 +197,7 @@ public class AddProductDialogFragment extends DialogFragment {
 
 	protected void updateCommercialProductsList() {
 		commercialProductsArrayList.clear();
-		commercialProductsArrayList.addAll(bController.getCommercialProductByProduct(productAddDialogEditText.getText().toString()));
+		commercialProductsArrayList.addAll(bController.getCommercialProductNamesByProduct(productAddDialogEditText.getText().toString()));
 		
 	}
 
