@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.support.v4.app.DialogFragment;
@@ -118,7 +119,7 @@ public class MainMenuActivity extends FragmentActivity {
 		spendingMainTextView.setText(Double.toString(bController.getTotalSpending()));
 		
 		totalVatTextView=(TextView) findViewById(R.id.totalVatTextView);
-		totalVatTextView.setText(Double.toString(bController.getTotalVatPayment()));
+		totalVatTextView.setText(Double.toString(bController.getTotalVatPayment()));		
         
 	}
 

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +25,8 @@ import com.bue.shoppingplanner.model.ProductKind;
 import com.bue.shoppingplanner.model.Shop;
 import com.bue.shoppingplanner.model.ShopDescription;
 import com.bue.shoppingplanner.model.UnknownBarcode;
+import com.bue.shoppingplanner.utilities.plotformats.WeeklyXAxisFormat;
+import com.bue.shoppingplanner.utilities.plotformats.YearlyXAxisFormat;
 import com.bue.shoppingplanner.views.MainMenuActivity;
 import com.bue.shoppingplanner.views.SettingsActivity;
 
@@ -34,11 +37,18 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MotionEvent;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.Toast;
+
+import com.androidplot.xy.SimpleXYSeries;
+import com.androidplot.series.XYSeries;
+import com.androidplot.xy.*;
 
 public class IntroActivity extends Activity {
 	
@@ -49,6 +59,7 @@ public class IntroActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_intro);
+		createPlot();
 		db=new DatabaseHandler(this);
 		initializeDatabase();
 		lastUpdate=JsonUpdate.getJsonUpdate(db);
@@ -268,6 +279,47 @@ public class IntroActivity extends Activity {
 			locale=getResources().getConfiguration().locale;
 		CurrencyController currencyController=new CurrencyController(this);
 		currencyController.setDefaultCurrencyFromLocale(locale);
+	}
+	
+	public void createPlot(){
+		XYPlot mySimpleXYPlot;
+		 // initialize our XYPlot reference:
+        mySimpleXYPlot = (XYPlot) findViewById(R.id.mySimpleXYPlot);
+ 
+        // Create a couple arrays of y-values to plot:
+        Number[] series1Numbers = {1, 8, 5, 2, 7, 4};
+        Number[] series2Numbers = {4, 6, 3, 8, 2, 10};
+        Number[] days={1433451600000l,1401915600000l,1370379600000l,1338843600000l,1307221200000l,1275685200000l};
+ 
+        // Turn the above arrays into XYSeries':
+        XYSeries series1 = new SimpleXYSeries(
+                Arrays.asList(days),          // SimpleXYSeries takes a List so turn our array into a List
+                Arrays.asList(series1Numbers), // Y_VALS_ONLY means use the element index as the x value
+                "Agourakia");                             // Set the display title of the series
+ 
+        // same as above
+        XYSeries series2 = new SimpleXYSeries(Arrays.asList(days),Arrays.asList(series2Numbers), "Fasolakia");
+ 
+        // Create a formatter to use for drawing a series using LineAndPointRenderer:
+        LineAndPointFormatter series1Format = new LineAndPointFormatter(
+                Color.rgb(0, 200, 0),                   // line color
+                Color.rgb(0, 100, 0),                   // point color
+                null);                                  // fill color (none)
+ 
+        // add a new series' to the xyplot:
+        mySimpleXYPlot.addSeries(series1, series1Format);
+ 
+        // same as above:
+        mySimpleXYPlot.addSeries(series2,
+                new LineAndPointFormatter(Color.rgb(0, 0, 200), Color.rgb(0, 0, 100), null));
+        
+        // reduce the number of range labels
+        mySimpleXYPlot.setTicksPerRangeLabel(3);
+        mySimpleXYPlot.setDomainValueFormat(new WeeklyXAxisFormat());
+ 
+        // by default, AndroidPlot displays developer guides to aid in laying out your plot.
+        // To get rid of them call disableAllMarkup():
+        //mySimpleXYPlot.disableAllMarkup();
 	}
 
 }
