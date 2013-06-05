@@ -1,6 +1,7 @@
 package com.bue.shoppingplanner.views.fragments;
 
 import com.bue.shoppingplanner.R;
+import com.bue.shoppingplanner.StatsMainFragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -36,7 +37,7 @@ public class StatsCategoriesFragment extends Fragment {
         mTabHost.setup(getActivity(), getFragmentManager(),R.id.realtabcontent);
 
         mTabHost.addTab(mTabHost.newTabSpec("buyer").setIndicator(buyer),
-                StatsContentFragment.class,tab1Bundle);
+                StatsMainFragment.class,tab1Bundle);
         mTabHost.addTab(mTabHost.newTabSpec("product").setIndicator(product),
         		StatsContentFragment.class, tab2Bundle);
         mTabHost.addTab(mTabHost.newTabSpec("shop").setIndicator(shop),

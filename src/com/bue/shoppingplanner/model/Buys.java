@@ -142,33 +142,33 @@ public class Buys {
 	}
 
 
-	public int addBuys(DatabaseHandler handler) {
+	public int addBuys(Dbh handler) {
 		SQLiteDatabase db = handler.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(DatabaseHandler.BUYS_PRODUCT, getProduct());
-		values.put(DatabaseHandler.BUYS_SHOP, getShop());
-		values.put(DatabaseHandler.BUYS_UNIT_PRICE, getUnitPrice());
-		values.put(DatabaseHandler.BUYS_AMOUNT, getAmount());
-		values.put(DatabaseHandler.BUYS_DATE, getDate());
-		values.put(DatabaseHandler.BUYS_USER_ID, getUser());
-		values.put(DatabaseHandler.BUYS_LIST_NAME, listName);
-		values.put(DatabaseHandler.BUYS_VAT, vat);
+		values.put(Dbh.BUYS_PRODUCT, getProduct());
+		values.put(Dbh.BUYS_SHOP, getShop());
+		values.put(Dbh.BUYS_UNIT_PRICE, getUnitPrice());
+		values.put(Dbh.BUYS_AMOUNT, getAmount());
+		values.put(Dbh.BUYS_DATE, getDate());
+		values.put(Dbh.BUYS_USER_ID, getUser());
+		values.put(Dbh.BUYS_LIST_NAME, listName);
+		values.put(Dbh.BUYS_VAT, vat);
 
 		// Inserting Row
-		int tmp=(int) db.insert(DatabaseHandler.TABLE_BUYS, null, values);
+		int tmp=(int) db.insert(Dbh.TABLE_BUYS, null, values);
 		db.close(); // Closing database connection
 		return tmp;
 	}
 
-	public Buys getBuys(DatabaseHandler handler, int id) {
+	public Buys getBuys(Dbh handler, int id) {
 		SQLiteDatabase db = handler.getReadableDatabase();
 
-		Cursor cursor = db.query(DatabaseHandler.TABLE_BUYS, new String[] { DatabaseHandler.BUYS_PRODUCT,
-				DatabaseHandler.BUYS_SHOP, DatabaseHandler.BUYS_UNIT_PRICE, DatabaseHandler.BUYS_AMOUNT, 
-				DatabaseHandler.BUYS_DATE, DatabaseHandler.BUYS_USER_ID,
-				DatabaseHandler.BUYS_VAT, }, DatabaseHandler.BUYS_ID + "=? AND "
-				+DatabaseHandler.BUYS_LIST_NAME+" = \"-1\"",
+		Cursor cursor = db.query(Dbh.TABLE_BUYS, new String[] { Dbh.BUYS_PRODUCT,
+				Dbh.BUYS_SHOP, Dbh.BUYS_UNIT_PRICE, Dbh.BUYS_AMOUNT, 
+				Dbh.BUYS_DATE, Dbh.BUYS_USER_ID,
+				Dbh.BUYS_VAT, }, Dbh.BUYS_ID + "=? AND "
+				+Dbh.BUYS_LIST_NAME+" = \"-1\"",
 				new String[] { String.valueOf(id) }, null, null, null, null);
 		if (cursor != null)
 			cursor.moveToFirst();
@@ -182,13 +182,13 @@ public class Buys {
 		return buys;
 	}
 	
-	public static Buys getLastBought(DatabaseHandler handler, int productId) {
+	public static Buys getLastBought(Dbh handler, int productId) {
 		SQLiteDatabase db = handler.getReadableDatabase();
-		Cursor cursor = db.query(DatabaseHandler.TABLE_BUYS, new String[] { DatabaseHandler.BUYS_USER_ID,
-				DatabaseHandler.BUYS_SHOP, DatabaseHandler.BUYS_UNIT_PRICE, DatabaseHandler.BUYS_AMOUNT, 
-				DatabaseHandler.BUYS_DATE, DatabaseHandler.BUYS_PRODUCT,
-				DatabaseHandler.BUYS_VAT, }, DatabaseHandler.BUYS_ID + "=? AND "
-				+DatabaseHandler.BUYS_LIST_NAME+" = \"-1\"",
+		Cursor cursor = db.query(Dbh.TABLE_BUYS, new String[] { Dbh.BUYS_USER_ID,
+				Dbh.BUYS_SHOP, Dbh.BUYS_UNIT_PRICE, Dbh.BUYS_AMOUNT, 
+				Dbh.BUYS_DATE, Dbh.BUYS_PRODUCT,
+				Dbh.BUYS_VAT, }, Dbh.BUYS_ID + "=? AND "
+				+Dbh.BUYS_LIST_NAME+" = \"-1\"",
 				new String[] { String.valueOf(productId) }, null, null, null, null);
 		Buys buys = new Buys();
 		if (cursor != null)
@@ -211,16 +211,16 @@ public class Buys {
 	 * 			else if equals 1 are items belonging to a shopping list
 	 * @return
 	 */
-	public static List<Buys> getAllBuys(DatabaseHandler handler, int itemType) {
+	public static List<Buys> getAllBuys(Dbh handler, int itemType) {
 		List<Buys> buysList = new ArrayList<Buys>();
 		// Select All Query
 		String selectQuery="";
 		if(itemType==0)
-			selectQuery = "SELECT  * FROM " + DatabaseHandler.TABLE_BUYS
-				+" WHERE "+DatabaseHandler.BUYS_LIST_NAME+" = \"-1\"";
+			selectQuery = "SELECT  * FROM " + Dbh.TABLE_BUYS
+				+" WHERE "+Dbh.BUYS_LIST_NAME+" = \"-1\"";
 		else if(itemType==1)
-			selectQuery = "SELECT  * FROM " + DatabaseHandler.TABLE_BUYS
-			+" WHERE "+DatabaseHandler.BUYS_LIST_NAME+" != \"-1\"";
+			selectQuery = "SELECT  * FROM " + Dbh.TABLE_BUYS
+			+" WHERE "+Dbh.BUYS_LIST_NAME+" != \"-1\"";
 			
 
 		SQLiteDatabase db = handler.getWritableDatabase();
@@ -251,36 +251,36 @@ public class Buys {
 	}
 
 	// Updating single Buys
-	public int updateBuys(DatabaseHandler handler) {
+	public int updateBuys(Dbh handler) {
 		SQLiteDatabase db = handler.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(DatabaseHandler.BUYS_PRODUCT, getProduct());
-		values.put(DatabaseHandler.BUYS_SHOP, getShop());
-		values.put(DatabaseHandler.BUYS_UNIT_PRICE, getUnitPrice());
-		values.put(DatabaseHandler.BUYS_AMOUNT, getAmount());
-		values.put(DatabaseHandler.BUYS_DATE, getDate());
-		values.put(DatabaseHandler.BUYS_USER_ID, getUser());
-		values.put(DatabaseHandler.BUYS_VAT, vat);
+		values.put(Dbh.BUYS_PRODUCT, getProduct());
+		values.put(Dbh.BUYS_SHOP, getShop());
+		values.put(Dbh.BUYS_UNIT_PRICE, getUnitPrice());
+		values.put(Dbh.BUYS_AMOUNT, getAmount());
+		values.put(Dbh.BUYS_DATE, getDate());
+		values.put(Dbh.BUYS_USER_ID, getUser());
+		values.put(Dbh.BUYS_VAT, vat);
 
 		// updating row
-		int updateMessage = db.update(DatabaseHandler.TABLE_BUYS, values, DatabaseHandler.BUYS_ID + " = ?",
+		int updateMessage = db.update(Dbh.TABLE_BUYS, values, Dbh.BUYS_ID + " = ?",
 				new String[] { String.valueOf(getId()) });
 		db.close();
 		return updateMessage;
 	}
 
 	// Deleting single Buys
-	public void deleteBuys(DatabaseHandler handler) {
+	public void deleteBuys(Dbh handler) {
 		SQLiteDatabase db = handler.getWritableDatabase();
-		db.delete(DatabaseHandler.TABLE_BUYS, DatabaseHandler.BUYS_ID + " = ?",
+		db.delete(Dbh.TABLE_BUYS, Dbh.BUYS_ID + " = ?",
 				new String[] { String.valueOf(getId()) });
 		db.close();
 	}
 
 	// Getting Buys count
-	public static int getBuysCount(DatabaseHandler handler) {
-		String countQuery = "SELECT  * FROM " + DatabaseHandler.TABLE_BUYS;
+	public static int getBuysCount(Dbh handler) {
+		String countQuery = "SELECT  * FROM " + Dbh.TABLE_BUYS;
 		SQLiteDatabase db = handler.getReadableDatabase();
 		Cursor cursor = db.rawQuery(countQuery, null);
 
@@ -291,9 +291,9 @@ public class Buys {
 		return count;
 	}
 	
-	public static double getTotalSpending(DatabaseHandler handler){
+	public static double getTotalSpending(Dbh handler){
 		double spending=0.0;
-		String query="SELECT sum("+DatabaseHandler.BUYS_UNIT_PRICE+"*"+DatabaseHandler.BUYS_AMOUNT+") FROM "+DatabaseHandler.TABLE_BUYS;
+		String query="SELECT sum("+Dbh.BUYS_UNIT_PRICE+"*"+Dbh.BUYS_AMOUNT+") FROM "+Dbh.TABLE_BUYS;
 		SQLiteDatabase db = handler.getReadableDatabase();
 		Cursor cursor = db.rawQuery(query, null);
 
@@ -305,10 +305,10 @@ public class Buys {
 		return spending;
 	}
 	
-	public static double getTotalVatPayments(DatabaseHandler handler){
+	public static double getTotalVatPayments(Dbh handler){
 		double spending=0.0;
-		String query="SELECT sum("+DatabaseHandler.BUYS_UNIT_PRICE+" * "+DatabaseHandler.BUYS_AMOUNT+" * "
-		+DatabaseHandler.BUYS_VAT+") FROM "+DatabaseHandler.TABLE_BUYS;
+		String query="SELECT sum("+Dbh.BUYS_UNIT_PRICE+" * "+Dbh.BUYS_AMOUNT+" * "
+		+Dbh.BUYS_VAT+") FROM "+Dbh.TABLE_BUYS;
 		SQLiteDatabase db = handler.getReadableDatabase();
 		Cursor cursor = db.rawQuery(query, null);
 
@@ -332,19 +332,19 @@ public class Buys {
 	 * @param handler
 	 * @return
 	 */
-	public static ArrayList<String[]> getTotalGroupByUser(DatabaseHandler handler, String fromDate, String toDate){
+	public static ArrayList<String[]> getTotalGroupByUser(Dbh handler, String fromDate, String toDate){
 		ArrayList<String[]> userTotal=new ArrayList<String[]>();
 		
-		String query="SELECT b."+DatabaseHandler.USER_NAME+", sum(a."+DatabaseHandler.BUYS_UNIT_PRICE+"*a."
-				+DatabaseHandler.BUYS_AMOUNT+") AS sumresult, "
-				+"sum(a."+DatabaseHandler.BUYS_UNIT_PRICE+" * a."
-				+DatabaseHandler.BUYS_AMOUNT+" * a."+DatabaseHandler.BUYS_VAT+") AS vatresult FROM "
-				+DatabaseHandler.TABLE_BUYS+" a, "+DatabaseHandler.TABLE_USER+" b"
-				+" WHERE a."+DatabaseHandler.BUYS_USER_ID+"=b."+DatabaseHandler.USER_ID
-				+" AND a."+DatabaseHandler.BUYS_LIST_NAME+" =\"-1\""
-				+" AND a."+DatabaseHandler.BUYS_DATE+" > \""+fromDate+"\""
-				+" AND a."+DatabaseHandler.BUYS_DATE+" < \""+toDate+"\""
-				+" GROUP BY b."+DatabaseHandler.USER_NAME
+		String query="SELECT b."+Dbh.USER_NAME+", sum(a."+Dbh.BUYS_UNIT_PRICE+"*a."
+				+Dbh.BUYS_AMOUNT+") AS sumresult, "
+				+"sum(a."+Dbh.BUYS_UNIT_PRICE+" * a."
+				+Dbh.BUYS_AMOUNT+" * a."+Dbh.BUYS_VAT+") AS vatresult FROM "
+				+Dbh.TABLE_BUYS+" a, "+Dbh.TABLE_USER+" b"
+				+" WHERE a."+Dbh.BUYS_USER_ID+"=b."+Dbh.USER_ID
+				+" AND a."+Dbh.BUYS_LIST_NAME+" =\"-1\""
+				+" AND a."+Dbh.BUYS_DATE+" > \""+fromDate+"\""
+				+" AND a."+Dbh.BUYS_DATE+" < \""+toDate+"\""
+				+" GROUP BY b."+Dbh.USER_NAME
 				+" ORDER BY sumresult DESC";
 		SQLiteDatabase db = handler.getReadableDatabase();
 		Cursor cursor = db.rawQuery(query, null);
@@ -374,18 +374,60 @@ public class Buys {
 	 * @param handler
 	 * @return
 	 */
-	public static ArrayList<String[]> getTotalGroupByProduct(DatabaseHandler handler, String fromDate, String toDate){
+	public static ArrayList<String[]> getTotalGroupByProduct(Dbh handler, String fromDate, String toDate){
 		ArrayList<String[]> productTotal=new ArrayList<String[]>();
 		
-		String query="SELECT b."+DatabaseHandler.PRODUCT_NAME+", sum(a."+DatabaseHandler.BUYS_UNIT_PRICE+"*a."
-				+DatabaseHandler.BUYS_AMOUNT+") AS sumresult FROM "
-				+DatabaseHandler.TABLE_BUYS+" a, "+DatabaseHandler.TABLE_PRODUCT+" b"
-				+" WHERE a."+DatabaseHandler.BUYS_PRODUCT+"=b."+DatabaseHandler.PRODUCT_ID
-				+" AND a."+DatabaseHandler.BUYS_LIST_NAME+" =\"-1\""
-				+" AND a."+DatabaseHandler.BUYS_DATE+" > \""+fromDate+"\""
-				+" AND a."+DatabaseHandler.BUYS_DATE+" < \""+toDate+"\""
-				+" GROUP BY b."+DatabaseHandler.PRODUCT_NAME
+		String query="SELECT b."+Dbh.PRODUCT_NAME+", sum(a."+Dbh.BUYS_UNIT_PRICE+"*a."
+				+Dbh.BUYS_AMOUNT+") AS sumresult FROM "
+				+Dbh.TABLE_BUYS+" a, "+Dbh.TABLE_PRODUCT+" b"
+				+" WHERE a."+Dbh.BUYS_PRODUCT+"=b."+Dbh.PRODUCT_ID
+				+" AND a."+Dbh.BUYS_LIST_NAME+" =\"-1\""
+				+" AND a."+Dbh.BUYS_DATE+" > \""+fromDate+"\""
+				+" AND a."+Dbh.BUYS_DATE+" < \""+toDate+"\""
+				+" GROUP BY b."+Dbh.PRODUCT_NAME
 				+" ORDER BY sumresult DESC";
+		SQLiteDatabase db = handler.getReadableDatabase();
+		Cursor cursor = db.rawQuery(query, null);
+
+		if (cursor != null)
+			while(cursor.moveToNext()){
+				String[] row=new String[3];
+				row[2]="Euro";
+				row[0] = cursor.getString(0);
+				row[1]=String.valueOf(cursor.getDouble(1));
+				productTotal.add(row);
+			}
+		cursor.close();
+		db.close();
+		return productTotal;
+	}
+	
+	/**
+	 * Returns spending of products that filtered by the lists in the parameters 
+	 * and a specific period of time
+	 */
+	public static ArrayList<String[]> getFilteredProductSpending(Dbh handler, String fromDate, String toDate,
+			ArrayList<String> users, ArrayList<String> kinds,ArrayList<String> shops, ArrayList<String> brands){
+		
+		ArrayList<String[]> productTotal=new ArrayList<String[]>();
+		
+		String query="SELECT p."+Dbh.PRODUCT_NAME+", sum(b."+Dbh.BUYS_UNIT_PRICE+"*b."
+				+Dbh.BUYS_AMOUNT+") AS sumresult " 
+				+"FROM "+Dbh.TABLE_BUYS+" b "
+				+Dbh.TABLE_PRODUCT+" b"
+				+" WHERE a."+Dbh.BUYS_PRODUCT+"=b."+Dbh.PRODUCT_ID
+				+" AND a."+Dbh.BUYS_LIST_NAME+" =\"-1\""
+				+" AND a."+Dbh.BUYS_DATE+" > \""+fromDate+"\""
+				+" AND a."+Dbh.BUYS_DATE+" < \""+toDate+"\""
+				+" GROUP BY b."+Dbh.PRODUCT_NAME
+				+" ORDER BY sumresult DESC";
+		String joins="";
+		String whereClause=" WHERE ";
+		if(users!=null){
+			joins=joins+Dbh.JOIN_USER;
+			whereClause=whereClause+" ON (";
+			
+		}
 		SQLiteDatabase db = handler.getReadableDatabase();
 		Cursor cursor = db.rawQuery(query, null);
 
@@ -414,17 +456,17 @@ public class Buys {
 	 * @param handler
 	 * @return
 	 */
-	public static ArrayList<String[]> getTotalGroupByShop(DatabaseHandler handler, String fromDate, String toDate){
+	public static ArrayList<String[]> getTotalGroupByShop(Dbh handler, String fromDate, String toDate){
 		ArrayList<String[]> shopTotal=new ArrayList<String[]>();
 		
-		String query="SELECT b."+DatabaseHandler.SHOP_NAME+", sum(a."+DatabaseHandler.BUYS_UNIT_PRICE+"*a."
-				+DatabaseHandler.BUYS_AMOUNT+") AS sumresult FROM "
-				+DatabaseHandler.TABLE_BUYS+" a, "+DatabaseHandler.TABLE_SHOP+" b"
-				+" WHERE a."+DatabaseHandler.BUYS_SHOP+"=b."+DatabaseHandler.SHOP_ID
-				+" AND a."+DatabaseHandler.BUYS_LIST_NAME+" =\"-1\""
-				+" AND a."+DatabaseHandler.BUYS_DATE+" > \""+fromDate+"\""
-				+" AND a."+DatabaseHandler.BUYS_DATE+" < \""+toDate+"\""
-				+" GROUP BY b."+DatabaseHandler.SHOP_NAME
+		String query="SELECT b."+Dbh.SHOP_NAME+", sum(a."+Dbh.BUYS_UNIT_PRICE+"*a."
+				+Dbh.BUYS_AMOUNT+") AS sumresult FROM "
+				+Dbh.TABLE_BUYS+" a, "+Dbh.TABLE_SHOP+" b"
+				+" WHERE a."+Dbh.BUYS_SHOP+"=b."+Dbh.SHOP_ID
+				+" AND a."+Dbh.BUYS_LIST_NAME+" =\"-1\""
+				+" AND a."+Dbh.BUYS_DATE+" > \""+fromDate+"\""
+				+" AND a."+Dbh.BUYS_DATE+" < \""+toDate+"\""
+				+" GROUP BY b."+Dbh.SHOP_NAME
 				+" ORDER BY sumresult DESC";
 		SQLiteDatabase db = handler.getReadableDatabase();
 		Cursor cursor = db.rawQuery(query, null);
@@ -454,19 +496,19 @@ public class Buys {
 	 * @param handler
 	 * @return
 	 */
-	public static ArrayList<String[]> getTotalGroupByKind(DatabaseHandler handler, String fromDate, String toDate){
+	public static ArrayList<String[]> getTotalGroupByKind(Dbh handler, String fromDate, String toDate){
 		ArrayList<String[]> shopTotal=new ArrayList<String[]>();
 		
-		String query="SELECT c."+DatabaseHandler.PRODUCT_KIND_NAME+", sum(a."+DatabaseHandler.BUYS_UNIT_PRICE+"*a."
-				+DatabaseHandler.BUYS_AMOUNT+") AS sumresult FROM "
-				+DatabaseHandler.TABLE_BUYS+" a, "+DatabaseHandler.TABLE_PRODUCT+" b, "+DatabaseHandler.TABLE_PRODUCT_KIND+" c"
-				+" WHERE a."+DatabaseHandler.BUYS_PRODUCT+"=b."+DatabaseHandler.PRODUCT_ID
-				+" AND c."+DatabaseHandler.PRODUCT_KIND_ID
-				+" = b."+DatabaseHandler.PRODUCT_KIND
-				+" AND a."+DatabaseHandler.BUYS_LIST_NAME+" =\"-1\""
-				+" AND a."+DatabaseHandler.BUYS_DATE+" > \""+fromDate+"\""
-				+" AND a."+DatabaseHandler.BUYS_DATE+" < \""+toDate+"\""
-				+" GROUP BY c."+DatabaseHandler.PRODUCT_KIND_NAME
+		String query="SELECT c."+Dbh.PRODUCT_KIND_NAME+", sum(a."+Dbh.BUYS_UNIT_PRICE+"*a."
+				+Dbh.BUYS_AMOUNT+") AS sumresult FROM "
+				+Dbh.TABLE_BUYS+" a, "+Dbh.TABLE_PRODUCT+" b, "+Dbh.TABLE_PRODUCT_KIND+" c"
+				+" WHERE a."+Dbh.BUYS_PRODUCT+"=b."+Dbh.PRODUCT_ID
+				+" AND c."+Dbh.PRODUCT_KIND_ID
+				+" = b."+Dbh.PRODUCT_KIND
+				+" AND a."+Dbh.BUYS_LIST_NAME+" =\"-1\""
+				+" AND a."+Dbh.BUYS_DATE+" > \""+fromDate+"\""
+				+" AND a."+Dbh.BUYS_DATE+" < \""+toDate+"\""
+				+" GROUP BY c."+Dbh.PRODUCT_KIND_NAME
 				+" ORDER BY sumresult DESC";
 		SQLiteDatabase db = handler.getReadableDatabase();
 		Cursor cursor = db.rawQuery(query, null);
@@ -498,19 +540,19 @@ public class Buys {
 	 * @param handler
 	 * @return
 	 */
-	public static ArrayList<String[]> getUserSpendingByProduct(DatabaseHandler handler, String groupName, String fromDate, String toDate){
+	public static ArrayList<String[]> getUserSpendingByProduct(Dbh handler, String groupName, String fromDate, String toDate){
 		ArrayList<String[]> total=new ArrayList<String[]>();
 		
-		String query="SELECT c."+DatabaseHandler.PRODUCT_NAME+", sum(a."+DatabaseHandler.BUYS_UNIT_PRICE+"*a."
-				+DatabaseHandler.BUYS_AMOUNT+") AS sumresult FROM "
-				+DatabaseHandler.TABLE_BUYS+" a, "+DatabaseHandler.TABLE_USER+" b, "+DatabaseHandler.TABLE_PRODUCT+" c"
-				+" WHERE a."+DatabaseHandler.BUYS_USER_ID+"=b."+DatabaseHandler.USER_ID
-				+" AND b."+DatabaseHandler.PRODUCT_NAME+" = \""+groupName+"\" AND a."
-				+DatabaseHandler.BUYS_PRODUCT+" = c."+DatabaseHandler.PRODUCT_ID
-				+" AND a."+DatabaseHandler.BUYS_LIST_NAME+" =\"-1\""
-				+" AND a."+DatabaseHandler.BUYS_DATE+" > \""+fromDate+"\""
-				+" AND a."+DatabaseHandler.BUYS_DATE+" < \""+toDate+"\""
-				+" GROUP BY c."+DatabaseHandler.PRODUCT_NAME
+		String query="SELECT c."+Dbh.PRODUCT_NAME+", sum(a."+Dbh.BUYS_UNIT_PRICE+"*a."
+				+Dbh.BUYS_AMOUNT+") AS sumresult FROM "
+				+Dbh.TABLE_BUYS+" a, "+Dbh.TABLE_USER+" b, "+Dbh.TABLE_PRODUCT+" c"
+				+" WHERE a."+Dbh.BUYS_USER_ID+"=b."+Dbh.USER_ID
+				+" AND b."+Dbh.PRODUCT_NAME+" = \""+groupName+"\" AND a."
+				+Dbh.BUYS_PRODUCT+" = c."+Dbh.PRODUCT_ID
+				+" AND a."+Dbh.BUYS_LIST_NAME+" =\"-1\""
+				+" AND a."+Dbh.BUYS_DATE+" > \""+fromDate+"\""
+				+" AND a."+Dbh.BUYS_DATE+" < \""+toDate+"\""
+				+" GROUP BY c."+Dbh.PRODUCT_NAME
 				+" ORDER BY sumresult DESC";
 		SQLiteDatabase db = handler.getReadableDatabase();
 		Cursor cursor = db.rawQuery(query, null);
@@ -540,18 +582,18 @@ public class Buys {
 	 * @param handler
 	 * @return
 	 */
-	public static ArrayList<String[]> getProductSpedingByShop(DatabaseHandler handler, String productName, String fromDate, String toDate){
+	public static ArrayList<String[]> getProductSpedingByShop(Dbh handler, String productName, String fromDate, String toDate){
 		ArrayList<String[]> total=new ArrayList<String[]>();
 		
-		String query="SELECT c."+DatabaseHandler.SHOP_NAME+", sum(a."+DatabaseHandler.BUYS_UNIT_PRICE+"*a."
-				+DatabaseHandler.BUYS_AMOUNT+") AS sumresult FROM "
-				+DatabaseHandler.TABLE_BUYS+" a, "+DatabaseHandler.TABLE_PRODUCT+" b, "+DatabaseHandler.TABLE_SHOP+" c"
-				+" WHERE a."+DatabaseHandler.BUYS_PRODUCT+"=b."+DatabaseHandler.PRODUCT_ID+" AND a."
-				+DatabaseHandler.BUYS_SHOP+" = c."+DatabaseHandler.SHOP_ID+" AND b."+DatabaseHandler.PRODUCT_NAME
-				+" = \""+productName+"\""+" AND a."+DatabaseHandler.BUYS_LIST_NAME+" =\"-1\""
-				+" AND a."+DatabaseHandler.BUYS_DATE+" > \""+fromDate+"\""
-				+" AND a."+DatabaseHandler.BUYS_DATE+" < \""+toDate+"\""
-				+" GROUP BY c."+DatabaseHandler.SHOP_NAME
+		String query="SELECT c."+Dbh.SHOP_NAME+", sum(a."+Dbh.BUYS_UNIT_PRICE+"*a."
+				+Dbh.BUYS_AMOUNT+") AS sumresult FROM "
+				+Dbh.TABLE_BUYS+" a, "+Dbh.TABLE_PRODUCT+" b, "+Dbh.TABLE_SHOP+" c"
+				+" WHERE a."+Dbh.BUYS_PRODUCT+"=b."+Dbh.PRODUCT_ID+" AND a."
+				+Dbh.BUYS_SHOP+" = c."+Dbh.SHOP_ID+" AND b."+Dbh.PRODUCT_NAME
+				+" = \""+productName+"\""+" AND a."+Dbh.BUYS_LIST_NAME+" =\"-1\""
+				+" AND a."+Dbh.BUYS_DATE+" > \""+fromDate+"\""
+				+" AND a."+Dbh.BUYS_DATE+" < \""+toDate+"\""
+				+" GROUP BY c."+Dbh.SHOP_NAME
 				+" ORDER BY sumresult DESC";
 		SQLiteDatabase db = handler.getReadableDatabase();
 		Cursor cursor = db.rawQuery(query, null);
@@ -581,18 +623,18 @@ public class Buys {
 	 * @param handler
 	 * @return
 	 */
-	public static ArrayList<String[]> getShopSpedingByProduct(DatabaseHandler handler, String shopName, String fromDate, String toDate){
+	public static ArrayList<String[]> getShopSpedingByProduct(Dbh handler, String shopName, String fromDate, String toDate){
 		ArrayList<String[]> total=new ArrayList<String[]>();
 		
-		String query="SELECT b."+DatabaseHandler.PRODUCT_NAME+", sum(a."+DatabaseHandler.BUYS_UNIT_PRICE+"*a."
-				+DatabaseHandler.BUYS_AMOUNT+") AS sumresult FROM "
-				+DatabaseHandler.TABLE_BUYS+" a, "+DatabaseHandler.TABLE_PRODUCT+" b, "+DatabaseHandler.TABLE_SHOP+" c"
-				+" WHERE a."+DatabaseHandler.BUYS_PRODUCT+"=b."+DatabaseHandler.PRODUCT_ID+" AND a."
-				+DatabaseHandler.BUYS_SHOP+" = c."+DatabaseHandler.SHOP_ID+" AND c."+DatabaseHandler.SHOP_NAME
-				+" = \""+shopName+"\""+" AND a."+DatabaseHandler.BUYS_LIST_NAME+" =\"-1\""
-				+" AND a."+DatabaseHandler.BUYS_DATE+" > \""+fromDate+"\""
-				+" AND a."+DatabaseHandler.BUYS_DATE+" < \""+toDate+"\""
-				+" GROUP BY b."+DatabaseHandler.PRODUCT_NAME
+		String query="SELECT b."+Dbh.PRODUCT_NAME+", sum(a."+Dbh.BUYS_UNIT_PRICE+"*a."
+				+Dbh.BUYS_AMOUNT+") AS sumresult FROM "
+				+Dbh.TABLE_BUYS+" a, "+Dbh.TABLE_PRODUCT+" b, "+Dbh.TABLE_SHOP+" c"
+				+" WHERE a."+Dbh.BUYS_PRODUCT+"=b."+Dbh.PRODUCT_ID+" AND a."
+				+Dbh.BUYS_SHOP+" = c."+Dbh.SHOP_ID+" AND c."+Dbh.SHOP_NAME
+				+" = \""+shopName+"\""+" AND a."+Dbh.BUYS_LIST_NAME+" =\"-1\""
+				+" AND a."+Dbh.BUYS_DATE+" > \""+fromDate+"\""
+				+" AND a."+Dbh.BUYS_DATE+" < \""+toDate+"\""
+				+" GROUP BY b."+Dbh.PRODUCT_NAME
 				+" ORDER BY sumresult DESC";
 		SQLiteDatabase db = handler.getReadableDatabase();
 		Cursor cursor = db.rawQuery(query, null);
@@ -622,19 +664,19 @@ public class Buys {
 	 * @param handler
 	 * @return
 	 */
-	public static ArrayList<String[]> getKindSpendingByProduct(DatabaseHandler handler, String kindName, String fromDate, String toDate){
+	public static ArrayList<String[]> getKindSpendingByProduct(Dbh handler, String kindName, String fromDate, String toDate){
 		ArrayList<String[]> shopTotal=new ArrayList<String[]>();
 		
-		String query="SELECT c."+DatabaseHandler.PRODUCT_NAME+", sum(a."+DatabaseHandler.BUYS_UNIT_PRICE+"*a."
-				+DatabaseHandler.BUYS_AMOUNT+") AS sumresult FROM "
-				+DatabaseHandler.TABLE_BUYS+" a, "+DatabaseHandler.TABLE_PRODUCT_KIND+" b, "+DatabaseHandler.TABLE_PRODUCT+" c"
-				+" WHERE c."+DatabaseHandler.PRODUCT_KIND+"=b."+DatabaseHandler.PRODUCT_KIND_ID
-				+" AND b."+DatabaseHandler.PRODUCT_KIND_NAME+" = \""+kindName
-				+"\" AND a."+DatabaseHandler.BUYS_PRODUCT+" = c."+DatabaseHandler.PRODUCT_ID
-				+" AND a."+DatabaseHandler.BUYS_LIST_NAME+" =\"-1\""
-				+" AND a."+DatabaseHandler.BUYS_DATE+" > \""+fromDate+"\""
-				+" AND a."+DatabaseHandler.BUYS_DATE+" < \""+toDate+"\""
-				+" GROUP BY c."+DatabaseHandler.PRODUCT_NAME
+		String query="SELECT c."+Dbh.PRODUCT_NAME+", sum(a."+Dbh.BUYS_UNIT_PRICE+"*a."
+				+Dbh.BUYS_AMOUNT+") AS sumresult FROM "
+				+Dbh.TABLE_BUYS+" a, "+Dbh.TABLE_PRODUCT_KIND+" b, "+Dbh.TABLE_PRODUCT+" c"
+				+" WHERE c."+Dbh.PRODUCT_KIND+"=b."+Dbh.PRODUCT_KIND_ID
+				+" AND b."+Dbh.PRODUCT_KIND_NAME+" = \""+kindName
+				+"\" AND a."+Dbh.BUYS_PRODUCT+" = c."+Dbh.PRODUCT_ID
+				+" AND a."+Dbh.BUYS_LIST_NAME+" =\"-1\""
+				+" AND a."+Dbh.BUYS_DATE+" > \""+fromDate+"\""
+				+" AND a."+Dbh.BUYS_DATE+" < \""+toDate+"\""
+				+" GROUP BY c."+Dbh.PRODUCT_NAME
 				+" ORDER BY sumresult DESC";
 		SQLiteDatabase db = handler.getReadableDatabase();
 		Cursor cursor = db.rawQuery(query, null);
@@ -657,10 +699,10 @@ public class Buys {
 	 * @param handler
 	 * @return
 	 */
-	public static ArrayList<String> getShoppingListNames(DatabaseHandler handler){
+	public static ArrayList<String> getShoppingListNames(Dbh handler){
 		ArrayList<String> listNames=new ArrayList<String>();
-		String query="SELECT DISTINCT "+DatabaseHandler.BUYS_LIST_NAME+" FROM "+DatabaseHandler.TABLE_BUYS
-				+" WHERE "+DatabaseHandler.BUYS_LIST_NAME+" != \"-1\"";
+		String query="SELECT DISTINCT "+Dbh.BUYS_LIST_NAME+" FROM "+Dbh.TABLE_BUYS
+				+" WHERE "+Dbh.BUYS_LIST_NAME+" != \"-1\"";
 		SQLiteDatabase db = handler.getReadableDatabase();
 		Cursor cursor = db.rawQuery(query, null);
 
@@ -678,10 +720,10 @@ public class Buys {
 	 * @param listName
 	 * @return
 	 */
-	public static ArrayList<Buys> getShoppingListItems(DatabaseHandler handler, String listName){
+	public static ArrayList<Buys> getShoppingListItems(Dbh handler, String listName){
 		ArrayList<Buys> items=new ArrayList<Buys>();
-		String query="SELECT * FROM "+DatabaseHandler.TABLE_BUYS+" WHERE "
-				+DatabaseHandler.BUYS_LIST_NAME+" = \""+listName+"\"";
+		String query="SELECT * FROM "+Dbh.TABLE_BUYS+" WHERE "
+				+Dbh.BUYS_LIST_NAME+" = \""+listName+"\"";
 		SQLiteDatabase db = handler.getReadableDatabase();
 		Cursor cursor = db.rawQuery(query, null);
 
@@ -705,9 +747,9 @@ public class Buys {
 		return items;
 	}
 	
-	public static void deleteShoppingList(DatabaseHandler handler, String listName){
+	public static void deleteShoppingList(Dbh handler, String listName){
 		SQLiteDatabase db = handler.getWritableDatabase();
-		db.delete(DatabaseHandler.TABLE_BUYS, DatabaseHandler.BUYS_LIST_NAME + " = ?",
+		db.delete(Dbh.TABLE_BUYS, Dbh.BUYS_LIST_NAME + " = ?",
 				new String[] { listName });
 		db.close();
 	}

@@ -48,23 +48,23 @@ public class JsonUpdate {
 		this.date = date;
 	}
 
-	public void addJsonUpdate(DatabaseHandler handler) {
+	public void addJsonUpdate(Dbh handler) {
 		SQLiteDatabase db = handler.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(DatabaseHandler.JSON_UPDATE_ID, id);
-		values.put(DatabaseHandler.JSON_UPDATE_DATE, date);
+		values.put(Dbh.JSON_UPDATE_ID, id);
+		values.put(Dbh.JSON_UPDATE_DATE, date);
 
 		// Inserting Row
-		db.insert(DatabaseHandler.TABLE_JSON_UPDATE, null, values);
+		db.insert(Dbh.TABLE_JSON_UPDATE, null, values);
 		db.close(); // Closing database connection
 	}
 
-	public static JsonUpdate getJsonUpdate(DatabaseHandler handler) {
+	public static JsonUpdate getJsonUpdate(Dbh handler) {
 		SQLiteDatabase db = handler.getReadableDatabase();
 
-		Cursor cursor = db.query(DatabaseHandler.TABLE_JSON_UPDATE,
-				new String[] { DatabaseHandler.JSON_UPDATE_DATE, }, DatabaseHandler.JSON_UPDATE_ID + "=?",
+		Cursor cursor = db.query(Dbh.TABLE_JSON_UPDATE,
+				new String[] { Dbh.JSON_UPDATE_DATE, }, Dbh.JSON_UPDATE_ID + "=?",
 				new String[] { String.valueOf(1) }, null, null, null, null);
 		JsonUpdate jsonUpdate=new JsonUpdate(-1,"");
 		if (cursor != null)
@@ -78,15 +78,15 @@ public class JsonUpdate {
 	}
 	
 	// Updating single JsonUpdate
-	 public int updateJsonUpdate(DatabaseHandler handler) {
+	 public int updateJsonUpdate(Dbh handler) {
 		SQLiteDatabase db = handler.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(DatabaseHandler.JSON_UPDATE_DATE, date);
+		values.put(Dbh.JSON_UPDATE_DATE, date);
 
 		// updating row
-		int updateMessage = db.update(DatabaseHandler.TABLE_JSON_UPDATE, values,
-				DatabaseHandler.JSON_UPDATE_ID + " = ?",
+		int updateMessage = db.update(Dbh.TABLE_JSON_UPDATE, values,
+				Dbh.JSON_UPDATE_ID + " = ?",
 				new String[] { String.valueOf(1) });
 		db.close();
 		return updateMessage;

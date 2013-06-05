@@ -13,12 +13,12 @@ import android.content.res.Resources;
 import com.bue.shoppingplanner.R;
 import com.bue.shoppingplanner.helpers.CurrencyHelper;
 import com.bue.shoppingplanner.model.Currencies;
-import com.bue.shoppingplanner.model.DatabaseHandler;
+import com.bue.shoppingplanner.model.Dbh;
 import com.bue.shoppingplanner.utilities.SPSharedPreferences;
 
 public class CurrencyController implements SPSharedPreferences {
 	
-	private DatabaseHandler db=null;
+	private Dbh db=null;
 	private SharedPreferences settings;
 	private String selectedCurrency;
 	private String defaultCurrency;
@@ -43,7 +43,7 @@ public class CurrencyController implements SPSharedPreferences {
 		defaultCurrency=settings.getString(SET_DEF_CURRENCY, "USD");
 		defaultCurrencyPosition=getCurrencyListPosition(defaultCurrency);
 		selectedCurrency="USD";
-		db=new DatabaseHandler(context);		
+		db=new Dbh(context);		
 	}
 
 	public String getSelectedCurrency() {

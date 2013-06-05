@@ -563,5 +563,6 @@
     <string name="select_file">Select File</string>
     <string name="import_db">Import</string>
     <string name="database">Database</string>
+    <string name="category">Category</string>
 
 </resources>

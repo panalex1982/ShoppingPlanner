@@ -17,7 +17,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class DatabaseHandler extends SQLiteOpenHelper {
+public class Dbh extends SQLiteOpenHelper {
 	// All public static variables
 	// Database Version
 	private static final int DATABASE_VERSION = 8;
@@ -103,9 +103,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	public static final String JSON_UPDATE_ID="id";
 	public static final String JSON_UPDATE_DATE = "date";
 	
+	//Select helpers
+	public final static String JOIN_USER="JOIN "+TABLE_USER+" U ON B."+BUYS_USER_ID+" = U."+USER_ID+" ";	
+	public final String JOIN_PRODUCT="JOIN "+TABLE_PRODUCT+" P ON B."+BUYS_PRODUCT+" = P."+PRODUCT_ID+" ";	
+	public final String JOIN_SHOP="JOIN "+TABLE_SHOP+" S ON B."+BUYS_SHOP+" = S."+SHOP_ID+" ";	
+	public final String JOIN_COMMERCIALPRODUCT="JOIN "+TABLE_COMMERCIAL_PRODUCT+" C ON P."+PRODUCT_BARCODE+" = C."+COMMERCIAL_PRODUCT_BARCODE+" ";	
+	public final String JOIN_PRODUCT_KIND="JOIN "+TABLE_PRODUCT_KIND+" K ON P."+PRODUCT_KIND+" = K."+PRODUCT_KIND_ID+" ";	
+	public final String JOIN_SHOP_DESCRIPTION="JOIN "+TABLE_SHOP_DESCRIPTION+" D ON S."+SHOP_DESCRIPTION+" = D."+SHOP_DESCRIPTION_ID+" ";
+	
 	
 
-	public DatabaseHandler(Context context) {
+	public Dbh(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
 

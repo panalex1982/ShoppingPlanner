@@ -55,28 +55,28 @@ public class CommercialProduct {
 	 * 
 	 * Commercial Product
 	 */
-	public String addCommercialProduct(DatabaseHandler handler) {
+	public String addCommercialProduct(Dbh handler) {
 		SQLiteDatabase db = handler.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(DatabaseHandler.COMMERCIAL_PRODUCT_BARCODE, getBarcode());
-		values.put(DatabaseHandler.COMMERCIAL_PRODUCT_NAME,
+		values.put(Dbh.COMMERCIAL_PRODUCT_BARCODE, getBarcode());
+		values.put(Dbh.COMMERCIAL_PRODUCT_NAME,
 				getCommercialName());
-		values.put(DatabaseHandler.COMMERCIAL_PRODUCT_COMPANY_BRAND,
+		values.put(Dbh.COMMERCIAL_PRODUCT_COMPANY_BRAND,
 				getCompanyBrand());
 
 		// Inserting Row
-		db.insert(DatabaseHandler.TABLE_COMMERCIAL_PRODUCT, null, values);
+		db.insert(Dbh.TABLE_COMMERCIAL_PRODUCT, null, values);
 		db.close(); // Closing database connection
 		return getCommercialProductId(handler);
 	}
 
-	public static CommercialProduct getCommercialProduct(DatabaseHandler handler, String barcode) {
+	public static CommercialProduct getCommercialProduct(Dbh handler, String barcode) {
 		SQLiteDatabase db = handler.getReadableDatabase();
 
-		Cursor cursor = db.query(DatabaseHandler.TABLE_COMMERCIAL_PRODUCT, new String[] {
-				DatabaseHandler.COMMERCIAL_PRODUCT_NAME, DatabaseHandler.COMMERCIAL_PRODUCT_COMPANY_BRAND, },
-				DatabaseHandler.COMMERCIAL_PRODUCT_BARCODE + "=?",
+		Cursor cursor = db.query(Dbh.TABLE_COMMERCIAL_PRODUCT, new String[] {
+				Dbh.COMMERCIAL_PRODUCT_NAME, Dbh.COMMERCIAL_PRODUCT_COMPANY_BRAND, },
+				Dbh.COMMERCIAL_PRODUCT_BARCODE + "=?",
 				new String[] { String.valueOf(barcode) }, null, null, null,
 				null);
 		CommercialProduct commercialProduct=new CommercialProduct();
@@ -92,10 +92,10 @@ public class CommercialProduct {
 	}
 
 	// Getting All Commercial Product
-	public static List<CommercialProduct> getAllCommercialProduct(DatabaseHandler handler) {
+	public static List<CommercialProduct> getAllCommercialProduct(Dbh handler) {
 		List<CommercialProduct> commercialProductList = new ArrayList<CommercialProduct>();
 		// Select All Query
-		String selectQuery = "SELECT  * FROM " + DatabaseHandler.TABLE_COMMERCIAL_PRODUCT;
+		String selectQuery = "SELECT  * FROM " + Dbh.TABLE_COMMERCIAL_PRODUCT;
 
 		SQLiteDatabase db = handler.getWritableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
@@ -118,36 +118,36 @@ public class CommercialProduct {
 	}
 
 	// Updating single Commercial Product
-	public int updateCommercialProduct(DatabaseHandler handler) {
+	public int updateCommercialProduct(Dbh handler) {
 		SQLiteDatabase db = handler.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(DatabaseHandler.COMMERCIAL_PRODUCT_NAME,
+		values.put(Dbh.COMMERCIAL_PRODUCT_NAME,
 				getCommercialName());
-		values.put(DatabaseHandler.COMMERCIAL_PRODUCT_COMPANY_BRAND,
+		values.put(Dbh.COMMERCIAL_PRODUCT_COMPANY_BRAND,
 				getCompanyBrand());
 
 		// updating row
 		int updateMessage = db
-				.update(DatabaseHandler.TABLE_COMMERCIAL_PRODUCT, values,
-						DatabaseHandler.COMMERCIAL_PRODUCT_BARCODE + " = ?",
+				.update(Dbh.TABLE_COMMERCIAL_PRODUCT, values,
+						Dbh.COMMERCIAL_PRODUCT_BARCODE + " = ?",
 						new String[] { String.valueOf(getBarcode()) });
 		db.close();
 		return updateMessage;
 	}
 
 	// Deleting single Commercial Product
-	public void deleteCommercialProduct(DatabaseHandler handler) {
+	public void deleteCommercialProduct(Dbh handler) {
 		SQLiteDatabase db = handler.getWritableDatabase();
-		db.delete(DatabaseHandler.TABLE_COMMERCIAL_PRODUCT,
-				DatabaseHandler.COMMERCIAL_PRODUCT_BARCODE + " = ?",
+		db.delete(Dbh.TABLE_COMMERCIAL_PRODUCT,
+				Dbh.COMMERCIAL_PRODUCT_BARCODE + " = ?",
 				new String[] { String.valueOf(getBarcode()) });
 		db.close();
 	}
 
 	// Getting Commercial Product
-	public static int getCommercialProductCount(DatabaseHandler handler) {
-		String countQuery = "SELECT  * FROM " + DatabaseHandler.TABLE_COMMERCIAL_PRODUCT;
+	public static int getCommercialProductCount(Dbh handler) {
+		String countQuery = "SELECT  * FROM " + Dbh.TABLE_COMMERCIAL_PRODUCT;
 		SQLiteDatabase db = handler.getReadableDatabase();
 		Cursor cursor = db.rawQuery(countQuery, null);
 
@@ -163,11 +163,11 @@ public class CommercialProduct {
 	 * @param db
 	 * @return
 	 */
-	public String getCommercialProductId(DatabaseHandler db){
+	public String getCommercialProductId(Dbh db){
 		String commercialProductId="-1";
 		SQLiteDatabase readable=db.getReadableDatabase();
-		Cursor cursor =readable.query(DatabaseHandler.TABLE_COMMERCIAL_PRODUCT, new String[]{DatabaseHandler.COMMERCIAL_PRODUCT_BARCODE,},DatabaseHandler.COMMERCIAL_PRODUCT_NAME+"=? AND "
-									+DatabaseHandler.COMMERCIAL_PRODUCT_COMPANY_BRAND+"=?",
+		Cursor cursor =readable.query(Dbh.TABLE_COMMERCIAL_PRODUCT, new String[]{Dbh.COMMERCIAL_PRODUCT_BARCODE,},Dbh.COMMERCIAL_PRODUCT_NAME+"=? AND "
+									+Dbh.COMMERCIAL_PRODUCT_COMPANY_BRAND+"=?",
 				new String[] {commercialName,companyBrand},null, null, null, null);
 		if (cursor != null)
             if(cursor.moveToFirst())
@@ -185,12 +185,12 @@ public class CommercialProduct {
 	 * @param productName
 	 * @return
 	 */
-	public static ArrayList<CommercialProduct> getCommercialProductByProduct(DatabaseHandler db, String productName){
+	public static ArrayList<CommercialProduct> getCommercialProductByProduct(Dbh db, String productName){
 		ArrayList<CommercialProduct> cProducts=new ArrayList<CommercialProduct>();
 		SQLiteDatabase readable=db.getReadableDatabase();
-		String query="SELECT A.* FROM "+DatabaseHandler.TABLE_COMMERCIAL_PRODUCT+" A, "
-						+ DatabaseHandler.TABLE_PRODUCT+" B WHERE A."+DatabaseHandler.COMMERCIAL_PRODUCT_BARCODE
-						+" = B."+DatabaseHandler.PRODUCT_BARCODE+" AND B."+DatabaseHandler.PRODUCT_NAME
+		String query="SELECT A.* FROM "+Dbh.TABLE_COMMERCIAL_PRODUCT+" A, "
+						+ Dbh.TABLE_PRODUCT+" B WHERE A."+Dbh.COMMERCIAL_PRODUCT_BARCODE
+						+" = B."+Dbh.PRODUCT_BARCODE+" AND B."+Dbh.PRODUCT_NAME
 						+" = \""+productName+"\"";
 		Cursor cursor =readable.rawQuery(query,null);
 		if (cursor != null)

@@ -73,25 +73,25 @@ public class Shop {
 	 * @return
 	 */
 	
-	public int addShop(DatabaseHandler handler) {
+	public int addShop(Dbh handler) {
 		SQLiteDatabase db = handler.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(DatabaseHandler.SHOP_NAME, getName());
-		values.put(DatabaseHandler.SHOP_ADDRESS, getAddress());
-		values.put(DatabaseHandler.SHOP_DESCRIPTION, getShopDescription());
+		values.put(Dbh.SHOP_NAME, getName());
+		values.put(Dbh.SHOP_ADDRESS, getAddress());
+		values.put(Dbh.SHOP_DESCRIPTION, getShopDescription());
 
 		// Inserting Row
-		db.insert(DatabaseHandler.TABLE_SHOP, null, values);		
+		db.insert(Dbh.TABLE_SHOP, null, values);		
 		db.close(); // Closing database connection
 		return this.getShopId(handler);
 	}
 	
-	public Shop getShop(DatabaseHandler handler, int id) {
+	public Shop getShop(Dbh handler, int id) {
 		SQLiteDatabase db = handler.getReadableDatabase();
 
-		Cursor cursor = db.query(DatabaseHandler.TABLE_SHOP, new String[] { DatabaseHandler.SHOP_NAME,
-				DatabaseHandler.SHOP_ADDRESS, DatabaseHandler.SHOP_DESCRIPTION, }, DatabaseHandler.SHOP_ID + "=?",
+		Cursor cursor = db.query(Dbh.TABLE_SHOP, new String[] { Dbh.SHOP_NAME,
+				Dbh.SHOP_ADDRESS, Dbh.SHOP_DESCRIPTION, }, Dbh.SHOP_ID + "=?",
 				new String[] { String.valueOf(id) }, null, null, null, null);
 		if (cursor != null)
 			cursor.moveToFirst();
@@ -104,11 +104,11 @@ public class Shop {
 		return shop;
 	}
 	
-	public void getShopByName(DatabaseHandler handler) {
+	public void getShopByName(Dbh handler) {
 		SQLiteDatabase db = handler.getReadableDatabase();
 
-		Cursor cursor = db.query(DatabaseHandler.TABLE_SHOP, new String[] { DatabaseHandler.SHOP_ID,
-				DatabaseHandler.SHOP_ADDRESS, DatabaseHandler.SHOP_DESCRIPTION, }, DatabaseHandler.SHOP_NAME + "=?",
+		Cursor cursor = db.query(Dbh.TABLE_SHOP, new String[] { Dbh.SHOP_ID,
+				Dbh.SHOP_ADDRESS, Dbh.SHOP_DESCRIPTION, }, Dbh.SHOP_NAME + "=?",
 				new String[] { String.valueOf(name) }, null, null, null, null);
 		if (cursor != null)
 			cursor.moveToFirst();
@@ -122,10 +122,10 @@ public class Shop {
 	}
 
 	// Getting All Shop
-	public static List<Shop> getAllShop(DatabaseHandler handler) {
+	public static List<Shop> getAllShop(Dbh handler) {
 		List<Shop> shopList = new ArrayList<Shop>();
 		// Select All Query
-		String selectQuery = "SELECT  * FROM " + DatabaseHandler.TABLE_SHOP;
+		String selectQuery = "SELECT  * FROM " + Dbh.TABLE_SHOP;
 
 		SQLiteDatabase db = handler.getWritableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
@@ -149,25 +149,25 @@ public class Shop {
 	}
 
 	// Updating single Shop
-	public int updateShop(DatabaseHandler handler) {
+	public int updateShop(Dbh handler) {
 		SQLiteDatabase db = handler.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(DatabaseHandler.SHOP_NAME, getName());
-		values.put(DatabaseHandler.SHOP_ADDRESS, getAddress());
-		values.put(DatabaseHandler.SHOP_DESCRIPTION, getShopDescription());
+		values.put(Dbh.SHOP_NAME, getName());
+		values.put(Dbh.SHOP_ADDRESS, getAddress());
+		values.put(Dbh.SHOP_DESCRIPTION, getShopDescription());
 
 		// updating row
-		int updateMessage = db.update(DatabaseHandler.TABLE_SHOP, values, DatabaseHandler.SHOP_ID + " = ?",
+		int updateMessage = db.update(Dbh.TABLE_SHOP, values, Dbh.SHOP_ID + " = ?",
 				new String[] { String.valueOf(getId()) });
 		db.close();
 		return updateMessage;
 	}
 
 	// Deleting single Shop
-	public void deleteShop(DatabaseHandler handler) {
+	public void deleteShop(Dbh handler) {
 		SQLiteDatabase db = handler.getWritableDatabase();
-		db.delete(DatabaseHandler.TABLE_SHOP, DatabaseHandler.SHOP_ID + " = ?",
+		db.delete(Dbh.TABLE_SHOP, Dbh.SHOP_ID + " = ?",
 				new String[] { String.valueOf(getId()) });
 		db.close();
 	}
@@ -177,8 +177,8 @@ public class Shop {
 	 * @param handler
 	 * @return
 	 */
-	public static int getShopCount(DatabaseHandler handler) {
-		String countQuery = "SELECT  * FROM " + DatabaseHandler.TABLE_SHOP;
+	public static int getShopCount(Dbh handler) {
+		String countQuery = "SELECT  * FROM " + Dbh.TABLE_SHOP;
 		SQLiteDatabase db = handler.getReadableDatabase();
 		Cursor cursor = db.rawQuery(countQuery, null);
 
@@ -194,10 +194,10 @@ public class Shop {
 	 * @param db
 	 * @return
 	 */
-	public int getShopId(DatabaseHandler db){
+	public int getShopId(Dbh db){
 		int shopId=-1;
 		SQLiteDatabase readable=db.getReadableDatabase();
-		Cursor cursor =readable.query(DatabaseHandler.TABLE_SHOP, new String[]{DatabaseHandler.SHOP_ID,},DatabaseHandler.SHOP_NAME+"=?",
+		Cursor cursor =readable.query(Dbh.TABLE_SHOP, new String[]{Dbh.SHOP_ID,},Dbh.SHOP_NAME+"=?",
 				new String[] {String.valueOf(name)},null, null, null, null);
 		if (cursor != null)
             if(cursor.moveToFirst())

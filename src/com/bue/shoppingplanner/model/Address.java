@@ -97,30 +97,30 @@ public class Address {
 	 * @param handler
 	 * @return
 	 */
-	public int addAddress(DatabaseHandler handler) {
+	public int addAddress(Dbh handler) {
 		SQLiteDatabase db = handler.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(DatabaseHandler.ADDRESS_STREET_NAME, getStreetName());
-		values.put(DatabaseHandler.ADDRESS_NUMBER, getNumber());
-		values.put(DatabaseHandler.ADDRESS_AREA, getArea());
-		values.put(DatabaseHandler.ADDRESS_CITY, getCity());
-		values.put(DatabaseHandler.ADDRESS_ZIP, getZip());
-		values.put(DatabaseHandler.ADDRESS_COUNTRY, getCountry());
+		values.put(Dbh.ADDRESS_STREET_NAME, getStreetName());
+		values.put(Dbh.ADDRESS_NUMBER, getNumber());
+		values.put(Dbh.ADDRESS_AREA, getArea());
+		values.put(Dbh.ADDRESS_CITY, getCity());
+		values.put(Dbh.ADDRESS_ZIP, getZip());
+		values.put(Dbh.ADDRESS_COUNTRY, getCountry());
 
 		// Inserting Row
-		db.insert(DatabaseHandler.TABLE_ADDRESS, null, values);
+		db.insert(Dbh.TABLE_ADDRESS, null, values);
 		db.close(); // Closing database connection
 		return getAddressId(handler);
 	}
 
-	public static Address getAddress(DatabaseHandler handler,int id) {
+	public static Address getAddress(Dbh handler,int id) {
 		SQLiteDatabase db = handler.getReadableDatabase();
 
-		Cursor cursor = db.query(DatabaseHandler.TABLE_ADDRESS, new String[] {
-				DatabaseHandler.ADDRESS_STREET_NAME, DatabaseHandler.ADDRESS_NUMBER, DatabaseHandler.ADDRESS_AREA,
-				DatabaseHandler.ADDRESS_CITY, DatabaseHandler.ADDRESS_ZIP, DatabaseHandler.ADDRESS_COUNTRY, },
-				DatabaseHandler.ADDRESS_ID
+		Cursor cursor = db.query(Dbh.TABLE_ADDRESS, new String[] {
+				Dbh.ADDRESS_STREET_NAME, Dbh.ADDRESS_NUMBER, Dbh.ADDRESS_AREA,
+				Dbh.ADDRESS_CITY, Dbh.ADDRESS_ZIP, Dbh.ADDRESS_COUNTRY, },
+				Dbh.ADDRESS_ID
 				+ "=?", new String[] { String.valueOf(id) }, null, null, null,
 				null);
 		Address address=new Address();
@@ -137,10 +137,10 @@ public class Address {
 	}
 
 	// Getting All Address
-	public static List<Address> getAllAddress(DatabaseHandler handler) {
+	public static List<Address> getAllAddress(Dbh handler) {
 		List<Address> addressList = new ArrayList<Address>();
 		// Select All Query
-		String selectQuery = "SELECT  * FROM " + DatabaseHandler.TABLE_ADDRESS;
+		String selectQuery = "SELECT  * FROM " + Dbh.TABLE_ADDRESS;
 
 		SQLiteDatabase db = handler.getWritableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
@@ -167,35 +167,35 @@ public class Address {
 	}
 
 	// Updating single Address
-	public int updateAddress(DatabaseHandler handler) {
+	public int updateAddress(Dbh handler) {
 		SQLiteDatabase db = handler.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(DatabaseHandler.ADDRESS_STREET_NAME, getStreetName());
-		values.put(DatabaseHandler.ADDRESS_NUMBER, getNumber());
-		values.put(DatabaseHandler.ADDRESS_AREA, getArea());
-		values.put(DatabaseHandler.ADDRESS_CITY, getCity());
-		values.put(DatabaseHandler.ADDRESS_ZIP, getZip());
-		values.put(DatabaseHandler.ADDRESS_COUNTRY, getCountry());
+		values.put(Dbh.ADDRESS_STREET_NAME, getStreetName());
+		values.put(Dbh.ADDRESS_NUMBER, getNumber());
+		values.put(Dbh.ADDRESS_AREA, getArea());
+		values.put(Dbh.ADDRESS_CITY, getCity());
+		values.put(Dbh.ADDRESS_ZIP, getZip());
+		values.put(Dbh.ADDRESS_COUNTRY, getCountry());
 
 		// updating row
-		int updateMessage = db.update(DatabaseHandler.TABLE_ADDRESS, values, DatabaseHandler.ADDRESS_ID
+		int updateMessage = db.update(Dbh.TABLE_ADDRESS, values, Dbh.ADDRESS_ID
 				+ " = ?", new String[] { String.valueOf(getId()) });
 		db.close();
 		return updateMessage;
 	}
 
 	// Deleting single Address
-	public void deleteCommercialAddress(DatabaseHandler handler) {
+	public void deleteCommercialAddress(Dbh handler) {
 		SQLiteDatabase db = handler.getWritableDatabase();
-		db.delete(DatabaseHandler.TABLE_ADDRESS, DatabaseHandler.ADDRESS_ID + " = ?",
+		db.delete(Dbh.TABLE_ADDRESS, Dbh.ADDRESS_ID + " = ?",
 				new String[] { String.valueOf(getId()) });
 		db.close();
 	}
 
 	// Getting Address
-	public static int getAddressCount(DatabaseHandler handler) {
-		String countQuery = "SELECT  * FROM " + DatabaseHandler.TABLE_ADDRESS;
+	public static int getAddressCount(Dbh handler) {
+		String countQuery = "SELECT  * FROM " + Dbh.TABLE_ADDRESS;
 		SQLiteDatabase db = handler.getReadableDatabase();
 		Cursor cursor = db.rawQuery(countQuery, null);
 
@@ -212,12 +212,12 @@ public class Address {
 	 * @param db
 	 * @return
 	 */
-	public int getAddressId(DatabaseHandler db){
+	public int getAddressId(Dbh db){
 		int addressId=-1;
 		SQLiteDatabase readable=db.getReadableDatabase();
-		Cursor cursor =readable.query(DatabaseHandler.TABLE_ADDRESS, new String[]{DatabaseHandler.ADDRESS_ID,},DatabaseHandler.ADDRESS_STREET_NAME+"=? AND "
-									+DatabaseHandler.ADDRESS_NUMBER+"=? AND "+DatabaseHandler.ADDRESS_CITY+"=? AND "+DatabaseHandler.ADDRESS_AREA+"=? AND "
-				+DatabaseHandler.ADDRESS_COUNTRY+"=? AND "+DatabaseHandler.ADDRESS_ZIP+"=?",
+		Cursor cursor =readable.query(Dbh.TABLE_ADDRESS, new String[]{Dbh.ADDRESS_ID,},Dbh.ADDRESS_STREET_NAME+"=? AND "
+									+Dbh.ADDRESS_NUMBER+"=? AND "+Dbh.ADDRESS_CITY+"=? AND "+Dbh.ADDRESS_AREA+"=? AND "
+				+Dbh.ADDRESS_COUNTRY+"=? AND "+Dbh.ADDRESS_ZIP+"=?",
 				new String[] {String.valueOf(getStreetName()),String.valueOf(getNumber()),getCity(),getArea(),getCountry(),getZip()},null, null, null, null);
 		if (cursor != null)
             if(cursor.moveToFirst())

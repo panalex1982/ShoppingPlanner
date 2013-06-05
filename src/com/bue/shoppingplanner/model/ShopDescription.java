@@ -58,23 +58,23 @@ public class ShopDescription {
 	 * @param handler
 	 * @return
 	 */
-	public int addShopDescription(DatabaseHandler handler) {
+	public int addShopDescription(Dbh handler) {
 		SQLiteDatabase db = handler.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(DatabaseHandler.SHOP_DESCRIPTION_NAME, getName());
+		values.put(Dbh.SHOP_DESCRIPTION_NAME, getName());
 
 		// Inserting Row
-		db.insert(DatabaseHandler.TABLE_SHOP_DESCRIPTION, null, values);
+		db.insert(Dbh.TABLE_SHOP_DESCRIPTION, null, values);
 		db.close(); // Closing database connection
 		return this.getShopDescriptionId(handler);
 	}
 
-	public static ShopDescription getShopDescription(DatabaseHandler handler, int id) {
+	public static ShopDescription getShopDescription(Dbh handler, int id) {
 		SQLiteDatabase db = handler.getReadableDatabase();
 
-		Cursor cursor = db.query(DatabaseHandler.TABLE_SHOP_DESCRIPTION,
-				new String[] { DatabaseHandler.SHOP_DESCRIPTION_NAME, }, DatabaseHandler.SHOP_DESCRIPTION_ID
+		Cursor cursor = db.query(Dbh.TABLE_SHOP_DESCRIPTION,
+				new String[] { Dbh.SHOP_DESCRIPTION_NAME, }, Dbh.SHOP_DESCRIPTION_ID
 						+ "=?", new String[] { String.valueOf(id) }, null,
 				null, null, null);
 		ShopDescription shopDescription=new ShopDescription();
@@ -90,10 +90,10 @@ public class ShopDescription {
 	}
 
 	// Getting All Shop Description
-	public static List<ShopDescription> getAllShopDescription(DatabaseHandler handler) {
+	public static List<ShopDescription> getAllShopDescription(Dbh handler) {
 		List<ShopDescription> shopDescriptionList = new ArrayList<ShopDescription>();
 		// Select All Query
-		String selectQuery = "SELECT  * FROM " + DatabaseHandler.TABLE_SHOP_DESCRIPTION;
+		String selectQuery = "SELECT  * FROM " + Dbh.TABLE_SHOP_DESCRIPTION;
 
 		SQLiteDatabase db = handler.getWritableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
@@ -115,31 +115,31 @@ public class ShopDescription {
 	}
 
 	// Updating single Shop Description
-	public int updateShopDescription(DatabaseHandler handler) {
+	public int updateShopDescription(Dbh handler) {
 		SQLiteDatabase db = handler.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(DatabaseHandler.SHOP_DESCRIPTION_NAME, getName());
+		values.put(Dbh.SHOP_DESCRIPTION_NAME, getName());
 
 		// updating row
-		int updateMessage = db.update(DatabaseHandler.TABLE_SHOP_DESCRIPTION, values,
-				DatabaseHandler.SHOP_DESCRIPTION_ID + " = ?",
+		int updateMessage = db.update(Dbh.TABLE_SHOP_DESCRIPTION, values,
+				Dbh.SHOP_DESCRIPTION_ID + " = ?",
 				new String[] { String.valueOf(getId()) });
 		db.close();
 		return updateMessage;
 	}
 
 	// Deleting single Shop Description
-	public void deleteShopDescription(DatabaseHandler handler) {
+	public void deleteShopDescription(Dbh handler) {
 		SQLiteDatabase db = handler.getWritableDatabase();
-		db.delete(DatabaseHandler.TABLE_SHOP_DESCRIPTION, DatabaseHandler.SHOP_DESCRIPTION_ID + " = ?",
+		db.delete(Dbh.TABLE_SHOP_DESCRIPTION, Dbh.SHOP_DESCRIPTION_ID + " = ?",
 				new String[] { String.valueOf(getId()) });
 		db.close();
 	}
 
 	// Getting Shop Description
-	public static int getShopDescriptiontCount(DatabaseHandler handler) {
-		String countQuery = "SELECT  * FROM " + DatabaseHandler.TABLE_SHOP_DESCRIPTION;
+	public static int getShopDescriptiontCount(Dbh handler) {
+		String countQuery = "SELECT  * FROM " + Dbh.TABLE_SHOP_DESCRIPTION;
 		SQLiteDatabase db = handler.getReadableDatabase();
 		Cursor cursor = db.rawQuery(countQuery, null);
 
@@ -155,10 +155,10 @@ public class ShopDescription {
 	 * @param db
 	 * @return
 	 */
-	public int getShopDescriptionId(DatabaseHandler db){
+	public int getShopDescriptionId(Dbh db){
 		int shopDescId=-1;
 		SQLiteDatabase readable=db.getReadableDatabase();
-		Cursor cursor =readable.query(DatabaseHandler.TABLE_SHOP_DESCRIPTION, new String[]{DatabaseHandler.SHOP_DESCRIPTION_ID,},DatabaseHandler.SHOP_DESCRIPTION_NAME+"=?",
+		Cursor cursor =readable.query(Dbh.TABLE_SHOP_DESCRIPTION, new String[]{Dbh.SHOP_DESCRIPTION_ID,},Dbh.SHOP_DESCRIPTION_NAME+"=?",
 				new String[] {String.valueOf(name)},null, null, null, null);
 		if (cursor != null)
             if(cursor.moveToFirst())

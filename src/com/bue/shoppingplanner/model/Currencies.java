@@ -48,23 +48,23 @@ public class Currencies {
 		this.rateToUsd = rateToUsd;
 	}
 	
-	public void addCurrencies(DatabaseHandler handler) {
+	public void addCurrencies(Dbh handler) {
 		SQLiteDatabase db = handler.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(DatabaseHandler.CURRENCIES_ID, id);
-		values.put(DatabaseHandler.CURRENCIES_RATE_TO_USD, rateToUsd);
+		values.put(Dbh.CURRENCIES_ID, id);
+		values.put(Dbh.CURRENCIES_RATE_TO_USD, rateToUsd);
 
 		// Inserting Row
-		db.insert(DatabaseHandler.TABLE_CURRENCIES, null, values);
+		db.insert(Dbh.TABLE_CURRENCIES, null, values);
 		db.close(); // Closing database connection
 	}
 
-	public static Currencies getCurrencies(DatabaseHandler handler, String currency) {
+	public static Currencies getCurrencies(Dbh handler, String currency) {
 		SQLiteDatabase db = handler.getReadableDatabase();
 
-		Cursor cursor = db.query(DatabaseHandler.TABLE_CURRENCIES,
-				new String[] { DatabaseHandler.CURRENCIES_RATE_TO_USD, }, DatabaseHandler.CURRENCIES_ID + "=?",
+		Cursor cursor = db.query(Dbh.TABLE_CURRENCIES,
+				new String[] { Dbh.CURRENCIES_RATE_TO_USD, }, Dbh.CURRENCIES_ID + "=?",
 				new String[] { currency }, null, null, null, null);
 		Currencies currencyObject=new Currencies();
 		if (cursor != null)
@@ -78,15 +78,15 @@ public class Currencies {
 	}
 	
 	// Updating single Currencies
-	 public int updateCurrencies(DatabaseHandler handler) {
+	 public int updateCurrencies(Dbh handler) {
 		SQLiteDatabase db = handler.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(DatabaseHandler.CURRENCIES_RATE_TO_USD, rateToUsd);
+		values.put(Dbh.CURRENCIES_RATE_TO_USD, rateToUsd);
 
 		// updating row
-		int updateMessage = db.update(DatabaseHandler.TABLE_CURRENCIES, values,
-				DatabaseHandler.CURRENCIES_ID + " = ?",
+		int updateMessage = db.update(Dbh.TABLE_CURRENCIES, values,
+				Dbh.CURRENCIES_ID + " = ?",
 				new String[] { id });
 		db.close();
 		return updateMessage;

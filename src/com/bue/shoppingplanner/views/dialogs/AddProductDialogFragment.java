@@ -13,7 +13,7 @@ import com.bue.shoppingplanner.helpers.ShoppingListElementHelper;
 import com.bue.shoppingplanner.helpers.SpinnerBuilder;
 import com.bue.shoppingplanner.helpers.VatHelper;
 import com.bue.shoppingplanner.model.CommercialProduct;
-import com.bue.shoppingplanner.model.DatabaseHandler;
+import com.bue.shoppingplanner.model.Dbh;
 import com.bue.shoppingplanner.model.Product;
 import com.bue.shoppingplanner.model.User;
 import com.bue.shoppingplanner.model.ProductKind;
@@ -37,7 +37,7 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 
 public class AddProductDialogFragment extends DialogFragment {
-	private DatabaseHandler db;
+	private Dbh db;
 	
 	// Use this instance of the interface to deliver action events
     private AddProductDialogListener mListener;
@@ -68,7 +68,7 @@ public class AddProductDialogFragment extends DialogFragment {
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		db=new DatabaseHandler(getActivity());
+		db=new Dbh(getActivity());
 		listElement=new ShoppingListElementHelper();
 		vat=new VatHelper(getActivity());
 		

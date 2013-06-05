@@ -6,7 +6,7 @@ import com.bue.shoppingplanner.R;
 import com.bue.shoppingplanner.controllers.ShopController;
 import com.bue.shoppingplanner.helpers.ShopElementHelper;
 import com.bue.shoppingplanner.helpers.SpinnerBuilder;
-import com.bue.shoppingplanner.model.DatabaseHandler;
+import com.bue.shoppingplanner.model.Dbh;
 import com.bue.shoppingplanner.model.Shop;
 import com.bue.shoppingplanner.model.ShopDescription;
 
@@ -23,7 +23,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 public class AddShopDialogFragment extends DialogFragment {
-	private DatabaseHandler db;
+	private Dbh db;
 	
 	// Use this instance of the interface to deliver action events
     private AddShopDialogListener mListener;
@@ -53,7 +53,7 @@ public class AddShopDialogFragment extends DialogFragment {
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		db=new DatabaseHandler(getActivity());
+		db=new Dbh(getActivity());
 		//Shop tmpShop=new Shop();
 		//ShopDescription tmpDesc=new ShopDescription();
 		existingShopsArrayList=new ArrayList<CharSequence>();

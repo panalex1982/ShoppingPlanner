@@ -1,16 +1,22 @@
 package com.bue.shoppingplanner.views;
 
+import java.util.ArrayList;
+
 import com.bue.shoppingplanner.R;
+import com.bue.shoppingplanner.StatsMainFragment;
+import com.bue.shoppingplanner.views.dialogs.StatsFilterDialogFragment;
 
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
 import android.os.Build;
 
-public class StatsActivity extends FragmentActivity {
+public class StatsActivity extends FragmentActivity implements StatsFilterDialogFragment.StatsFilterDialogListener{
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +58,19 @@ public class StatsActivity extends FragmentActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onDialogPositiveClick(DialogFragment dialog) {
+		StatsFilterDialogFragment filters=(StatsFilterDialogFragment)dialog;
+		FragmentManager manager=getSupportFragmentManager();		
+		StatsMainFragment fragment=(StatsMainFragment) manager.findFragmentById(filters.getFragmentId());
+	}
+
+	@Override
+	public void onDialogNegativeClick(DialogFragment dialog) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

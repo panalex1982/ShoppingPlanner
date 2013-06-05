@@ -48,24 +48,24 @@ public class ProductKind {
 	}
 
 	// Product Kind
-		public void addProductKind(DatabaseHandler handler) {
+		public void addProductKind(Dbh handler) {
 			SQLiteDatabase db = handler.getWritableDatabase();
 
 			ContentValues values = new ContentValues();
-			values.put(DatabaseHandler.PRODUCT_KIND_NAME, getName()); // ProductKind
+			values.put(Dbh.PRODUCT_KIND_NAME, getName()); // ProductKind
 																	// Name
 			// values.put(PRODUCT_KIND_GROUP_ID, productKind.getGroup_id());
 
 			// Inserting Row
-			db.insert(DatabaseHandler.TABLE_PRODUCT_KIND, null, values);
+			db.insert(Dbh.TABLE_PRODUCT_KIND, null, values);
 			db.close(); // Closing database connection
 		}
 
-		public static ProductKind getProductKind(DatabaseHandler handler,int id) {
+		public static ProductKind getProductKind(Dbh handler,int id) {
 			SQLiteDatabase db = handler.getReadableDatabase();
 
-			Cursor cursor = db.query(DatabaseHandler.TABLE_PRODUCT_KIND,
-					new String[] { DatabaseHandler.PRODUCT_KIND_NAME, }, DatabaseHandler.PRODUCT_KIND_ID + "=?",
+			Cursor cursor = db.query(Dbh.TABLE_PRODUCT_KIND,
+					new String[] { Dbh.PRODUCT_KIND_NAME, }, Dbh.PRODUCT_KIND_ID + "=?",
 					new String[] { String.valueOf(id) }, null, null, null, null);
 			ProductKind productKind = new ProductKind();
 			if (cursor != null)
@@ -80,10 +80,10 @@ public class ProductKind {
 		}
 
 		// Getting All ProductKind
-		public static List<ProductKind> getAllProductKind(DatabaseHandler handler) {
+		public static List<ProductKind> getAllProductKind(Dbh handler) {
 			List<ProductKind> productKindList = new ArrayList<ProductKind>();
 			// Select All Query
-			String selectQuery = "SELECT  * FROM " + DatabaseHandler.TABLE_PRODUCT_KIND;
+			String selectQuery = "SELECT  * FROM " + Dbh.TABLE_PRODUCT_KIND;
 
 			SQLiteDatabase db = handler.getWritableDatabase();
 			Cursor cursor = db.rawQuery(selectQuery, null);
@@ -107,32 +107,32 @@ public class ProductKind {
 		}
 
 		// Updating single ProductKind
-		public int updateProductKind(DatabaseHandler handler) {
+		public int updateProductKind(Dbh handler) {
 			SQLiteDatabase db = handler.getWritableDatabase();
 
 			ContentValues values = new ContentValues();
-			values.put(DatabaseHandler.PRODUCT_KIND_NAME, getName());
+			values.put(Dbh.PRODUCT_KIND_NAME, getName());
 			// values.put(PRODUCT_KIND_GROUP_ID, productKind.getGroup_id());
 
 			// updating row
-			int updateMessage = db.update(DatabaseHandler.TABLE_PRODUCT_KIND, values,
-					DatabaseHandler.PRODUCT_KIND_ID + " = ?",
+			int updateMessage = db.update(Dbh.TABLE_PRODUCT_KIND, values,
+					Dbh.PRODUCT_KIND_ID + " = ?",
 					new String[] { String.valueOf(getId()) });
 			db.close();
 			return updateMessage;
 		}
 
 		// Deleting single ProductKind
-		public void deleteProductKind(DatabaseHandler handler) {
+		public void deleteProductKind(Dbh handler) {
 			SQLiteDatabase db = handler.getWritableDatabase();
-			db.delete(DatabaseHandler.TABLE_PRODUCT_KIND, DatabaseHandler.PRODUCT_KIND_ID + " = ?",
+			db.delete(Dbh.TABLE_PRODUCT_KIND, Dbh.PRODUCT_KIND_ID + " = ?",
 					new String[] { String.valueOf(getId()) });
 			db.close();
 		}
 
 		// Getting ProductKind
-		public static int getProductKindCount(DatabaseHandler handler) {
-			String countQuery = "SELECT  * FROM " + DatabaseHandler.TABLE_PRODUCT_KIND;
+		public static int getProductKindCount(Dbh handler) {
+			String countQuery = "SELECT  * FROM " + Dbh.TABLE_PRODUCT_KIND;
 			SQLiteDatabase db = handler.getReadableDatabase();
 			Cursor cursor = db.rawQuery(countQuery, null);
 
@@ -148,10 +148,10 @@ public class ProductKind {
 		 * @param db
 		 * @return
 		 */
-		public int getProductKindId(DatabaseHandler db){
+		public int getProductKindId(Dbh db){
 			int productKindId=-1;
 			SQLiteDatabase readable=db.getReadableDatabase();
-			Cursor cursor =readable.query(DatabaseHandler.TABLE_PRODUCT_KIND, new String[]{DatabaseHandler.PRODUCT_KIND_ID,},DatabaseHandler.PRODUCT_KIND_NAME+"=?",
+			Cursor cursor =readable.query(Dbh.TABLE_PRODUCT_KIND, new String[]{Dbh.PRODUCT_KIND_ID,},Dbh.PRODUCT_KIND_NAME+"=?",
 					new String[] {String.valueOf(name)},null, null, null, null);
 			if (cursor != null)
 	            if(cursor.moveToFirst())

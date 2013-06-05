@@ -160,7 +160,7 @@ public class MainMenuActivity extends FragmentActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		DatabaseHandler db=new DatabaseHandler(this);
+		Dbh db=new Dbh(this);
 		spendingMainTextView.setText(Double.toString(Buys.getTotalSpending(db)));
 	}
 	

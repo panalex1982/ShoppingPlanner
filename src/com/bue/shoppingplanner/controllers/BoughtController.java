@@ -13,7 +13,7 @@ import com.bue.shoppingplanner.helpers.ShoppingListElementHelper;
 import com.bue.shoppingplanner.model.Address;
 import com.bue.shoppingplanner.model.Buys;
 import com.bue.shoppingplanner.model.CommercialProduct;
-import com.bue.shoppingplanner.model.DatabaseHandler;
+import com.bue.shoppingplanner.model.Dbh;
 import com.bue.shoppingplanner.model.Product;
 import com.bue.shoppingplanner.model.User;
 import com.bue.shoppingplanner.model.ProductKind;
@@ -26,7 +26,7 @@ public class BoughtController {
 	private ArrayList<ShoppingListElementHelper> products;
 	private ShopElementHelper shop;
 	private Context context;
-	private DatabaseHandler db=null;
+	private Dbh db=null;
 	private String listName;
 
 	public BoughtController(Context context, ArrayList<ShoppingListElementHelper> products, ShopElementHelper shop) {
@@ -34,7 +34,7 @@ public class BoughtController {
 		this.products = products;
 		this.shop=shop;
 		this.context = context;
-		db=new DatabaseHandler(context);
+		db=new Dbh(context);
 	}
 	
 	
@@ -42,7 +42,7 @@ public class BoughtController {
 	public BoughtController(Context context) {
 		super();
 		this.context = context;
-		db=new DatabaseHandler(context);
+		db=new Dbh(context);
 	}
 
 
@@ -118,7 +118,7 @@ public class BoughtController {
 		}
 		
 		if(db==null){
-			db=new DatabaseHandler(context);
+			db=new Dbh(context);
 		}
 		
 		//Create Product Model and persist shopping list

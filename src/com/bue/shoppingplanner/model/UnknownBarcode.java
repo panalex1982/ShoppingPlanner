@@ -26,12 +26,12 @@ public class UnknownBarcode {
 	 * Creates UnkwnowBarcode object with id=1;
 	 * @param handler
 	 */
-	public UnknownBarcode(DatabaseHandler handler){
+	public UnknownBarcode(Dbh handler){
 		SQLiteDatabase db = handler.getReadableDatabase();
 		id=1;
 		
-		Cursor cursor = db.query(DatabaseHandler.TABLE_UNKNOWN_BARCODE,
-				new String[] { DatabaseHandler.UNKNOWN_BARCODE_VALUE, }, DatabaseHandler.UNKNOWN_BARCODE_ID + "=?",
+		Cursor cursor = db.query(Dbh.TABLE_UNKNOWN_BARCODE,
+				new String[] { Dbh.UNKNOWN_BARCODE_VALUE, }, Dbh.UNKNOWN_BARCODE_ID + "=?",
 				new String[] { String.valueOf(id) }, null, null, null, null);
 		if (cursor != null)
 			if(cursor.moveToFirst()){
@@ -70,22 +70,22 @@ public class UnknownBarcode {
 		this.barcode = barcode;
 	}
 	
-	public void addUnknownBarcode(DatabaseHandler handler) {
+	public void addUnknownBarcode(Dbh handler) {
 		SQLiteDatabase db = handler.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(DatabaseHandler.UNKNOWN_BARCODE_VALUE, barcode);
+		values.put(Dbh.UNKNOWN_BARCODE_VALUE, barcode);
 
 		// Inserting Row
-		db.insert(DatabaseHandler.TABLE_UNKNOWN_BARCODE, null, values);
+		db.insert(Dbh.TABLE_UNKNOWN_BARCODE, null, values);
 		db.close(); // Closing database connection
 	}
 
-	public UnknownBarcode getUnknownBarcode(DatabaseHandler handler, int id) {
+	public UnknownBarcode getUnknownBarcode(Dbh handler, int id) {
 		SQLiteDatabase db = handler.getReadableDatabase();
 
-		Cursor cursor = db.query(DatabaseHandler.TABLE_UNKNOWN_BARCODE,
-				new String[] { DatabaseHandler.UNKNOWN_BARCODE_VALUE, }, DatabaseHandler.UNKNOWN_BARCODE_ID + "=?",
+		Cursor cursor = db.query(Dbh.TABLE_UNKNOWN_BARCODE,
+				new String[] { Dbh.UNKNOWN_BARCODE_VALUE, }, Dbh.UNKNOWN_BARCODE_ID + "=?",
 				new String[] { String.valueOf(id) }, null, null, null, null);
 		if (cursor != null)
 			cursor.moveToFirst();
@@ -98,15 +98,15 @@ public class UnknownBarcode {
 	}
 	
 	// Updating single UnknownBarcode
-		public int updateUnknownBarcode(DatabaseHandler handler) {
+		public int updateUnknownBarcode(Dbh handler) {
 			SQLiteDatabase db = handler.getWritableDatabase();
 
 			ContentValues values = new ContentValues();
-			values.put(DatabaseHandler.UNKNOWN_BARCODE_VALUE, (barcode-1));
+			values.put(Dbh.UNKNOWN_BARCODE_VALUE, (barcode-1));
 
 			// updating row
-			int updateMessage = db.update(DatabaseHandler.TABLE_UNKNOWN_BARCODE, values,
-					DatabaseHandler.UNKNOWN_BARCODE_ID + " = ?",
+			int updateMessage = db.update(Dbh.TABLE_UNKNOWN_BARCODE, values,
+					Dbh.UNKNOWN_BARCODE_ID + " = ?",
 					new String[] { String.valueOf(id) });
 			db.close();
 			return updateMessage;

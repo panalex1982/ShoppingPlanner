@@ -18,7 +18,7 @@ import com.bue.shoppingplanner.helpers.ExchangesAsyncTask;
 import com.bue.shoppingplanner.model.Address;
 import com.bue.shoppingplanner.model.CommercialProduct;
 import com.bue.shoppingplanner.model.Currencies;
-import com.bue.shoppingplanner.model.DatabaseHandler;
+import com.bue.shoppingplanner.model.Dbh;
 import com.bue.shoppingplanner.model.JsonUpdate;
 import com.bue.shoppingplanner.model.User;
 import com.bue.shoppingplanner.model.ProductKind;
@@ -52,7 +52,7 @@ import com.androidplot.xy.*;
 
 public class IntroActivity extends Activity {
 	
-	private DatabaseHandler db;
+	private Dbh db;
 	private JsonUpdate lastUpdate;
 	
 	@Override
@@ -60,7 +60,7 @@ public class IntroActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_intro);
 		createPlot();
-		db=new DatabaseHandler(this);
+		db=new Dbh(this);
 		initializeDatabase();
 		lastUpdate=JsonUpdate.getJsonUpdate(db);
 		String updateDateString=lastUpdate.getDate();

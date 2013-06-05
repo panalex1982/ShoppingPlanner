@@ -225,24 +225,4 @@ public class StatsContentFragment extends Fragment {
 		groupStatsListAdapter.notifyDataSetChanged();
 	}
 
-	// @Override
-	// public void onActivityCreated(Bundle savedInstanceState) {
-	// super.onActivityCreated(savedInstanceState);
-	//
-	// }
-
-	/*
-	 * @Override public void onListItemClick(ListView l, View v, int position,
-	 * long id) { super.onListItemClick(l, v, position, id);
-	 * Log.d("Item Selected", totalsBy.get(position-1)[0]); Bundle bundle=new
-	 * Bundle(); bundle.putInt("chosenTab", listGroup);
-	 * bundle.putString("listKey", totalsBy.get(position-1)[0]); FragmentManager
-	 * fragmentManager = getFragmentManager(); FragmentTransaction
-	 * fragmentTransaction = fragmentManager.beginTransaction();
-	 * StatsContentFragment fragment=new StatsContentFragment();
-	 * fragment.setArguments(bundle); fragmentTransaction.replace(this.getId(),
-	 * fragment); fragmentTransaction.addToBackStack(null);
-	 * fragmentTransaction.commit(); //Errors:has problem when I change tab }
-	 */
-
 }

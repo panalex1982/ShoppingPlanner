@@ -76,25 +76,25 @@ public class Product {
 	 * "FOREIGN KEY("+PRODUCT_GROUP_ID_FK+") REFERENCES "+
 	 * TABLE_PRODUCT_GROUP+"("+PRODUCT_GROUP_ID+")"+")";Product
 	 */
-	public int addProduct(DatabaseHandler handler) {
+	public int addProduct(Dbh handler) {
 		SQLiteDatabase db = handler.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(DatabaseHandler.PRODUCT_NAME, getName());
-		values.put(DatabaseHandler.PRODUCT_BARCODE, getBarcode());
-		values.put(DatabaseHandler.PRODUCT_KIND, getKind());
+		values.put(Dbh.PRODUCT_NAME, getName());
+		values.put(Dbh.PRODUCT_BARCODE, getBarcode());
+		values.put(Dbh.PRODUCT_KIND, getKind());
 
 		// Inserting Row
-		db.insert(DatabaseHandler.TABLE_PRODUCT, null, values);
+		db.insert(Dbh.TABLE_PRODUCT, null, values);
 		db.close(); // Closing database connection
 		return getProductId(handler);
 	}
 
-	public static Product getProduct(DatabaseHandler handler, int id) {
+	public static Product getProduct(Dbh handler, int id) {
 		SQLiteDatabase db = handler.getReadableDatabase();
 
-		Cursor cursor = db.query(DatabaseHandler.TABLE_PRODUCT, new String[] { DatabaseHandler.PRODUCT_NAME,
-				DatabaseHandler.PRODUCT_BARCODE, DatabaseHandler.PRODUCT_KIND, }, DatabaseHandler.PRODUCT_ID + "=?",
+		Cursor cursor = db.query(Dbh.TABLE_PRODUCT, new String[] { Dbh.PRODUCT_NAME,
+				Dbh.PRODUCT_BARCODE, Dbh.PRODUCT_KIND, }, Dbh.PRODUCT_ID + "=?",
 				new String[] { String.valueOf(id) }, null, null, null, null);
 		Product product=new Product();
 		if (cursor != null)
@@ -108,11 +108,11 @@ public class Product {
 		return product;
 	}
 	
-	public static Product getProduct(DatabaseHandler handler, String productName) {
+	public static Product getProduct(Dbh handler, String productName) {
 		SQLiteDatabase db = handler.getReadableDatabase();
 
-		Cursor cursor = db.query(DatabaseHandler.TABLE_PRODUCT, new String[] { DatabaseHandler.PRODUCT_ID,
-				DatabaseHandler.PRODUCT_BARCODE, DatabaseHandler.PRODUCT_KIND, }, DatabaseHandler.PRODUCT_NAME + "=?",
+		Cursor cursor = db.query(Dbh.TABLE_PRODUCT, new String[] { Dbh.PRODUCT_ID,
+				Dbh.PRODUCT_BARCODE, Dbh.PRODUCT_KIND, }, Dbh.PRODUCT_NAME + "=?",
 				new String[] { productName }, null, null, null, null);
 		Product product=new Product();
 		if (cursor != null)
@@ -127,10 +127,10 @@ public class Product {
 	}
 
 	// Getting All Product
-	public static List<Product> getAllProduct(DatabaseHandler handler) {
+	public static List<Product> getAllProduct(Dbh handler) {
 		List<Product> productList = new ArrayList<Product>();
 		// Select All Query
-		String selectQuery = "SELECT  * FROM " + DatabaseHandler.TABLE_PRODUCT;
+		String selectQuery = "SELECT  * FROM " + Dbh.TABLE_PRODUCT;
 
 		SQLiteDatabase db = handler.getWritableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
@@ -155,32 +155,32 @@ public class Product {
 	}
 
 	// Updating single Product
-	public int updateProduct(DatabaseHandler handler) {
+	public int updateProduct(Dbh handler) {
 		SQLiteDatabase db = handler.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
-		values.put(DatabaseHandler.PRODUCT_NAME, getName());
-		values.put(DatabaseHandler.PRODUCT_BARCODE, getBarcode());
-		values.put(DatabaseHandler.PRODUCT_KIND, getKind());
+		values.put(Dbh.PRODUCT_NAME, getName());
+		values.put(Dbh.PRODUCT_BARCODE, getBarcode());
+		values.put(Dbh.PRODUCT_KIND, getKind());
 
 		// updating row
-		int updateMessage = db.update(DatabaseHandler.TABLE_PRODUCT, values, DatabaseHandler.PRODUCT_ID
+		int updateMessage = db.update(Dbh.TABLE_PRODUCT, values, Dbh.PRODUCT_ID
 				+ " = ?", new String[] { String.valueOf(getId()) });
 		db.close();
 		return updateMessage;
 	}
 
 	// Deleting single Product
-	public void deleteProduct(DatabaseHandler handler) {
+	public void deleteProduct(Dbh handler) {
 		SQLiteDatabase db = handler.getWritableDatabase();
-		db.delete(DatabaseHandler.TABLE_PRODUCT, DatabaseHandler.PRODUCT_ID + " = ?",
+		db.delete(Dbh.TABLE_PRODUCT, Dbh.PRODUCT_ID + " = ?",
 				new String[] { String.valueOf(getId()) });
 		db.close();
 	}
 
 	// Getting Product
-	public static int getProductCount(DatabaseHandler handler) {
-		String countQuery = "SELECT  * FROM " + DatabaseHandler.TABLE_PRODUCT;
+	public static int getProductCount(Dbh handler) {
+		String countQuery = "SELECT  * FROM " + Dbh.TABLE_PRODUCT;
 		SQLiteDatabase db = handler.getReadableDatabase();
 		Cursor cursor = db.rawQuery(countQuery, null);
 
@@ -196,11 +196,11 @@ public class Product {
 	 * @param db
 	 * @return
 	 */
-	public int getProductId(DatabaseHandler db){
+	public int getProductId(Dbh db){
 		int productId=-1;
 		SQLiteDatabase readable=db.getReadableDatabase();
-		Cursor cursor =readable.query(DatabaseHandler.TABLE_PRODUCT, new String[]{DatabaseHandler.PRODUCT_ID,},DatabaseHandler.PRODUCT_NAME+"=? AND "
-									+DatabaseHandler.PRODUCT_BARCODE+"=? AND "+DatabaseHandler.PRODUCT_KIND+"=?",
+		Cursor cursor =readable.query(Dbh.TABLE_PRODUCT, new String[]{Dbh.PRODUCT_ID,},Dbh.PRODUCT_NAME+"=? AND "
+									+Dbh.PRODUCT_BARCODE+"=? AND "+Dbh.PRODUCT_KIND+"=?",
 				new String[] {String.valueOf(name),barcode,String.valueOf(kind)},null, null, null, null);
 		if (cursor != null)
             if(cursor.moveToFirst())

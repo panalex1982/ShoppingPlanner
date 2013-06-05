@@ -6,14 +6,14 @@ import android.content.Context;
 
 import com.bue.shoppingplanner.helpers.ShopElementHelper;
 import com.bue.shoppingplanner.model.Address;
-import com.bue.shoppingplanner.model.DatabaseHandler;
+import com.bue.shoppingplanner.model.Dbh;
 import com.bue.shoppingplanner.model.Shop;
 import com.bue.shoppingplanner.model.ShopDescription;
 
 public class ShopController {
 	private ShopElementHelper element;
 	private Context context;
-	private DatabaseHandler db=null;
+	private Dbh db=null;
 
 	public ShopController(ShopElementHelper element) {
 		super();
@@ -24,7 +24,7 @@ public class ShopController {
 		super();
 		this.element=new ShopElementHelper();
 		this.context = context;
-		db=new DatabaseHandler(context);
+		db=new Dbh(context);
 	}
 	
 	public ShopElementHelper getElement() {
