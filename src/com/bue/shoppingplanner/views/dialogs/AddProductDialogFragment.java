@@ -260,7 +260,7 @@ public class AddProductDialogFragment extends DialogFragment {
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				if(!priceAddDialogEditText.getText().toString().equals("")){
-						priceAddDialogEditText.setText(formatCurrecy(priceAddDialogEditText.getText().toString(),currencyAddDialogSpinner.getSelectedItem().toString()));		
+						priceAddDialogEditText.setText(CurrencyController.formatCurrecy(priceAddDialogEditText.getText().toString(),currencyAddDialogSpinner.getSelectedItem().toString()));		
 				}
 			}
 		});
@@ -272,7 +272,7 @@ public class AddProductDialogFragment extends DialogFragment {
 			public void onItemSelected(AdapterView<?> arg0, View arg1,
 					int arg2, long arg3) {
 				if(!priceAddDialogEditText.getText().toString().equals(""))
-					priceAddDialogEditText.setText(formatCurrecy(priceAddDialogEditText.getText().toString(),currencyAddDialogSpinner.getSelectedItem().toString()));
+					priceAddDialogEditText.setText(CurrencyController.formatCurrecy(priceAddDialogEditText.getText().toString(),currencyAddDialogSpinner.getSelectedItem().toString()));
 				
 			}
 
@@ -311,21 +311,6 @@ public class AddProductDialogFragment extends DialogFragment {
 			}
     		
 		});
-    }
-    
-    private String formatCurrecy(String price, String currencyIso){
-    	DecimalFormat format = new DecimalFormat();
-		Currency currency=Currency.getInstance(currencyIso);
-		//DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-		//symbols.setCurrency(currency);
-		format.setGroupingUsed(false);
-		format.setMaximumFractionDigits(currency.getDefaultFractionDigits());
-		format.setMinimumFractionDigits(currency.getDefaultFractionDigits());
-		//Log.d("Currency test: ",currency.getCurrencyCode()+" "+currency.getSymbol()+" "+currency.getDefaultFractionDigits());
-		format.setCurrency(currency);
-		//format.setDecimalFormatSymbols(symbols);
-		String formatted = format.format(Double.parseDouble(price));
-		return formatted;
     }
 	
 

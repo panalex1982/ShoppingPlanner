@@ -1,5 +1,6 @@
 package com.bue.shoppingplanner.controllers;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Currency;
@@ -134,5 +135,39 @@ public class CurrencyController implements SPSharedPreferences {
 		}
 		return price;
 	}
+	
+	public String getCurrencySymbol(){
+        Currency currency=Currency.getInstance(defaultCurrency);
+        return currency.getSymbol();
+	}
+	public static String formatCurrecy(String price, String currencyIso){
+    	DecimalFormat format = new DecimalFormat();
+		Currency currency=Currency.getInstance(currencyIso);
+		//DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+		//symbols.setCurrency(currency);
+		format.setGroupingUsed(false);
+		format.setMaximumFractionDigits(currency.getDefaultFractionDigits());
+		format.setMinimumFractionDigits(currency.getDefaultFractionDigits());
+		//Log.d("Currency test: ",currency.getCurrencyCode()+" "+currency.getSymbol()+" "+currency.getDefaultFractionDigits());
+		format.setCurrency(currency);
+		//format.setDecimalFormatSymbols(symbols);
+		String formatted = format.format(Double.parseDouble(price));
+		return formatted;
+    }
+	
+	public String formatCurrecy(String price){
+    	DecimalFormat format = new DecimalFormat();
+		Currency currency=Currency.getInstance(defaultCurrency);
+		//DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+		//symbols.setCurrency(currency);
+		format.setGroupingUsed(false);
+		format.setMaximumFractionDigits(currency.getDefaultFractionDigits());
+		format.setMinimumFractionDigits(currency.getDefaultFractionDigits());
+		//Log.d("Currency test: ",currency.getCurrencyCode()+" "+currency.getSymbol()+" "+currency.getDefaultFractionDigits());
+		format.setCurrency(currency);
+		//format.setDecimalFormatSymbols(symbols);
+		String formatted = format.format(Double.parseDouble(price));
+		return formatted;
+    }
 
 }

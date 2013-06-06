@@ -1,10 +1,15 @@
-package com.bue.shoppingplanner;
+package com.bue.shoppingplanner.views.fragments;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import com.bue.shoppingplanner.R;
+import com.bue.shoppingplanner.R.id;
+import com.bue.shoppingplanner.R.layout;
+import com.bue.shoppingplanner.R.string;
 import com.bue.shoppingplanner.controllers.BoughtController;
+import com.bue.shoppingplanner.utilities.FilterMode;
 import com.bue.shoppingplanner.views.adapters.StatsArrayAdapter;
 import com.bue.shoppingplanner.views.adapters.StatsExpandableListAdapter;
 import com.bue.shoppingplanner.views.dialogs.StatsFilterDialogFragment;
@@ -30,13 +35,10 @@ import android.widget.TextView;
  * 
  */
 public class StatsMainFragment extends Fragment{
-	// TODO: Rename parameter arguments, choose names that match
-	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-	private static final String ARG_PARAM1 = "param1";
+	private static final String CHOSEN_TAB = "chosenTab";
 	private static final String ARG_PARAM2 = "param2";
 
-	// TODO: Rename and change types of parameters
-	private String mParam1;
+	private int chosenTab;
 	private String mParam2;
 	
 	private int fragmentId;
@@ -91,7 +93,7 @@ public class StatsMainFragment extends Fragment{
 	 * Use this factory method to create a new instance of this fragment using
 	 * the provided parameters.
 	 * 
-	 * @param param1
+	 * @param chosenTab
 	 *            Parameter 1.
 	 * @param param2
 	 *            Parameter 2.
@@ -100,7 +102,7 @@ public class StatsMainFragment extends Fragment{
 	public static StatsMainFragment newInstance(String param1, String param2) {
 		StatsMainFragment fragment = new StatsMainFragment();
 		Bundle args = new Bundle();
-		args.putString(ARG_PARAM1, param1);
+		args.putInt(CHOSEN_TAB, 1);
 		args.putString(ARG_PARAM2, param2);
 		fragment.setArguments(args);
 		return fragment;
@@ -114,7 +116,7 @@ public class StatsMainFragment extends Fragment{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
-			mParam1 = getArguments().getString(ARG_PARAM1);
+			chosenTab = getArguments().getInt(CHOSEN_TAB);
 			mParam2 = getArguments().getString(ARG_PARAM2);
 		}
 		
@@ -135,9 +137,21 @@ public class StatsMainFragment extends Fragment{
 		View view = inflater.inflate(R.layout.fragment_main_stats,
 				container, false);
 		initializeView(view);
-		productCase();
-		initializeListeners();
-		
+		switch(chosenTab){
+			case 1:
+				buyerCase();
+				break;
+			case 2:
+				productCase();
+				break;
+			case 3:
+				shopCase();
+				break;
+			case 4:
+				kindCase();
+				break;
+		}
+		initializeListeners();		
 		return view;
 	}
 	
@@ -149,10 +163,10 @@ public class StatsMainFragment extends Fragment{
 		filterButton4=(Button) view.findViewById(R.id.filterButton4);
 		
 		//filter ArrayList
-		filter1=new ArrayList<String>();
-		filter2=new ArrayList<String>();
-		filter3=new ArrayList<String>();
-		filter4=new ArrayList<String>();
+		filter1=null;
+		filter2=null;
+		filter3=null;
+		filter4=null;
 		
 		//date buttons
 		fromButton=(Button) view.findViewById(R.id.fromMainStatsButton);
@@ -227,25 +241,193 @@ public class StatsMainFragment extends Fragment{
 		filterButton3.setText(R.string.brand);
 		filterButton4.setText(R.string.shop);
 		
+		//filter buttons listeners
 		filterButton1.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				openFilterDialog("user");
-				
+				openFilterDialog(FilterMode.USER,1);				
 			}
 		});
 		
-		sumsArrayList.addAll(bController.getTotalByProduct(dateFormater.format(fromDate.getTime()),
-										dateFormater.format(toDate.getTime())));
+		filterButton2.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				openFilterDialog(FilterMode.KIND,2);				
+			}
+		});
+		
+		filterButton3.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				openFilterDialog(FilterMode.BRAND,3);				
+			}
+		});
+		
+		filterButton4.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				openFilterDialog(FilterMode.SHOP,4);				
+			}
+		});
+		
+		sumsArrayList.addAll(bController.getFilteredProductSpending(dateFormater.format(fromDate.getTime()),
+				dateFormater.format(toDate.getTime()), filter1, filter2, filter4, filter3));
 		
 	}
 	
-	protected void openFilterDialog(String filterType) {
+	private void buyerCase(){
+		filterButton1.setText(R.string.product);
+		filterButton2.setText(R.string.category);
+		filterButton3.setText(R.string.brand);
+		filterButton4.setText(R.string.shop);
+		
+		//filter buttons listeners
+		filterButton1.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				openFilterDialog(FilterMode.PRODUCT,1);				
+			}
+		});
+		
+		filterButton2.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				openFilterDialog(FilterMode.KIND,2);				
+			}
+		});
+		
+		filterButton3.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				openFilterDialog(FilterMode.BRAND,3);				
+			}
+		});
+		
+		filterButton4.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				openFilterDialog(FilterMode.SHOP,4);				
+			}
+		});
+		
+		sumsArrayList.addAll(bController.getFilteredUserSpending(dateFormater.format(fromDate.getTime()),
+				dateFormater.format(toDate.getTime()), filter1, filter2, filter4, filter3));
+	}
+	
+	public void shopCase(){
+		filterButton1.setText(R.string.product);
+		filterButton2.setText(R.string.category);
+		filterButton3.setText(R.string.brand);
+		filterButton4.setText(R.string.buyer);
+		
+		//filter buttons listeners
+		filterButton1.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				openFilterDialog(FilterMode.PRODUCT,1);				
+			}
+		});
+		
+		filterButton2.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				openFilterDialog(FilterMode.KIND,2);				
+			}
+		});
+		
+		filterButton3.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				openFilterDialog(FilterMode.BRAND,3);				
+			}
+		});
+		
+		filterButton4.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				openFilterDialog(FilterMode.USER,4);				
+			}
+		});
+		
+		sumsArrayList.addAll(bController.getFilteredShopSpending(dateFormater.format(fromDate.getTime()),
+				dateFormater.format(toDate.getTime()), filter1, filter2, filter4, filter3));
+	}
+	
+	public void kindCase(){
+		filterButton1.setText(R.string.product);
+		filterButton2.setText(R.string.shop);
+		filterButton3.setText(R.string.brand);
+		filterButton4.setText(R.string.buyer);
+		
+		//filter buttons listeners
+		filterButton1.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				openFilterDialog(FilterMode.PRODUCT,1);				
+			}
+		});
+		
+		filterButton2.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				openFilterDialog(FilterMode.SHOP,2);				
+			}
+		});
+		
+		filterButton3.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				openFilterDialog(FilterMode.BRAND,3);				
+			}
+		});
+		
+		filterButton4.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				openFilterDialog(FilterMode.USER,4);				
+			}
+		});
+		
+		sumsArrayList.addAll(bController.getFilteredKindSpending(dateFormater.format(fromDate.getTime()),
+				dateFormater.format(toDate.getTime()), filter1, filter2, filter4, filter3));
+	}
+	
+	protected void openFilterDialog(int filterType, int filterListNumber) {
 		StatsFilterDialogFragment filterDialog=new StatsFilterDialogFragment();
 		Bundle bundle=new Bundle();
-		bundle.putString("filterType", filterType);
+		bundle.putInt("filterType", filterType);
 		bundle.putInt("fragmentId", fragmentId);
+		bundle.putInt("filterListNumber",filterListNumber);
+		switch(filterListNumber){
+			case 1:
+				bundle.putStringArrayList("existingFilterList", filter1);
+				break;
+			case 2:
+				bundle.putStringArrayList("existingFilterList", filter2);
+				break;
+			case 3:
+				bundle.putStringArrayList("existingFilterList", filter3);
+				break;
+			case 4:
+				bundle.putStringArrayList("existingFilterList", filter4);
+				break;
+		}
 		filterDialog.setArguments(bundle);
 		filterDialog.show(getFragmentManager(), "StatsFilterDialogFragment");
 		
@@ -259,7 +441,43 @@ public class StatsMainFragment extends Fragment{
 	}
 
 	public void setFilterList1(ArrayList<String> list){
-		filter1.addAll(list);
+		if(filter1==null)
+			filter1=new ArrayList<String>();
+		if(list.isEmpty())
+			filter1=null;
+		else
+			filter1.addAll(list);
+		updateResultList();
+	}
+	
+	public void setFilterList2(ArrayList<String> list){
+		if(filter2==null)
+			filter2=new ArrayList<String>();
+		if(list.isEmpty())
+			filter2=null;
+		else
+			filter2.addAll(list);
+		updateResultList();
+	}
+	
+	public void setFilterList3(ArrayList<String> list){
+		if(filter3==null)
+			filter3=new ArrayList<String>();
+		if(list.isEmpty())
+			filter3=null;
+		else
+			filter3.addAll(list);
+		updateResultList();
+	}
+	
+	public void setFilterList4(ArrayList<String> list){
+		if(filter4==null)
+			filter4=new ArrayList<String>();
+		if(list.isEmpty())
+			filter4=null;
+		else
+			filter4.addAll(list);
+		updateResultList();
 	}
 
 }

@@ -2,6 +2,7 @@ package com.bue.shoppingplanner.controllers;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 import android.content.Context;
@@ -308,4 +309,102 @@ public class BoughtController {
 		return price;
 	}	
 	
+	 /**
+	  * Returns spending of products that filtered by the parameters 
+	  * and a specific period of time
+	  * @param fromDate
+	  * @param toDate
+	  * @param users
+	  * @param kinds
+	  * @param shops
+	  * @param brands
+	  * @return
+	  */
+	public ArrayList<String[]> getFilteredProductSpending(String fromDate, String toDate,
+			ArrayList<String> users, ArrayList<String> kinds,ArrayList<String> shops, ArrayList<String> brands){
+		return Buys.getFilteredProductSpending(db, fromDate, toDate, users, kinds, shops, brands);
+	}
+	
+	/**
+	 * Returns spending of users that filtered by the parameters 
+	  * and a specific period of time
+	 * @param fromDate
+	 * @param toDate
+	 * @param products
+	 * @param kinds
+	 * @param shops
+	 * @param brands
+	 * @return
+	 */
+	public Collection<? extends String[]> getFilteredUserSpending(
+			String fromDate, String toDate, ArrayList<String> products,
+			ArrayList<String> kinds, ArrayList<String> shops,
+			ArrayList<String> brands) {
+		return Buys.getFilteredUserSpending(db, fromDate, toDate, products, kinds, shops, brands);
+	}
+	
+	public Collection<? extends String[]> getFilteredShopSpending(
+			String fromDate, String toDate, ArrayList<String> products,
+			ArrayList<String> kinds, ArrayList<String> users,
+			ArrayList<String> brands) {
+		return Buys.getFilteredShopSpending(db, fromDate, toDate, products, kinds, users, brands);
+	}
+	
+	public Collection<? extends String[]> getFilteredKindSpending(
+			String fromDate, String toDate, ArrayList<String> products,
+			ArrayList<String> shops, ArrayList<String> users,
+			ArrayList<String> brands) {
+		return Buys.getFilteredKindSpending(db, fromDate, toDate, products, shops, users, brands);
+	}
+
+
+
+	public ArrayList<? extends String> getAllUsers() {
+		ArrayList<String> userNames=new ArrayList<String>();
+		for(User user:User.getAllUser(db)){
+			userNames.add(user.getName());
+		}
+		return userNames;
+	}
+
+
+
+	public Collection<? extends String> getAllKinds() {
+		ArrayList<String> kindNames=new ArrayList<String>();
+		for(ProductKind kind:ProductKind.getAllProductKind(db)){
+			kindNames.add(kind.getName());
+		}
+		return kindNames;
+	}
+
+
+
+	public Collection<? extends String> getAllBrands() {
+		ArrayList<String> brands=new ArrayList<String>();
+		for(CommercialProduct brand:CommercialProduct.getAllCommercialProduct(db)){
+			brands.add(brand.getCompanyBrand());
+		}
+		return brands;
+	}
+
+
+
+	public Collection<? extends String> getAllShops() {
+		ArrayList<String> shopNames=new ArrayList<String>();
+		for(Shop shop:Shop.getAllShop(db)){
+			shopNames.add(shop.getName());
+		}
+		return shopNames;
+	}
+
+
+
+	public Collection<? extends String> getAllProducts() {
+		ArrayList<String> productNames=new ArrayList<String>();
+		for(Product product:Product.getAllProduct(db)){
+			productNames.add(product.getName());
+		}
+		return productNames;
+	}
+
 }

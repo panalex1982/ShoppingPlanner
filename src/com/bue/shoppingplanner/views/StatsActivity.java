@@ -3,8 +3,8 @@ package com.bue.shoppingplanner.views;
 import java.util.ArrayList;
 
 import com.bue.shoppingplanner.R;
-import com.bue.shoppingplanner.StatsMainFragment;
 import com.bue.shoppingplanner.views.dialogs.StatsFilterDialogFragment;
+import com.bue.shoppingplanner.views.fragments.StatsMainFragment;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -63,13 +63,27 @@ public class StatsActivity extends FragmentActivity implements StatsFilterDialog
 	@Override
 	public void onDialogPositiveClick(DialogFragment dialog) {
 		StatsFilterDialogFragment filters=(StatsFilterDialogFragment)dialog;
+		ArrayList<String> filterList=filters.getFiltersList();
 		FragmentManager manager=getSupportFragmentManager();		
 		StatsMainFragment fragment=(StatsMainFragment) manager.findFragmentById(filters.getFragmentId());
+		switch(filters.getFilterListNumber()){
+			case 1:
+				fragment.setFilterList1(filterList);
+				break;
+			case 2:
+				fragment.setFilterList2(filterList);
+				break;
+			case 3:
+				fragment.setFilterList3(filterList);
+				break;
+			case 4:
+				fragment.setFilterList4(filterList);
+				break;
+		}
 	}
 
 	@Override
 	public void onDialogNegativeClick(DialogFragment dialog) {
-		// TODO Auto-generated method stub
 		
 	}
 
