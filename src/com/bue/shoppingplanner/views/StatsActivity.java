@@ -65,7 +65,7 @@ public class StatsActivity extends FragmentActivity implements StatsFilterDialog
 		StatsFilterDialogFragment filters=(StatsFilterDialogFragment)dialog;
 		ArrayList<String> filterList=filters.getFiltersList();
 		FragmentManager manager=getSupportFragmentManager();		
-		StatsMainFragment fragment=(StatsMainFragment) manager.findFragmentById(filters.getFragmentId());
+		StatsMainFragment fragment=(StatsMainFragment) manager.findFragmentByTag(filters.getFragmentTag());
 		switch(filters.getFilterListNumber()){
 			case 1:
 				fragment.setFilterList1(filterList);

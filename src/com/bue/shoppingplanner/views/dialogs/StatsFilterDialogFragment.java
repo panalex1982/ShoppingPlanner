@@ -51,8 +51,8 @@ public class StatsFilterDialogFragment extends DialogFragment {
 	/** In which list corresponds to the called fragment */
 	private int filterListNumber;
 
-	/** Fragment Id of the fragment which called the fragment dialog */
-	private int fragmentId;
+	/** Fragment Tag of the fragment which called the fragment dialog */
+	private String fragmentTag;
 
 	private BoughtController bController;
 
@@ -84,7 +84,7 @@ public class StatsFilterDialogFragment extends DialogFragment {
 		Bundle filterBundle = getArguments();
 		if (filterBundle != null) {
 			filterType = filterBundle.getInt("filterType");
-			fragmentId = filterBundle.getInt("fragmentId");
+			fragmentTag = filterBundle.getString("fragmentTag");
 			filterListNumber = filterBundle.getInt("filterListNumber");
 			filtersList = filterBundle.getStringArrayList("existingFilterList");
 		}
@@ -154,8 +154,8 @@ public class StatsFilterDialogFragment extends DialogFragment {
 		return filtersList;
 	}
 
-	public int getFragmentId() {
-		return fragmentId;
+	public String getFragmentTag() {
+		return fragmentTag;
 	}
 
 	public int getFilterMode() {
