@@ -5,28 +5,20 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import com.bue.shoppingplanner.R;
-import com.bue.shoppingplanner.R.id;
-import com.bue.shoppingplanner.R.layout;
-import com.bue.shoppingplanner.R.string;
 import com.bue.shoppingplanner.controllers.BoughtController;
 import com.bue.shoppingplanner.utilities.FilterMode;
 import com.bue.shoppingplanner.views.adapters.StatsArrayAdapter;
-import com.bue.shoppingplanner.views.adapters.StatsExpandableListAdapter;
 import com.bue.shoppingplanner.views.dialogs.StatsFilterDialogFragment;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ListView;
-import android.widget.TextView;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Use the

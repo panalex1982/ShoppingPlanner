@@ -184,13 +184,14 @@ public class AddProductDialogFragment extends DialogFragment {
 		Product selectedProduct=bController.getProduct(productAddDialogEditText.getText().toString());
 		productKindAddDialogSpinner.setSelection(selectedProduct.getKind()-1);
 		String[] price=bController.getLastPriceAndVat(selectedProduct.getId());
-		priceAddDialogEditText.setText(price[0]);
-		int vatAddDialogSpinnerIndex=vat.getVatRates().indexOf(price[1]);
-		if(vatAddDialogSpinnerIndex>=0)
-			vatAddDialogSpinner.setSelection(vatAddDialogSpinnerIndex);
-		else
-			vatAddDialogAutoCompleteTextView.setText(price[1]);
-		
+		if(Double.parseDouble(price[0])!=0.0){
+			priceAddDialogEditText.setText(price[0]);
+			int vatAddDialogSpinnerIndex=vat.getVatRates().indexOf(price[1]);
+			if(vatAddDialogSpinnerIndex>=0)
+				vatAddDialogSpinner.setSelection(vatAddDialogSpinnerIndex);
+			else
+				vatAddDialogAutoCompleteTextView.setText(price[1]);
+		}		
 	}
 
 

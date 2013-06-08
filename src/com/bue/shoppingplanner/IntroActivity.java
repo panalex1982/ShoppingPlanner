@@ -25,6 +25,7 @@ import com.bue.shoppingplanner.model.ProductKind;
 import com.bue.shoppingplanner.model.Shop;
 import com.bue.shoppingplanner.model.ShopDescription;
 import com.bue.shoppingplanner.model.UnknownBarcode;
+import com.bue.shoppingplanner.utilities.ScanBarcode;
 import com.bue.shoppingplanner.utilities.plotformats.WeeklyXAxisFormat;
 import com.bue.shoppingplanner.utilities.plotformats.YearlyXAxisFormat;
 import com.bue.shoppingplanner.views.MainMenuActivity;
@@ -42,8 +43,10 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MotionEvent;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.androidplot.xy.SimpleXYSeries;
@@ -58,7 +61,17 @@ public class IntroActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		//Test Barcode Scanner
 		setContentView(R.layout.activity_intro);
+		Button activityButton = (Button) findViewById(R.id.scanButton);
+        activityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(IntroActivity.this, 
+                		ScanBarcode.class));
+            }
+        });
+        //Test Plot
 		createPlot();
 		db=new Dbh(this);
 		initializeDatabase();

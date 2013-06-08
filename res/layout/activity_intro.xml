@@ -15,15 +15,22 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:text="@string/intro_message" />
-    
+
+     <Button
+         android:id="@+id/scanButton"
+         style="?android:attr/buttonStyleSmall"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignLeft="@+id/textView1"
+         android:layout_below="@+id/textView1"
+         android:text="Button" />
+
      <com.androidplot.xy.XYPlot
-            android:id="@+id/mySimpleXYPlot"
-            android:layout_width="fill_parent"
-            android:layout_alignTop="@id/textView1"
-            android:layout_height="fill_parent"
-            android:layout_marginTop="10px"
-            android:layout_marginLeft="10px"
-            android:layout_marginRight="10px"
-            title="A Simple XYPlot Example"/>
+         android:id="@+id/mySimpleXYPlot"
+         android:layout_width="360dp"
+         android:layout_height="360dp"
+         android:layout_alignRight="@+id/scanButton"
+         android:layout_below="@+id/scanButton"
+         android:layout_marginTop="42dp" />
 
 </RelativeLayout>
