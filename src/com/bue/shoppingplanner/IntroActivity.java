@@ -39,6 +39,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.v4.app.FragmentActivity;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
@@ -53,7 +54,7 @@ import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.series.XYSeries;
 import com.androidplot.xy.*;
 
-public class IntroActivity extends Activity {
+public class IntroActivity extends FragmentActivity {
 	
 	private Dbh db;
 	private JsonUpdate lastUpdate;
@@ -63,14 +64,6 @@ public class IntroActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		//Test Barcode Scanner
 		setContentView(R.layout.activity_intro);
-		Button activityButton = (Button) findViewById(R.id.scanButton);
-        activityButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(IntroActivity.this, 
-                		ScanBarcode.class));
-            }
-        });
         //Test Plot
 		createPlot();
 		db=new Dbh(this);
@@ -334,5 +327,7 @@ public class IntroActivity extends Activity {
         // To get rid of them call disableAllMarkup():
         //mySimpleXYPlot.disableAllMarkup();
 	}
+	
+	
 
 }

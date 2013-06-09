@@ -3,8 +3,10 @@ package com.bue.shoppingplanner.views;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.bue.shoppingplanner.IntroActivity;
 import com.bue.shoppingplanner.R;
 import com.bue.shoppingplanner.utilities.SPSharedPreferences;
+import com.bue.shoppingplanner.utilities.ScanBarcode;
 import com.bue.shoppingplanner.utilities.SerializeObject;
 import com.bue.shoppingplanner.views.adapters.ShoppingListElementArrayAdapter;
 import com.bue.shoppingplanner.views.dialogs.AddProductDialogFragment;
@@ -36,6 +38,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 
@@ -49,6 +52,7 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 	private ImageButton addShopButton;
 	private ImageButton saveListImageButton;
 	private ImageButton persistShoppingListButton;
+	private ImageButton barcodeScanImageButton;
 	
 	
 	private TextView shopNameTextView;
@@ -209,6 +213,16 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 			}
 		});
 		
+		//Scan Barcode
+		barcodeScanImageButton=(ImageButton) findViewById(R.id.barcodeScanImageButton);
+		barcodeScanImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(ShoppingListActivity.this, 
+                		ScanBarcode.class),1);
+            }
+        });
+		
 		//shoppingListView and shoppingListAdapter initialize
 		shoppingListView=(ListView) findViewById(R.id.shoppingListView);
 		shoppingListAdapter=new ShoppingListElementArrayAdapter(this,R.layout.shopping_list_element_view, shoppingListArrayList);
@@ -276,12 +290,43 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 		shoppingListAdapter=null;
 	}
 	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		if(requestCode==1){
+			Bundle extras=data.getExtras();
+			String barcode=(extras.getString("lastBarcodeScan")==null?"noBarcode":extras.getString("lastBarcodeScan"));
+			if(barcode=="noBarcode" || barcode==""){
+				Toast toast=new Toast(this);
+				toast.setText("Wrong Barcode!");
+				toast.setDuration(Toast.LENGTH_LONG);
+				toast.show();
+			}else{
+				showAddProductDialog(barcode);
+			}
+		}
+	}
+	
 	/**
 	 * Opens dialog fragment to add new product to the list.
 	 */
 	protected void showAddProductDialog() {
         // Create an instance of the dialog fragment and show it
 		DialogFragment dialog = new AddProductDialogFragment();
+        dialog.show(getSupportFragmentManager(), "AddProductDialogFragment");        
+    }
+	
+	/**
+	 * Opens dialog fragment to add new product to the list.
+	 * @param barcode -provides barcode to load existing product or add new commercial product.
+	 */
+	protected void showAddProductDialog(String barcode) {
+        // Create an instance of the dialog fragment and show it
+		DialogFragment dialog = new AddProductDialogFragment();
+		Bundle barcodeBundle=new Bundle();
+		barcodeBundle.putString("barcode", barcode);
+		dialog.setArguments(barcodeBundle);
         dialog.show(getSupportFragmentManager(), "AddProductDialogFragment");        
     }
 	
@@ -363,12 +408,16 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 	}
 	
 	protected void refreshElements(){
-		if(shopElement.getName()!=null){
-			shopNameTextView.setText(shopElement.getName()+" @ "+shopElement.getCity());
-		}else{
-			shopNameTextView.setText(R.string.no_shop);
+		try{
+			if(shopElement.getName()!=null){
+				shopNameTextView.setText(shopElement.getName()+" @ "+shopElement.getCity());
+			}else{
+				shopNameTextView.setText(R.string.no_shop);
+			}
+			notifyElementChangesOnShoppingListAdapter();
+		}catch(Exception ex){
+			Log.d("Exception: ", ex.toString());
 		}
-		notifyElementChangesOnShoppingListAdapter();
 	}
 	
 	protected void persistItems(Context context, int persistType){	

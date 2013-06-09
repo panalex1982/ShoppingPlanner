@@ -35,6 +35,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public class AddProductDialogFragment extends DialogFragment {
 	private Dbh db;
@@ -44,6 +45,9 @@ public class AddProductDialogFragment extends DialogFragment {
 	
 	private AutoCompleteTextView productAddDialogEditText,
 								brandAddDialogEditText;
+	
+	private TextView barcodeTextView;
+	
 	private EditText priceAddDialogEditText;
 	private EditText numberAddDialogEditText,
 					vatAddDialogAutoCompleteTextView;
@@ -64,10 +68,18 @@ public class AddProductDialogFragment extends DialogFragment {
 	
 	private BoughtController bController;
 	
+	private String barcode;
+	
 	
 
 	@Override
-	public Dialog onCreateDialog(Bundle savedInstanceState) {
+	public Dialog onCreateDialog(Bundle savedInstanceState) {	
+		Bundle barcodeBundle=getArguments();
+		if(barcodeBundle!=null){
+			barcode=barcodeBundle.getString("barcode");			
+		}else{
+			barcode="No Barcode Provided.";//TODO: Add to R.string
+		}
 		db=new Dbh(getActivity());
 		listElement=new ShoppingListElementHelper();
 		vat=new VatHelper(getActivity());
@@ -83,7 +95,11 @@ public class AddProductDialogFragment extends DialogFragment {
 		brandAddDialogEditText=(AutoCompleteTextView) dialogMainView.findViewById(R.id.brandAddDialogEditText);
 		priceAddDialogEditText=(EditText) dialogMainView.findViewById(R.id.priceAddDialogEditText);
 		numberAddDialogEditText=(EditText) dialogMainView.findViewById(R.id.numberAddDialogEditText);
-			
+		
+		//Text View
+		//Barcode
+		barcodeTextView=(TextView) dialogMainView.findViewById(R.id.barcodeTextView);
+		barcodeTextView.setText(barcode);
 		
 		//Add Adapters to auto-complete text views
 		bController=new BoughtController(getActivity());
@@ -159,8 +175,12 @@ public class AddProductDialogFragment extends DialogFragment {
                 	listElement.setUser(productGroupAddDialogSpinner.getSelectedItem().toString());
                 	listElement.setKind(productKindAddDialogSpinner.getSelectedItem().toString());
                 	listElement.setChecked(true);
-                	listElement.setBarcode("unknown");//TODO: When I add barcodes I will present
-                								//the barcode or "unknown" for not known barcodes
+                	//the barcode or "unknown" for not known barcodes
+                	if(barcode=="" || barcode=="No Barcode Provided.")
+                		listElement.setBarcode("unknown");
+                	else
+                		listElement.setBarcode(barcode);
+                								
                 	listElement.setCurrency(currencyAddDialogSpinner.getSelectedItem().toString());
                 	listElement.setVat(Double.parseDouble(vatAddDialogAutoCompleteTextView.getText().toString())/100);
                 	// Send the positive button event back to the host activity
@@ -181,7 +201,7 @@ public class AddProductDialogFragment extends DialogFragment {
 	
 	
 	protected void updateProductDialog() {
-		Product selectedProduct=bController.getProduct(productAddDialogEditText.getText().toString());
+		Product selectedProduct=bController.getProduct(productAddDialogEditText.getText().toString());		
 		productKindAddDialogSpinner.setSelection(selectedProduct.getKind()-1);
 		String[] price=bController.getLastPriceAndVat(selectedProduct.getId());
 		if(Double.parseDouble(price[0])!=0.0){
@@ -211,8 +231,7 @@ public class AddProductDialogFragment extends DialogFragment {
 		int quantity=Integer.parseInt(numberAddDialogEditText.getText().toString())+i;
 		if(quantity<0)
 			quantity=0;
-		numberAddDialogEditText.setText(Integer.toString(quantity));
-		
+		numberAddDialogEditText.setText(Integer.toString(quantity));		
 	}
 
 
@@ -312,6 +331,14 @@ public class AddProductDialogFragment extends DialogFragment {
 			}
     		
 		});
+    }
+    
+    public void checkBarcodeExistance(String barcode){
+    	String[] product=bController.getCommerialProduct(barcode);
+    	if(!product.equals("0")){
+    		productAddDialogEditText.setText(product[2]);
+    		brandAddDialogEditText.setText(product[1]);
+    	}
     }
 	
 

@@ -564,5 +564,6 @@
     <string name="import_db">Import</string>
     <string name="database">Database</string>
     <string name="category">Category</string>
+    <string name="barcode">Barcode</string>
 
 </resources>

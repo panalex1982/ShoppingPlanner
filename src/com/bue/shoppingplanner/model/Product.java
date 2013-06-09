@@ -209,4 +209,22 @@ public class Product {
 		readable.close();
 		return productId;
 	}
+
+	public static Product getProductFromBarcode(Dbh handler, String barcode) {
+		SQLiteDatabase db = handler.getReadableDatabase();
+
+		Cursor cursor = db.query(Dbh.TABLE_PRODUCT, new String[] { Dbh.PRODUCT_ID,
+				Dbh.PRODUCT_NAME, Dbh.PRODUCT_KIND, }, Dbh.PRODUCT_BARCODE + "=?",
+				new String[] { barcode }, null, null, null, null);
+		Product product=new Product();
+		if (cursor != null)
+			if(cursor.moveToFirst()){
+		 product = new Product(cursor.getInt(0), cursor.getString(1), barcode,
+				 cursor.getInt(2));
+			}
+		cursor.close();
+		db.close();
+
+		return product;
+	}
 }

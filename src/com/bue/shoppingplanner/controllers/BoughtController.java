@@ -406,5 +406,32 @@ public class BoughtController {
 		}
 		return productNames;
 	}
+	
+	/**
+	 * Return String array with 3 elements. The 1st is the product description or company name,
+	 * the 2nd is the commercial name of product(it is not used for easier product input
+	 * and the 3rd is the product which describes the barcode.
+	 * 
+	 * If the 1st element of the return array is "0" then Commercial Product does not exist.
+	 * 	
+	 * @param barcode
+	 * @return
+	 */
+	public String[] getCommerialProduct(String barcode){
+		String[] barcodedProduct=new String[3];
+		CommercialProduct cProduct=CommercialProduct.getCommercialProduct(db, barcode);
+		if(cProduct.isEmpty()){
+			Product product=Product.getProductFromBarcode(db, barcode);
+			barcodedProduct[0]=cProduct.getCompanyBrand();
+			barcodedProduct[1]=cProduct.getCommercialName();
+			barcodedProduct[2]=product.getName();
+			return barcodedProduct;
+		}else{
+			barcodedProduct[0]="0";
+			barcodedProduct[1]="0";
+			barcodedProduct[2]="0";
+			return barcodedProduct;
+		}
+	}
 
 }

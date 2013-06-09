@@ -47,6 +47,10 @@ public class CommercialProduct {
 		this.companyBrand = companyBrand;
 	}
 	
+	public boolean isEmpty() {
+		return barcode.isEmpty();
+	}
+	
 	/*
 	 * "CREATE TABLE " + TABLE_COMMERCIAL_PRODUCT+"("+
 	 * COMMERCIAL_PRODUCT_BARCODE+ " INTEGER PRIMARY KEY,"+
@@ -202,5 +206,7 @@ public class CommercialProduct {
 		readable.close();
 		return cProducts;
 	}
+	
+	
 	
 }

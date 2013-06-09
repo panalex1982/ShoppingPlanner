@@ -8,14 +8,18 @@ import net.sourceforge.zbar.SymbolSet;
 
 import com.bue.shoppingplanner.R;
 import com.bue.shoppingplanner.utilities.CameraPreview;
+
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.hardware.Camera;
 import android.hardware.Camera.AutoFocusCallback;
+import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.PreviewCallback;
 import android.hardware.Camera.Size;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -35,6 +39,8 @@ public class ScanBarcode extends FragmentActivity{
 
     private boolean barcodeScanned = false;
     private boolean previewing = true;
+    
+    private String scan;
 
     static {
         System.loadLibrary("iconv");
@@ -47,7 +53,7 @@ public class ScanBarcode extends FragmentActivity{
         setContentView(R.layout.camera_main);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
+        scan="";
         autoFocusHandler = new Handler();
         mCamera = getCameraInstance();
 
@@ -91,6 +97,7 @@ public class ScanBarcode extends FragmentActivity{
         try {
             c = Camera.open();
         } catch (Exception e){
+        	Log.d("Can't open camera: ",e.toString());
         }
         return c;
     }
@@ -129,10 +136,20 @@ public class ScanBarcode extends FragmentActivity{
                     mCamera.stopPreview();
                     
                     SymbolSet syms = scanner.getResults();
-                    for (Symbol sym : syms) {
-                        scanText.setText("barcode result " + sym.getData());
-                        barcodeScanned = true;
-                    }
+                    if(syms.size()<20)
+	                    for (Symbol sym : syms) {
+	                        scanText.setText("barcode result " + sym.getData());
+	                        scan=scan+sym.getData();
+	                        barcodeScanned = true;
+	                    }
+                }
+                if(barcodeScanned){
+                	//Bundle barcodeBundle=new Bundle();
+                	//barcodeBundle.putString("lastBarcodeScan", scan);
+                	Intent rIntent=new Intent();
+                	rIntent.putExtra("lastBarcodeScan", scan);
+                	setResult(1,rIntent);
+                	finish();
                 }
             }
         };
