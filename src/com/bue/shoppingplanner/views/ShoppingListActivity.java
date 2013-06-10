@@ -292,7 +292,6 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 		if(requestCode==1){
 			Bundle extras=data.getExtras();
@@ -403,8 +402,16 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 	 * It also changes the total cost field value.
 	 */
 	public void notifyElementChangesOnShoppingListAdapter(){
-		shoppingListAdapter.notifyDataSetChanged();
-		totalCostTextView.setText(String.valueOf(shoppingListAdapter.getTotalCost()));
+		try{
+			shoppingListAdapter.notifyDataSetChanged();
+		}catch(Exception ex){
+			Log.d("Exception 1: ",ex.toString());
+		}
+		try{
+			totalCostTextView.setText(String.valueOf(shoppingListAdapter.getTotalCost()));
+		}catch(Exception ex){
+			Log.d("Exception 2: ",ex.toString());
+		}
 	}
 	
 	protected void refreshElements(){
@@ -416,7 +423,7 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 			}
 			notifyElementChangesOnShoppingListAdapter();
 		}catch(Exception ex){
-			Log.d("Exception: ", ex.toString());
+			Log.d("Exception 3: ", ex.toString());
 		}
 	}
 	

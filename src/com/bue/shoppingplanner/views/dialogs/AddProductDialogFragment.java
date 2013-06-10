@@ -74,12 +74,6 @@ public class AddProductDialogFragment extends DialogFragment {
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {	
-		Bundle barcodeBundle=getArguments();
-		if(barcodeBundle!=null){
-			barcode=barcodeBundle.getString("barcode");			
-		}else{
-			barcode="No Barcode Provided.";//TODO: Add to R.string
-		}
 		db=new Dbh(getActivity());
 		listElement=new ShoppingListElementHelper();
 		vat=new VatHelper(getActivity());
@@ -99,7 +93,6 @@ public class AddProductDialogFragment extends DialogFragment {
 		//Text View
 		//Barcode
 		barcodeTextView=(TextView) dialogMainView.findViewById(R.id.barcodeTextView);
-		barcodeTextView.setText(barcode);
 		
 		//Add Adapters to auto-complete text views
 		bController=new BoughtController(getActivity());
@@ -162,6 +155,17 @@ public class AddProductDialogFragment extends DialogFragment {
 		});
 		
 		validationListeners();
+		
+		//Check if barcode exist
+		Bundle barcodeBundle=getArguments();
+		if(barcodeBundle!=null){
+			barcode=barcodeBundle.getString("barcode");	
+			checkBarcodeExistance(barcode);
+		}else{
+			barcode="No Barcode Provided.";//TODO: Add to R.string
+		}		
+		barcodeTextView.setText(barcode);
+		
 		
 		builder.setTitle("Add Product")
 			.setView(dialogMainView)
@@ -335,9 +339,10 @@ public class AddProductDialogFragment extends DialogFragment {
     
     public void checkBarcodeExistance(String barcode){
     	String[] product=bController.getCommerialProduct(barcode);
-    	if(!product.equals("0")){
+    	if(!product[0].equals("0")){
     		productAddDialogEditText.setText(product[2]);
-    		brandAddDialogEditText.setText(product[1]);
+    		brandAddDialogEditText.setText(product[0]);
+    		updateProductDialog();
     	}
     }
 	

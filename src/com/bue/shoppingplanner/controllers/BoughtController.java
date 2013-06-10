@@ -420,7 +420,7 @@ public class BoughtController {
 	public String[] getCommerialProduct(String barcode){
 		String[] barcodedProduct=new String[3];
 		CommercialProduct cProduct=CommercialProduct.getCommercialProduct(db, barcode);
-		if(cProduct.isEmpty()){
+		if(!cProduct.isNull()){
 			Product product=Product.getProductFromBarcode(db, barcode);
 			barcodedProduct[0]=cProduct.getCompanyBrand();
 			barcodedProduct[1]=cProduct.getCommercialName();

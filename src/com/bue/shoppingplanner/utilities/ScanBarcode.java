@@ -146,7 +146,7 @@ public class ScanBarcode extends FragmentActivity{
                 if(barcodeScanned){
                 	//Bundle barcodeBundle=new Bundle();
                 	//barcodeBundle.putString("lastBarcodeScan", scan);
-                	Intent rIntent=new Intent();
+                	Intent rIntent=getIntent();
                 	rIntent.putExtra("lastBarcodeScan", scan);
                 	setResult(1,rIntent);
                 	finish();

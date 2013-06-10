@@ -51,6 +51,10 @@ public class CommercialProduct {
 		return barcode.isEmpty();
 	}
 	
+	public boolean isNull(){
+		return barcode==null;
+	}
+	
 	/*
 	 * "CREATE TABLE " + TABLE_COMMERCIAL_PRODUCT+"("+
 	 * COMMERCIAL_PRODUCT_BARCODE+ " INTEGER PRIMARY KEY,"+
