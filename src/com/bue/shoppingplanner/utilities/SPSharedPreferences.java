@@ -8,6 +8,9 @@ public interface SPSharedPreferences {
 	public final String SET_DEF_CURRENCY="defaultCurrency";
 	public final String SET_STANDARD_VAT_RATE="standardVatRate";
 	public final String SET_REDUCED_VAT_RATE="ReducedVatRate";
+	// Scaned Barcode
+//	public final String BARCODE_SHARE="sharingBarcodes";
+//	public final String SCANNED_BARCODE="scannedBarcode";
 	
 	
 }

@@ -15,6 +15,7 @@ import java.util.concurrent.ExecutionException;
 import com.bue.shoppingplanner.R;
 import com.bue.shoppingplanner.controllers.CurrencyController;
 import com.bue.shoppingplanner.helpers.ExchangesAsyncTask;
+import com.bue.shoppingplanner.helpers.UpcDataAsyncTasc;
 import com.bue.shoppingplanner.model.Address;
 import com.bue.shoppingplanner.model.CommercialProduct;
 import com.bue.shoppingplanner.model.Currencies;
@@ -82,7 +83,7 @@ public class IntroActivity extends FragmentActivity {
 				try {
 					ArrayList<Currencies> result=async.get();
 					for(Currencies item:result){
-						Log.i(item.getId(),""+item.getRateToUsd());
+						//Log.i(item.getId(),""+item.getRateToUsd());
 						item.updateCurrencies(db);
 						lastUpdate=new JsonUpdate();
 						lastUpdate.addJsonUpdate(db);

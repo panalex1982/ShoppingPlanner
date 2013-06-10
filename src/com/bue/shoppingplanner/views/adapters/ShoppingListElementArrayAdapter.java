@@ -192,48 +192,10 @@ public class ShoppingListElementArrayAdapter extends ArrayAdapter<ShoppingListEl
        
         return row;
     }
-	
-	
-   
-//    @Override
-//	public void add(ShoppingListElementHelper element) {
-//		super.add(element);
-//		data.add(element);
-//	}
-    
-    
-    
-//    @Override
-//	public int getPosition(ShoppingListElementHelper item) {
-//		return super.getPosition(item);
-//	}
-
-	public double getTotalCost(){
-    	double total=0.0;
-    	for(ShoppingListElementHelper element:data){
-    		total=total+element.getPrice()*element.getQuantity();
-    	}
-    	return total;
-    }
 
     public boolean isListItemChanged() {
 		return listItemChanged;
 	}
-    
-    
-    
-    
-
-
-//	private class ShoppingListElementHolder
-//    {
-//        ImageView listElementAddImageView, listElementRemoveImageView;//, listElementEditImageView;
-//        TextView listElementTextView;
-//        CheckBox listElementCheckBox;
-//        TableRow hiddingTableRow;
-//        TableLayout elementTableLayout;
-//    }
-	
 	
 
 }

@@ -64,6 +64,8 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 	private ShopElementHelper shopElement;
 	
 	private SharedPreferences savedShoppingList;
+	//Second way to pass barcode
+//	private SharedPreferences barcodeShare;
 	
 	private final String SAVED_STATE_SL="encodedShoppingList";
 	private final String SAVED_STATE_STORE="encodedStore";
@@ -77,7 +79,9 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+		//barcode Preferences
+//		barcodeShare=getSharedPreferences(BARCODE_SHARE, 0);
+		//general Preference
 		savedShoppingList=getSharedPreferences(PREFS_NAME, 0);
 		boolean hasList=savedShoppingList.getBoolean(PREFS_HAS_SAVED_FILE, false);
 		editList=false;
@@ -296,12 +300,8 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 		if(requestCode==1){
 			Bundle extras=data.getExtras();
 			String barcode=(extras.getString("lastBarcodeScan")==null?"noBarcode":extras.getString("lastBarcodeScan"));
-			if(barcode=="noBarcode" || barcode==""){
-				Toast toast=new Toast(this);
-				toast.setText("Wrong Barcode!");
-				toast.setDuration(Toast.LENGTH_LONG);
-				toast.show();
-			}else{
+//			String barcode=barcodeShare.getString(SCANNED_BARCODE,"noBarcode");
+			if(!barcode.equals("noBarcode") && !barcode.equals("")){				
 				showAddProductDialog(barcode);
 			}
 		}
@@ -397,22 +397,24 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 		}
 	}
 	
-	/**
-	 * Notify element changes to the ShoppingListArrayAdapter.
-	 * It also changes the total cost field value.
-	 */
-	public void notifyElementChangesOnShoppingListAdapter(){
-		try{
-			shoppingListAdapter.notifyDataSetChanged();
-		}catch(Exception ex){
-			Log.d("Exception 1: ",ex.toString());
-		}
-		try{
-			totalCostTextView.setText(String.valueOf(shoppingListAdapter.getTotalCost()));
-		}catch(Exception ex){
-			Log.d("Exception 2: ",ex.toString());
-		}
-	}
+//  Bud implementation	
+//	/**
+//	 * Notify element changes to the ShoppingListArrayAdapter.
+//	 * It also changes the total cost field value.
+//	 */
+//	public void notifyElementChangesOnShoppingListAdapter(){
+//		try{
+//			//shoppingListAdapter.notifyDataSetChanged();
+//		}catch(Exception ex){
+//			Log.d("Exception 1: ",ex.toString());
+//		}
+//		try{
+//			//totalCostTextView.setText(String.valueOf(shoppingListAdapter.getTotalCost()));
+//			totalCostTextView.setText(String.valueOf(getTotalCost()));
+//		}catch(Exception ex){
+//			Log.d("Exception 2: ",ex.toString());
+//		}
+//	}
 	
 	protected void refreshElements(){
 		try{
@@ -421,7 +423,8 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 			}else{
 				shopNameTextView.setText(R.string.no_shop);
 			}
-			notifyElementChangesOnShoppingListAdapter();
+			//notifyElementChangesOnShoppingListAdapter();
+			totalCostTextView.setText(String.valueOf(getTotalCost()));
 		}catch(Exception ex){
 			Log.d("Exception 3: ", ex.toString());
 		}
@@ -464,4 +467,12 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 			
 		
 	}
+	
+	private double getTotalCost(){
+    	double total=0.0;
+    	for(ShoppingListElementHelper element:shoppingListArrayList){
+    		total=total+element.getPrice()*element.getQuantity();
+    	}
+    	return total;
+    }
 }

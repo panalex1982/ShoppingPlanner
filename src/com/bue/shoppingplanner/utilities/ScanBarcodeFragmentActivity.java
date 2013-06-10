@@ -13,6 +13,7 @@ import com.bue.shoppingplanner.views.dialogs.AddProductDialogFragment;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.hardware.Camera;
 import android.hardware.Camera.AutoFocusCallback;
@@ -32,7 +33,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-public class ScanBarcodeFragmentActivity extends FragmentActivity{
+public class ScanBarcodeFragmentActivity extends FragmentActivity implements SPSharedPreferences{
 
 	private Camera mCamera;
     private CameraPreview mPreview;
@@ -47,6 +48,9 @@ public class ScanBarcodeFragmentActivity extends FragmentActivity{
     private boolean previewing = true;
     
     private String scan;
+    
+  //Second way to pass barcode
+    //private SharedPreferences barcodeShare;
 
     static {
         System.loadLibrary("iconv");
@@ -88,6 +92,8 @@ public class ScanBarcodeFragmentActivity extends FragmentActivity{
                     }
                 }
             });
+      //Second way to pass barcode
+        //barcodeShare=getSharedPreferences(BARCODE_SHARE, 0);
        
     }
 
@@ -151,11 +157,16 @@ public class ScanBarcodeFragmentActivity extends FragmentActivity{
 	                    }
                 }
                 if(barcodeScanned){
-                	//Bundle barcodeBundle=new Bundle();
-                	//barcodeBundle.putString("lastBarcodeScan", scan);
+                	Bundle barcodeBundle=new Bundle();
+                	barcodeBundle.putString("lastBarcodeScan", scan);
                 	Intent rIntent=getIntent();
                 	rIntent.putExtra("lastBarcodeScan", scan);
                 	setResult(1,rIntent);
+                	//Second way to pass barcode
+//                	SharedPreferences.Editor editor=barcodeShare.edit();
+//                	editor.putString(SCANNED_BARCODE, scan);
+//                	editor.commit();
+//                	setResult(1);
                 	finish();
                 }
             }

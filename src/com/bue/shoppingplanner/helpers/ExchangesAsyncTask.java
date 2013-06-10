@@ -25,7 +25,7 @@ import android.util.Log;
 public class ExchangesAsyncTask extends AsyncTask<String, Integer, ArrayList<Currencies>> {
 
 	@Override
-	protected ArrayList doInBackground(String... params) {
+	protected ArrayList<Currencies> doInBackground(String... params) {
 		return setExchangeRates(params[0]);
 	}
 	

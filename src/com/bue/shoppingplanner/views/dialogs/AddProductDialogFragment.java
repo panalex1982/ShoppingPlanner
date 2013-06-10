@@ -5,12 +5,14 @@ import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 import com.bue.shoppingplanner.R;
 import com.bue.shoppingplanner.controllers.BoughtController;
 import com.bue.shoppingplanner.controllers.CurrencyController;
 import com.bue.shoppingplanner.helpers.ShoppingListElementHelper;
 import com.bue.shoppingplanner.helpers.SpinnerBuilder;
+import com.bue.shoppingplanner.helpers.UpcDataAsyncTasc;
 import com.bue.shoppingplanner.helpers.VatHelper;
 import com.bue.shoppingplanner.model.CommercialProduct;
 import com.bue.shoppingplanner.model.Dbh;
@@ -362,9 +364,24 @@ public class AddProductDialogFragment extends DialogFragment {
     	if(!product[0].equals("0")){
     		productAddDialogEditText.setText(product[2]);
     		brandAddDialogEditText.setText(product[0]);
-    		//updateProductDialog();
-    		productAddDialogEditText.performClick();
     		vatAddDialogAutoCompleteTextView.requestFocus();
+    	}else{
+    		UpcDataAsyncTasc asyncUpc=new UpcDataAsyncTasc();
+    		asyncUpc.execute("http://api.upcdatabase.org/json/783cc13a52d57e32aa9cc5bd16a592df/"+barcode);
+    		try {
+				ShoppingListElementHelper elementHelper=asyncUpc.get();
+				if(!elementHelper.getBarcode().equals("invalid")){
+					productAddDialogEditText.setText(elementHelper.getProduct());
+		    		brandAddDialogEditText.setText(elementHelper.getBrand());
+				}
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    				
     	}
     }
 	
