@@ -25,7 +25,7 @@ import com.bue.shoppingplanner.model.ProductKind;
 import com.bue.shoppingplanner.model.Shop;
 import com.bue.shoppingplanner.model.ShopDescription;
 import com.bue.shoppingplanner.model.UnknownBarcode;
-import com.bue.shoppingplanner.utilities.ScanBarcode;
+import com.bue.shoppingplanner.utilities.ScanBarcodeFragmentActivity;
 import com.bue.shoppingplanner.utilities.plotformats.WeeklyXAxisFormat;
 import com.bue.shoppingplanner.utilities.plotformats.YearlyXAxisFormat;
 import com.bue.shoppingplanner.views.MainMenuActivity;

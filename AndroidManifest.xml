@@ -86,7 +86,7 @@
                 android:value="com.bue.shoppingplanner.views.SettingsActivity" />
         </activity>
         <activity 
-            android:name="com.bue.shoppingplanner.utilities.ScanBarcode">
+            android:name="com.bue.shoppingplanner.utilities.ScanBarcodeFragmentActivity">
         </activity>
     </application>
 

@@ -69,6 +69,13 @@ public class AddProductDialogFragment extends DialogFragment {
 	private BoughtController bController;
 	
 	private String barcode;
+
+	/**This variable prevents from change value on vatEditText 
+	 * when first time DialogFragment runs. This is because of known bug
+	 * (according same problem soleved on http://stackoverflow.com/questions/5930728/spinner-initialized-when-my-activity-starts-android)
+	 * with the AdapterView onItemSelectedListener which is fired when Activity start.
+	 */
+	protected boolean spinnerBug;
 	
 	
 
@@ -77,6 +84,7 @@ public class AddProductDialogFragment extends DialogFragment {
 		db=new Dbh(getActivity());
 		listElement=new ShoppingListElementHelper();
 		vat=new VatHelper(getActivity());
+		spinnerBug=true;
 		
 		//Create main dialog
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -200,10 +208,18 @@ public class AddProductDialogFragment extends DialogFragment {
 		
 
 		return builder.create();
+	}	
+
+	@Override
+	public void onActivityCreated(Bundle arg0) {
+		// TODO Auto-generated method stub
+		super.onActivityCreated(arg0);
 	}
-	
-	
-	
+
+
+
+
+
 	protected void updateProductDialog() {
 		Product selectedProduct=bController.getProduct(productAddDialogEditText.getText().toString());		
 		productKindAddDialogSpinner.setSelection(selectedProduct.getKind()-1);
@@ -214,7 +230,7 @@ public class AddProductDialogFragment extends DialogFragment {
 			if(vatAddDialogSpinnerIndex>=0)
 				vatAddDialogSpinner.setSelection(vatAddDialogSpinnerIndex);
 			else
-				vatAddDialogAutoCompleteTextView.setText(price[1]);
+				vatAddDialogAutoCompleteTextView.setText(price[1]);			
 		}		
 	}
 
@@ -244,13 +260,14 @@ public class AddProductDialogFragment extends DialogFragment {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		try {
-            // Instantiate the AddProductDialogListener so we can send events to the host
-            mListener = (AddProductDialogListener) activity;
-        } catch (ClassCastException e) {
-            // The activity doesn't implement the interface, throw exception
-		throw new ClassCastException(activity.toString()
-				+ " must implement AddProductDialogListener");
-        }
+			// Instantiate the AddProductDialogListener so we can send events to
+			// the host
+			mListener = (AddProductDialogListener) activity;
+		} catch (ClassCastException e) {
+			// The activity doesn't implement the interface, throw exception
+			throw new ClassCastException(activity.toString()
+					+ " must implement AddProductDialogListener");
+		}
 	}
 	
 	
@@ -324,8 +341,11 @@ public class AddProductDialogFragment extends DialogFragment {
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1,
 					int position, long arg3) {
-				vatAddDialogAutoCompleteTextView.setText(vat.getVatRates().get(position));
-				
+				if(spinnerBug){
+					spinnerBug=false;
+				}else{
+					vatAddDialogAutoCompleteTextView.setText(vat.getVatRates().get(position));
+				}
 			}
 
 			@Override
@@ -342,7 +362,9 @@ public class AddProductDialogFragment extends DialogFragment {
     	if(!product[0].equals("0")){
     		productAddDialogEditText.setText(product[2]);
     		brandAddDialogEditText.setText(product[0]);
-    		updateProductDialog();
+    		//updateProductDialog();
+    		productAddDialogEditText.performClick();
+    		vatAddDialogAutoCompleteTextView.requestFocus();
     	}
     }
 	

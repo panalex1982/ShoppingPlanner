@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import com.bue.shoppingplanner.IntroActivity;
 import com.bue.shoppingplanner.R;
 import com.bue.shoppingplanner.utilities.SPSharedPreferences;
-import com.bue.shoppingplanner.utilities.ScanBarcode;
+import com.bue.shoppingplanner.utilities.ScanBarcodeFragmentActivity;
 import com.bue.shoppingplanner.utilities.SerializeObject;
 import com.bue.shoppingplanner.views.adapters.ShoppingListElementArrayAdapter;
 import com.bue.shoppingplanner.views.dialogs.AddProductDialogFragment;
@@ -218,8 +218,8 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 		barcodeScanImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(new Intent(ShoppingListActivity.this, 
-                		ScanBarcode.class),1);
+                startActivityForResult(new Intent(ShoppingListActivity.this,
+                		ScanBarcodeFragmentActivity.class),1);
             }
         });
 		

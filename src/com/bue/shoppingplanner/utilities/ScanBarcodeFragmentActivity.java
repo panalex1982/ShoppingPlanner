@@ -8,7 +8,10 @@ import net.sourceforge.zbar.SymbolSet;
 
 import com.bue.shoppingplanner.R;
 import com.bue.shoppingplanner.utilities.CameraPreview;
+import com.bue.shoppingplanner.views.dialogs.AddProductDialogFragment;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.hardware.Camera;
@@ -18,15 +21,18 @@ import android.hardware.Camera.PreviewCallback;
 import android.hardware.Camera.Size;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-public class ScanBarcode extends FragmentActivity{
+public class ScanBarcodeFragmentActivity extends FragmentActivity{
 
 	private Camera mCamera;
     private CameraPreview mPreview;
@@ -49,7 +55,6 @@ public class ScanBarcode extends FragmentActivity{
     @Override
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.camera_main);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -83,9 +88,11 @@ public class ScanBarcode extends FragmentActivity{
                     }
                 }
             });
+       
     }
 
-    @Override
+
+	@Override
 	public void onPause() {
         super.onPause();
         releaseCamera();
