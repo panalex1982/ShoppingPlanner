@@ -378,7 +378,6 @@
         <item>Zambian Kwacha</item>
         <item>Zimbabwean Dollar</item>
     </string-array>
-    
     <string-array name="currency_symbols">
         <item>$</item>
         <item>€</item>
@@ -392,7 +391,7 @@
         <item>AMD</item>
         <item>ƒ</item>
         <item>AOA</item>
-         <item>ARS</item>
+        <item>ARS</item>
         <item>AUD</item>
         <item>AWG</item>
         <item>AZN</item>
@@ -546,6 +545,7 @@
         <item>ZMW</item>
         <item>ZWL</item>
     </string-array>
+
     <string name="standard_rate">VAT Standard Rate (%)</string>
     <string name="reduced_rate">VAT Reduced Rate (%)</string>
     <string name="vat">VAT</string>
@@ -565,5 +565,8 @@
     <string name="database">Database</string>
     <string name="category">Category</string>
     <string name="barcode">Barcode</string>
+    <string name="title_activity_database_menu">Manage Local Database</string>
+    <string name="title_activity_manage_products">Manage Products</string>
+    <string name="title_activity_exchange_rates">Exchange Rates</string>
 
 </resources>

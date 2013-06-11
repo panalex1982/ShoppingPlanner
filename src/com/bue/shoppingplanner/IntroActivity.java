@@ -13,9 +13,9 @@ import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 import com.bue.shoppingplanner.R;
+import com.bue.shoppingplanner.asynctascs.ExchangesAsyncTask;
+import com.bue.shoppingplanner.asynctascs.UpcDataAsyncTasc;
 import com.bue.shoppingplanner.controllers.CurrencyController;
-import com.bue.shoppingplanner.helpers.ExchangesAsyncTask;
-import com.bue.shoppingplanner.helpers.UpcDataAsyncTasc;
 import com.bue.shoppingplanner.model.Address;
 import com.bue.shoppingplanner.model.CommercialProduct;
 import com.bue.shoppingplanner.model.Currencies;

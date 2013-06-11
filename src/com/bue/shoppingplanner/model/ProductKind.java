@@ -105,6 +105,28 @@ public class ProductKind {
 			// return product kind list
 			return productKindList;
 		}
+		
+		// Getting All ProductKind
+				public static List<String> getAllProductKindNames(Dbh handler) {
+					List<String> productKindList = new ArrayList<String>();
+					// Select All Query
+					String selectQuery = "SELECT "+Dbh.PRODUCT_KIND_NAME+" FROM " + Dbh.TABLE_PRODUCT_KIND;
+
+					SQLiteDatabase db = handler.getWritableDatabase();
+					Cursor cursor = db.rawQuery(selectQuery, null);
+
+					// looping through all rows and adding to list
+					if (cursor.moveToFirst()) {
+						do {
+							productKindList.add(cursor.getString(0));
+						} while (cursor.moveToNext());
+					}
+					cursor.close();
+					db.close();
+
+					// return product kind list
+					return productKindList;
+				}
 
 		// Updating single ProductKind
 		public int updateProductKind(Dbh handler) {

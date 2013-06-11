@@ -1,4 +1,4 @@
-package com.bue.shoppingplanner.helpers;
+package com.bue.shoppingplanner.asynctascs;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package com.bue.shoppingplanner.helpers;
+package com.bue.shoppingplanner.asynctascs;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,6 +17,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONObject;
 
 import com.bue.shoppingplanner.IntroActivity;
+import com.bue.shoppingplanner.helpers.ShoppingListElementHelper;
 import com.bue.shoppingplanner.model.Currencies;
 
 import android.os.AsyncTask;

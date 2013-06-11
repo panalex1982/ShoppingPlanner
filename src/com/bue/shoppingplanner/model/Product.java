@@ -9,26 +9,27 @@ import android.database.sqlite.SQLiteDatabase;
 
 /**
  * General Product, does not include the firm
+ * 
  * @author Panagiotis
- *
+ * 
  */
-		
+
 public class Product {
 	private int id;
 	private String name;
-	private String barcode;//Can ignored
+	private String barcode;// Can ignored
 	private int kind;
-	
+
 	public Product() {
 		super();
 	}
-	
+
 	public Product(String name, String barcode, int kind) {
 		super();
 		this.name = name;
 		this.barcode = barcode;
 		this.kind = kind;
-		
+
 	}
 
 	public Product(int id, String name, String barcode, int kind) {
@@ -38,32 +39,40 @@ public class Product {
 		this.barcode = barcode;
 		this.kind = kind;
 	}
+
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public String getBarcode() {
 		return barcode;
 	}
+
 	public void setBarcode(String barcode) {
 		this.barcode = barcode;
 	}
+
 	public int getKind() {
 		return kind;
 	}
+
 	public void setKind(int kind) {
 		this.kind = kind;
 	}
-	
-	//Database operations
+
+	// Database operations
 	/*
 	 * "CREATE TABLE " + TABLE_PRODUCT +"("+PRODUCT_ID +
 	 * " INTEGER PRIMARY KEY AUTOINCREMENT ," +PRODUCT_NAME + " TEXT NOT NULL,"
@@ -93,32 +102,34 @@ public class Product {
 	public static Product getProduct(Dbh handler, int id) {
 		SQLiteDatabase db = handler.getReadableDatabase();
 
-		Cursor cursor = db.query(Dbh.TABLE_PRODUCT, new String[] { Dbh.PRODUCT_NAME,
-				Dbh.PRODUCT_BARCODE, Dbh.PRODUCT_KIND, }, Dbh.PRODUCT_ID + "=?",
-				new String[] { String.valueOf(id) }, null, null, null, null);
-		Product product=new Product();
+		Cursor cursor = db.query(Dbh.TABLE_PRODUCT, new String[] {
+				Dbh.PRODUCT_NAME, Dbh.PRODUCT_BARCODE, Dbh.PRODUCT_KIND, },
+				Dbh.PRODUCT_ID + "=?", new String[] { String.valueOf(id) },
+				null, null, null, null);
+		Product product = new Product();
 		if (cursor != null)
-			if(cursor.moveToFirst()){
-		 product = new Product(id, cursor.getString(0),
-				cursor.getString(1), cursor.getInt(2));
+			if (cursor.moveToFirst()) {
+				product = new Product(id, cursor.getString(0),
+						cursor.getString(1), cursor.getInt(2));
 			}
 		cursor.close();
 		db.close();
 
 		return product;
 	}
-	
+
 	public static Product getProduct(Dbh handler, String productName) {
 		SQLiteDatabase db = handler.getReadableDatabase();
 
-		Cursor cursor = db.query(Dbh.TABLE_PRODUCT, new String[] { Dbh.PRODUCT_ID,
-				Dbh.PRODUCT_BARCODE, Dbh.PRODUCT_KIND, }, Dbh.PRODUCT_NAME + "=?",
-				new String[] { productName }, null, null, null, null);
-		Product product=new Product();
+		Cursor cursor = db.query(Dbh.TABLE_PRODUCT, new String[] {
+				Dbh.PRODUCT_ID, Dbh.PRODUCT_BARCODE, Dbh.PRODUCT_KIND, },
+				Dbh.PRODUCT_NAME + "=?", new String[] { productName }, null,
+				null, null, null);
+		Product product = new Product();
 		if (cursor != null)
-			if(cursor.moveToFirst()){
-		 product = new Product(cursor.getInt(0), productName,
-				cursor.getString(1), cursor.getInt(2));
+			if (cursor.moveToFirst()) {
+				product = new Product(cursor.getInt(0), productName,
+						cursor.getString(1), cursor.getInt(2));
 			}
 		cursor.close();
 		db.close();
@@ -147,6 +158,30 @@ public class Product {
 				// Adding contact to list
 				productList.add(product);
 			} while (cursor.moveToNext());
+		}
+		cursor.close();
+		db.close();
+		// return contact list
+		return productList;
+	}
+
+	// Getting All Product
+	public static List<String> getAllProductNamesOfKind(Dbh handler, String kind) {
+		List<String> productList = new ArrayList<String>();
+		// Select All Query
+		String selectQuery = "SELECT  " +Dbh.TABLE_PRODUCT+"."
+				+ Dbh.PRODUCT_NAME + " FROM "
+				+ Dbh.TABLE_PRODUCT +" "+ Dbh.JOIN_PRODUCT_KIND
+				+" WHERE "+Dbh.TABLE_PRODUCT_KIND+"."
+				+ Dbh.PRODUCT_KIND_NAME + " = \"" + kind+"\"";
+
+		SQLiteDatabase db = handler.getWritableDatabase();
+		Cursor cursor = db.rawQuery(selectQuery, null);
+
+		// looping through all rows and adding to list
+		while (cursor.moveToNext()) {
+			// Adding product name to list
+			productList.add(cursor.getString(0));
 		}
 		cursor.close();
 		db.close();
@@ -190,21 +225,24 @@ public class Product {
 		db.close();
 		return count;
 	}
-	
+
 	/**
 	 * Return PK of the Product.
+	 * 
 	 * @param db
 	 * @return
 	 */
-	public int getProductId(Dbh db){
-		int productId=-1;
-		SQLiteDatabase readable=db.getReadableDatabase();
-		Cursor cursor =readable.query(Dbh.TABLE_PRODUCT, new String[]{Dbh.PRODUCT_ID,},Dbh.PRODUCT_NAME+"=? AND "
-									+Dbh.PRODUCT_BARCODE+"=? AND "+Dbh.PRODUCT_KIND+"=?",
-				new String[] {String.valueOf(name),barcode,String.valueOf(kind)},null, null, null, null);
+	public int getProductId(Dbh db) {
+		int productId = -1;
+		SQLiteDatabase readable = db.getReadableDatabase();
+		Cursor cursor = readable.query(Dbh.TABLE_PRODUCT,
+				new String[] { Dbh.PRODUCT_ID, }, Dbh.PRODUCT_NAME + "=? AND "
+						+ Dbh.PRODUCT_BARCODE + "=? AND " + Dbh.PRODUCT_KIND
+						+ "=?", new String[] { String.valueOf(name), barcode,
+						String.valueOf(kind) }, null, null, null, null);
 		if (cursor != null)
-            if(cursor.moveToFirst())
-            	productId=cursor.getInt(0);
+			if (cursor.moveToFirst())
+				productId = cursor.getInt(0);
 		cursor.close();
 		readable.close();
 		return productId;
@@ -213,14 +251,15 @@ public class Product {
 	public static Product getProductFromBarcode(Dbh handler, String barcode) {
 		SQLiteDatabase db = handler.getReadableDatabase();
 
-		Cursor cursor = db.query(Dbh.TABLE_PRODUCT, new String[] { Dbh.PRODUCT_ID,
-				Dbh.PRODUCT_NAME, Dbh.PRODUCT_KIND, }, Dbh.PRODUCT_BARCODE + "=?",
-				new String[] { barcode }, null, null, null, null);
-		Product product=new Product();
+		Cursor cursor = db.query(Dbh.TABLE_PRODUCT, new String[] {
+				Dbh.PRODUCT_ID, Dbh.PRODUCT_NAME, Dbh.PRODUCT_KIND, },
+				Dbh.PRODUCT_BARCODE + "=?", new String[] { barcode }, null,
+				null, null, null);
+		Product product = new Product();
 		if (cursor != null)
-			if(cursor.moveToFirst()){
-		 product = new Product(cursor.getInt(0), cursor.getString(1), barcode,
-				 cursor.getInt(2));
+			if (cursor.moveToFirst()) {
+				product = new Product(cursor.getInt(0), cursor.getString(1),
+						barcode, cursor.getInt(2));
 			}
 		cursor.close();
 		db.close();

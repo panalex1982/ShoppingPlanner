@@ -36,10 +36,12 @@ public class MainMenuActivity extends FragmentActivity {
 	private ImageButton statsImageButton;
 	private ImageButton shopsImageButton;
 	private ImageButton savedListsImageButton;
+	private ImageButton dbButton;
 	
 	private TextView spendingMainTextView;
 	private TextView totalVatTextView;
 	private ImageButton settingsImageButton;
+	private ImageButton ratesImageButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +110,32 @@ public class MainMenuActivity extends FragmentActivity {
 			public boolean onTouch(View v, MotionEvent event) {
 				if(event.getAction()==MotionEvent.ACTION_UP){
 					startActivity(new Intent(MainMenuActivity.this, SettingsActivity.class));
+				}
+				return false;
+			}
+		});
+		
+		//DB Button ImageButton
+		dbButton=(ImageButton) findViewById(R.id.dbButton);
+		dbButton.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if(event.getAction()==MotionEvent.ACTION_UP){
+					startActivity(new Intent(MainMenuActivity.this, DatabaseMenuActivity.class));
+				}
+				return false;
+			}
+		});
+		
+		//Exchange Rates ImagButton
+		ratesImageButton=(ImageButton) findViewById(R.id.ratesImageButton);
+		ratesImageButton.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if(event.getAction()==MotionEvent.ACTION_UP){
+					startActivity(new Intent(MainMenuActivity.this, ExchangeRatesActivity.class));
 				}
 				return false;
 			}

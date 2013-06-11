@@ -1,20 +1,15 @@
 package com.bue.shoppingplanner.views.dialogs;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
-import java.util.Currency;
-import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 import com.bue.shoppingplanner.R;
+import com.bue.shoppingplanner.asynctascs.UpcDataAsyncTasc;
 import com.bue.shoppingplanner.controllers.BoughtController;
 import com.bue.shoppingplanner.controllers.CurrencyController;
 import com.bue.shoppingplanner.helpers.ShoppingListElementHelper;
 import com.bue.shoppingplanner.helpers.SpinnerBuilder;
-import com.bue.shoppingplanner.helpers.UpcDataAsyncTasc;
 import com.bue.shoppingplanner.helpers.VatHelper;
-import com.bue.shoppingplanner.model.CommercialProduct;
 import com.bue.shoppingplanner.model.Dbh;
 import com.bue.shoppingplanner.model.Product;
 import com.bue.shoppingplanner.model.User;
@@ -26,8 +21,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -36,6 +29,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -57,7 +51,7 @@ public class AddProductDialogFragment extends DialogFragment {
 	private ImageButton numberAddAddDialogImageButton;
 	private ImageButton numberRemoveAddDialogImageButton;
 	
-	private Spinner productGroupAddDialogSpinner;
+	private Spinner productUserAddDialogSpinner;
 	private Spinner productKindAddDialogSpinner;
 	private Spinner currencyAddDialogSpinner,
 					vatAddDialogSpinner;
@@ -125,7 +119,7 @@ public class AddProductDialogFragment extends DialogFragment {
 		for(User group:User.getAllUser(db)){
 			productGroupSpinnerList.add(group.getName());
 		}
-		productGroupAddDialogSpinner=SpinnerBuilder.createSpinnerFromArrayList(getActivity(),dialogMainView, R.id.productGroupAddDialogSpinner, productGroupSpinnerList, android.R.layout.simple_spinner_item,android.R.layout.simple_spinner_dropdown_item);
+		productUserAddDialogSpinner=SpinnerBuilder.createSpinnerFromArrayList(getActivity(),dialogMainView, R.id.productGroupAddDialogSpinner, productGroupSpinnerList, android.R.layout.simple_spinner_item,android.R.layout.simple_spinner_dropdown_item);
 		ArrayList<CharSequence> productKindSpinnerList=new ArrayList<CharSequence>();
 		for(ProductKind kind:ProductKind.getAllProductKind(db)){
 			productKindSpinnerList.add(kind.getName());
@@ -171,6 +165,20 @@ public class AddProductDialogFragment extends DialogFragment {
 		if(barcodeBundle!=null){
 			barcode=barcodeBundle.getString("barcode");	
 			checkBarcodeExistance(barcode);
+			boolean isOnlyProduct=barcodeBundle.getBoolean("isOnlyProduct",false);
+			if(isOnlyProduct){
+				LinearLayout hiddingLinearLayout=(LinearLayout) dialogMainView.findViewById(R.id.hiddingLinearLayout);
+				hiddingLinearLayout.setEnabled(false);
+				hiddingLinearLayout.removeAllViews();
+				priceAddDialogEditText.setEnabled(false);
+				numberAddDialogEditText.setEnabled(false);
+				vatAddDialogAutoCompleteTextView.setEnabled(false);
+				numberAddAddDialogImageButton.setEnabled(false);
+				numberRemoveAddDialogImageButton.setEnabled(false);
+				productUserAddDialogSpinner.setEnabled(false);
+				currencyAddDialogSpinner.setEnabled(false);
+				vatAddDialogSpinner.setEnabled(false);
+			}
 		}else{
 			barcode="No Barcode Provided.";//TODO: Add to R.string
 		}		
@@ -180,13 +188,16 @@ public class AddProductDialogFragment extends DialogFragment {
 		builder.setTitle("Add Product")
 			.setView(dialogMainView)
 			.setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
+                @Override
+				public void onClick(DialogInterface dialog, int id) {
                 	listElement.setProduct(productAddDialogEditText.getText().toString());
                 	listElement.setBrand(brandAddDialogEditText.getText().toString());
-                	listElement.setPrice(Double.parseDouble(priceAddDialogEditText.getText().toString()));
-                	listElement.setQuantity(Integer.parseInt(numberAddDialogEditText.getText().toString()));
-                	
-                	listElement.setUser(productGroupAddDialogSpinner.getSelectedItem().toString());
+                	if(priceAddDialogEditText.isEnabled()){
+	                	listElement.setPrice(Double.parseDouble(priceAddDialogEditText.getText().toString()));
+	                	listElement.setQuantity(Integer.parseInt(numberAddDialogEditText.getText().toString()));
+	                	
+	                	listElement.setUser(productUserAddDialogSpinner.getSelectedItem().toString());
+                	}
                 	listElement.setKind(productKindAddDialogSpinner.getSelectedItem().toString());
                 	listElement.setChecked(true);
                 	//the barcode or "unknown" for not known barcodes
@@ -202,7 +213,8 @@ public class AddProductDialogFragment extends DialogFragment {
                 }
             })
             .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
+                @Override
+				public void onClick(DialogInterface dialog, int id) {
                 	//Send the negative button event back
                 	mListener.onDialogNegativeClick(AddProductDialogFragment.this);
                 }
@@ -297,35 +309,37 @@ public class AddProductDialogFragment extends DialogFragment {
     }
     
     private void validationListeners(){
-    	// priceAddDialogEditText
-    	priceAddDialogEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-			
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				if(!priceAddDialogEditText.getText().toString().equals("")){
-						priceAddDialogEditText.setText(CurrencyController.formatCurrecy(priceAddDialogEditText.getText().toString(),currencyAddDialogSpinner.getSelectedItem().toString()));		
+    	if(priceAddDialogEditText.isEnabled())
+	    	// priceAddDialogEditText
+	    	priceAddDialogEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+				
+				@Override
+				public void onFocusChange(View v, boolean hasFocus) {
+					if(!priceAddDialogEditText.getText().toString().equals("")){
+							priceAddDialogEditText.setText(CurrencyController.formatCurrecy(priceAddDialogEditText.getText().toString(),currencyAddDialogSpinner.getSelectedItem().toString()));		
+					}
 				}
-			}
-		});
+			});
     	
-    	// currencyAddDialogSpinner
-    	currencyAddDialogSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
-
-			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int arg2, long arg3) {
-				if(!priceAddDialogEditText.getText().toString().equals(""))
-					priceAddDialogEditText.setText(CurrencyController.formatCurrecy(priceAddDialogEditText.getText().toString(),currencyAddDialogSpinner.getSelectedItem().toString()));
-				
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-    		
-    	});
+    	if(currencyAddDialogSpinner.isEnabled())
+	    	// currencyAddDialogSpinner
+	    	currencyAddDialogSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+	
+				@Override
+				public void onItemSelected(AdapterView<?> arg0, View arg1,
+						int arg2, long arg3) {
+					if(!priceAddDialogEditText.getText().toString().equals(""))
+						priceAddDialogEditText.setText(CurrencyController.formatCurrecy(priceAddDialogEditText.getText().toString(),currencyAddDialogSpinner.getSelectedItem().toString()));
+					
+				}
+	
+				@Override
+				public void onNothingSelected(AdapterView<?> arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+	    		
+	    	});
     	
     	// product input if exist
     	productAddDialogEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -337,34 +351,40 @@ public class AddProductDialogFragment extends DialogFragment {
 			}
 		});
     	
-    	// Change vat according to Spinner
-    	vatAddDialogSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-			@Override
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int position, long arg3) {
-				if(spinnerBug){
-					spinnerBug=false;
-				}else{
-					vatAddDialogAutoCompleteTextView.setText(vat.getVatRates().get(position));
+    	if(vatAddDialogSpinner.isEnabled())
+	    	// Change vat according to Spinner
+	    	vatAddDialogSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+	
+				@Override
+				public void onItemSelected(AdapterView<?> arg0, View arg1,
+						int position, long arg3) {
+					if(spinnerBug){
+						spinnerBug=false;
+					}else{
+						vatAddDialogAutoCompleteTextView.setText(vat.getVatRates().get(position));
+					}
 				}
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-    		
-		});
+	
+				@Override
+				public void onNothingSelected(AdapterView<?> arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+	    		
+			});
     }
     
     public void checkBarcodeExistance(String barcode){
     	String[] product=bController.getCommerialProduct(barcode);
-    	if(!product[0].equals("0")){
+    	if(barcode.equals("no_barcode")){
+    		barcodeTextView.setEnabled(false);
+    	}else if(!product[0].equals("0")){
     		productAddDialogEditText.setText(product[2]);
     		brandAddDialogEditText.setText(product[0]);
-    		vatAddDialogAutoCompleteTextView.requestFocus();
+    		if(vatAddDialogAutoCompleteTextView.isEnabled())
+    			vatAddDialogAutoCompleteTextView.requestFocus();
+    		else
+    			brandAddDialogEditText.requestFocus();
     	}else{
     		UpcDataAsyncTasc asyncUpc=new UpcDataAsyncTasc();
     		asyncUpc.execute("http://api.upcdatabase.org/json/783cc13a52d57e32aa9cc5bd16a592df/"+barcode);

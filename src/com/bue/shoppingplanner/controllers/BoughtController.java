@@ -127,34 +127,15 @@ public class BoughtController {
 		for(ShoppingListElementHelper element : products){
 			if(element.isChecked()){
 				String barcode=element.getBarcode();
-				String productName="";
+				String productName=element.getProduct();
 				
-				//Set the commercial
-				//Does not have Barcode
-				if(element.getBarcode().equalsIgnoreCase("unknown")){
-					productName=element.getProduct();
-					UnknownBarcode unBarcode=new UnknownBarcode(db);
-					CommercialProduct commercial=new CommercialProduct(String.valueOf(unBarcode.getBarcode()-1),element.getProduct(),element.getBrand());
-					unBarcode.updateUnknownBarcode(db);
-					barcode=commercial.addCommercialProduct(db);
-				//Has Barcode
-				}else{
-					CommercialProduct commercial=new CommercialProduct(element.getBarcode(),element.getProduct(),element.getBrand());
-					if(commercial.getCommercialProductId(db).equals("-1"))
-						barcode=commercial.addCommercialProduct(db);
-					else
-						barcode=commercial.getBarcode();
-					productName=element.getProduct();					
-				}
+				barcode=addCommercialProduct(barcode, productName, element.getBrand());
+				
 				//Set the product kind
 				ProductKind kind=new ProductKind(element.getKind());
 				int productKind=kind.getProductKindId(db);
 				
-				Product product=new Product(productName,barcode,productKind);
-				int productId=product.getProductId(db);
-				if(productId==-1){
-					productId=product.addProduct(db);
-				}
+				int productId=addProduct(productName, barcode, productKind);
 				User user=new User(element.getUser());
 				int userId=user.getUserId(db);
 				Buys buys=null;
@@ -432,6 +413,58 @@ public class BoughtController {
 			barcodedProduct[2]="0";
 			return barcodedProduct;
 		}
+	}
+
+
+
+	public ArrayList<String> getAllKindNames() {
+		return (ArrayList<String>) ProductKind.getAllProductKindNames(db);
+	}
+
+
+
+	public ArrayList<String> getAllProductNamesOfKind(String kindName) {
+		return (ArrayList<String>) Product.getAllProductNamesOfKind(db, kindName);
+	}
+	
+	private int addProduct(String productName, String barcode, int productKind){
+		Product product=new Product(productName,barcode,productKind);
+		int productId=product.getProductId(db);
+		if(productId==-1){
+			productId=product.addProduct(db);
+		}
+		return productId;
+	}
+	
+	private String addCommercialProduct(String barcode, String commercialName, String brand){
+		//Set the commercial
+		//Does not have Barcode
+		if(barcode.equalsIgnoreCase("unknown")){
+			//productName=element.getProduct();
+			UnknownBarcode unBarcode=new UnknownBarcode(db);
+			CommercialProduct commercial=new CommercialProduct(String.valueOf(unBarcode.getBarcode()-1),commercialName,brand);
+			unBarcode.updateUnknownBarcode(db);
+			barcode=commercial.addCommercialProduct(db);
+		//Has Barcode
+		}else{
+			CommercialProduct commercial=new CommercialProduct(barcode,commercialName,brand);
+			if(commercial.getCommercialProductId(db).equals("-1"))
+				barcode=commercial.addCommercialProduct(db);
+			else
+				barcode=commercial.getBarcode();
+			//productName=element.getProduct();					
+		}
+		return barcode;
+	}
+	
+	public void persistProduct(ShoppingListElementHelper element){
+		String barcode=addCommercialProduct(element.getBarcode(), element.getProduct(), element.getBrand());
+		
+		//Set the product kind
+		ProductKind kind=new ProductKind(element.getKind());
+		int productKind=kind.getProductKindId(db);
+		
+		addProduct(element.getProduct(), barcode, productKind);
 	}
 
 }

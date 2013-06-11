@@ -17,43 +17,35 @@
 
 	<ImageButton
 	    android:id="@+id/statsImageButton"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
+	    android:layout_width="60dp"
+	    android:layout_height="60dp"
 	    android:layout_alignTop="@+id/shoppingListImageButton"
 	    android:layout_toRightOf="@+id/shoppingListImageButton"
 	    android:src="@drawable/ic_stats_icon" />
 
 	<ImageButton
 	    android:id="@+id/shopsImageButton"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
+	    android:layout_width="60dp"
+	    android:layout_height="60dp"
 	    android:layout_alignTop="@+id/statsImageButton"
 	    android:layout_toRightOf="@+id/statsImageButton"
 	    android:src="@drawable/ic_shop" />
 
 	<ImageButton
 	    android:id="@+id/savedListsImageButton"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
+	    android:layout_width="60dp"
+	    android:layout_height="60dp"
 	    android:layout_alignTop="@+id/shopsImageButton"
 	    android:layout_toRightOf="@+id/shopsImageButton"
 	    android:src="@android:drawable/btn_star_big_on" />
 
 	<ImageButton
 	    android:id="@+id/shoppingListImageButton"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
+	    android:layout_width="60dp"
+	    android:layout_height="60dp"
 	    android:layout_alignParentLeft="true"
 	    android:layout_alignParentTop="true"
 	    android:src="@android:drawable/ic_menu_edit" />
-
-	<ImageButton
-	    android:id="@+id/settingsImageButton"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_alignLeft="@+id/savedListsImageButton"
-	    android:layout_below="@+id/shopsImageButton"
-	    android:src="@android:drawable/ic_menu_manage" />
 
 	<TextView
 	    android:id="@+id/textView1"
@@ -83,5 +75,29 @@
 	    android:layout_alignTop="@+id/totalVatLabelTextView"
 	    android:text="Medium Text"
 	    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+	<ImageButton
+	    android:id="@+id/settingsImageButton"
+	    android:layout_width="60dp"
+	    android:layout_height="60dp"
+	    android:layout_below="@+id/statsImageButton"
+	    android:layout_toRightOf="@+id/shoppingListImageButton"
+	    android:src="@android:drawable/ic_menu_manage" />
+
+	<ImageButton
+	    android:id="@+id/dbButton"
+	    android:layout_width="60dp"
+	    android:layout_height="60dp"
+	    android:layout_alignLeft="@+id/savedListsImageButton"
+	    android:layout_below="@+id/savedListsImageButton"
+	    android:src="@drawable/ic_db" />
+
+	<ImageButton
+	    android:id="@+id/ratesImageButton"
+	    android:layout_width="60dp"
+	    android:layout_height="60dp"
+	    android:layout_alignTop="@+id/settingsImageButton"
+	    android:layout_toRightOf="@+id/settingsImageButton"
+	    android:src="@drawable/ic_exchange_rates" />
 
 </RelativeLayout>

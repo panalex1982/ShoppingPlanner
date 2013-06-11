@@ -1,5 +1,7 @@
 package com.bue.shoppingplanner.model;
 
+import java.util.ArrayList;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -58,6 +60,26 @@ public class Currencies {
 		// Inserting Row
 		db.insert(Dbh.TABLE_CURRENCIES, null, values);
 		db.close(); // Closing database connection
+	}
+	
+	public static ArrayList<Currencies> getAllCurrencies(Dbh handler){
+		ArrayList<Currencies> rates=new ArrayList<Currencies>();
+		SQLiteDatabase db = handler.getReadableDatabase();
+
+		Cursor cursor = db.query(Dbh.TABLE_CURRENCIES,
+				new String[] { Dbh.CURRENCIES_ID, Dbh.CURRENCIES_RATE_TO_USD, }, null,
+				null, null, null, null, null);
+		
+		if (cursor != null)
+			while(cursor.moveToNext()){
+				Currencies currencyObject=new Currencies();
+				currencyObject = new Currencies(cursor.getString(0), cursor.getDouble(1));
+				rates.add(currencyObject);
+			}
+		cursor.close();
+		db.close();
+
+		return rates;
 	}
 
 	public static Currencies getCurrencies(Dbh handler, String currency) {

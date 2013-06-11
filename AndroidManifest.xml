@@ -11,9 +11,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-	<uses-permission android:name="android.permission.VIBRATE" />
-	<uses-feature android:name="android.hardware.camera"/>
-	<uses-feature android:name="android.hardware.camera.autofocus"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
         android:allowBackup="true"
@@ -85,8 +86,31 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bue.shoppingplanner.views.SettingsActivity" />
         </activity>
-        <activity 
-            android:name="com.bue.shoppingplanner.utilities.ScanBarcodeFragmentActivity">
+        <activity android:name="com.bue.shoppingplanner.utilities.ScanBarcodeFragmentActivity" >
+        </activity>
+        <activity
+            android:name="com.bue.shoppingplanner.views.DatabaseMenuActivity"
+            android:label="@string/title_activity_database_menu"
+            android:parentActivityName="com.bue.shoppingplanner.views.MainMenuActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bue.shoppingplanner.views.MainMenuActivity" />
+        </activity>
+        <activity
+            android:name="com.bue.shoppingplanner.views.ManageProductsActivity"
+            android:label="@string/title_activity_manage_products"
+            android:parentActivityName="com.bue.shoppingplanner.views.DatabaseMenuActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bue.shoppingplanner.views.DatabaseMenuActivity" />
+        </activity>
+        <activity
+            android:name="com.bue.shoppingplanner.views.ExchangeRatesActivity"
+            android:label="@string/title_activity_exchange_rates"
+            android:parentActivityName="com.bue.shoppingplanner.views.MainMenuActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bue.shoppingplanner.views.MainMenuActivity" />
         </activity>
     </application>
 
