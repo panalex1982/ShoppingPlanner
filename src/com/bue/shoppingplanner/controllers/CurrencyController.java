@@ -143,23 +143,35 @@ public class CurrencyController implements SPSharedPreferences {
 		return price;
 	}
 
-	public ArrayList<String> getRates(String toCurrencyIso) {
-		ArrayList<String> rates = new ArrayList<String>();
+	/**
+	 * returns array list with exchange rates, currency symbol and the flag name of a drawable
+	 * @param toCurrencyIso
+	 * @return
+	 */
+	public ArrayList<String[]> getRates(String toCurrencyIso) {
+		ArrayList<String[]> rates = new ArrayList<String[]>();
 		if (toCurrencyIso.equals("USD")) {
 			for (Currencies currency : Currencies.getAllCurrencies(db)) {
 				if (!currency.getId().equals(toCurrencyIso)) {
-					String tmp = currency.getRateToUsd() + " "
-							+ getCurrencySymbol(currency.getId());
+					String[] tmp = new String[2];
+					tmp[0]=String.valueOf(currency.getRateToUsd());
+					tmp[1]=getCurrencySymbol(currency.getId());
+					tmp[2]=getCountryIso(currency.getId());
 					rates.add(tmp);
 				}
 			}
 		} else {
-//			Currencies selectedRate = Currencies.getCurrencies(db,
-//					toCurrencyIso);
+			Currencies toRate = Currencies.getCurrencies(db,
+					toCurrencyIso);
+			double rateToUsd = toRate.getRateToUsd();
 			for (Currencies currency : Currencies.getAllCurrencies(db)) {
-					String tmp = (1/currency.getRateToUsd()) + " "
-							+ getCurrencySymbol(currency.getId());
+				if (!currency.getId().equals(toCurrencyIso)){
+					String[] tmp = new String[3];
+					tmp[0]=String.valueOf((1/rateToUsd)*currency.getRateToUsd()); 
+					tmp[1]=getCurrencySymbol(currency.getId());
+					tmp[2]=getCountryIso(currency.getId());
 					rates.add(tmp);
+				}
 			}
 		}
 		return rates;
@@ -171,8 +183,22 @@ public class CurrencyController implements SPSharedPreferences {
 	}
 
 	public String getCurrencySymbol(String isoCurrency) {
-		Currency currency = Currency.getInstance(defaultCurrency);
-		return currency.getSymbol();
+		try{
+			Currency currency = Currency.getInstance(isoCurrency);
+			return currency.getSymbol();
+		}catch(Exception ex){
+			return isoCurrency+" THIS";
+		}
+	}
+	
+	public String getCountryIso(String isoCurrency) {
+		try{
+			Currency currency = Currency.getInstance(isoCurrency);
+			Locale locale=new Locale(isoCurrency);		
+			return currency.getSymbol();
+		}catch(Exception ex){
+			return isoCurrency+" THIS";
+		}
 	}
 
 	public static String formatCurrecy(String price, String currencyIso) {
