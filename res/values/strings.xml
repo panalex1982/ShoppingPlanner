@@ -572,5 +572,10 @@
     <string name="buyer_name">Buyer Name</string>
     <string name="add">Add</string>
     <string name="buyers_list">Buyers</string>
+    <string name="product_categories">Product Categories</string>
+    <string name="title_activity_manage_product_categories">Manage Product Categories</string>
+    <string name="product_category">Product Category</string>
+    <string name="shop_type">Shop Type</string>
+    <string name="shop_types">Shop Types</string>
 
 </resources>

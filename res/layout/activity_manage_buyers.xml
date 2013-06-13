@@ -8,10 +8,10 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".ManageBuyersActivity" >
+    tools:context=".ManageTableActivity" >
 
     <TextView
-        android:id="@+id/buyerAddUserLabelTextView"
+        android:id="@+id/addColumnManageTableLabelTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/buyer_name"
@@ -41,7 +41,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/buyersListLabelTextView"
+        android:id="@+id/columnManageTableListLabelTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/buyers_list"

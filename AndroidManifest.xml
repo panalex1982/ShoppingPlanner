@@ -113,8 +113,16 @@
                 android:value="com.bue.shoppingplanner.views.MainMenuActivity" />
         </activity>
         <activity
-            android:name="com.bue.shoppingplanner.views.ManageBuyersActivity"
+            android:name="com.bue.shoppingplanner.views.ManageTableActivity"
             android:label="@string/title_activity_manage_buyers"
+            android:parentActivityName="com.bue.shoppingplanner.views.DatabaseMenuActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bue.shoppingplanner.views.DatabaseMenuActivity" />
+        </activity>
+        <activity
+            android:name="com.bue.shoppingplanner.ManageProductCategoriesActivity"
+            android:label="@string/title_activity_manage_product_categories"
             android:parentActivityName="com.bue.shoppingplanner.views.DatabaseMenuActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

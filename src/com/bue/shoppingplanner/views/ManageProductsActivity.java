@@ -139,7 +139,7 @@ public class ManageProductsActivity extends FragmentActivity implements AddProdu
 			Bundle extras = data.getExtras();
 			String barcode = (extras.getString("lastBarcodeScan") == null ? "noBarcode"
 					: extras.getString("lastBarcodeScan"));
-			if (!barcode.equals("noBarcode") && !barcode.equals("")) {
+			if (!barcode.equals("noBarcode") && !barcode.equals("") && !barcode.equals("cancel")) {
 				DialogOpener.showAddProductDialog(getSupportFragmentManager(),
 						barcode, true);
 			}

@@ -301,7 +301,7 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 			Bundle extras=data.getExtras();
 			String barcode=(extras.getString("lastBarcodeScan")==null?"noBarcode":extras.getString("lastBarcodeScan"));
 //			String barcode=barcodeShare.getString(SCANNED_BARCODE,"noBarcode");
-			if(!barcode.equals("noBarcode") && !barcode.equals("")){				
+			if(!barcode.equals("noBarcode") && !barcode.equals("") && !barcode.equals("cancel")){				
 				showAddProductDialog(barcode);
 			}
 		}

@@ -3,6 +3,7 @@ package com.bue.shoppingplanner.views;
 import com.bue.shoppingplanner.R;
 import com.bue.shoppingplanner.R.layout;
 import com.bue.shoppingplanner.R.menu;
+import com.bue.shoppingplanner.helpers.ManageTableType;
 import com.bue.shoppingplanner.utilities.ScanBarcodeFragmentActivity;
 import com.bue.shoppingplanner.views.dialogs.AddProductDialogFragment;
 
@@ -23,7 +24,9 @@ import android.os.Build;
 
 public class DatabaseMenuActivity extends FragmentActivity {
 	private Button hanldeProductsButton,
-					manageBuyersButton;
+					manageBuyersButton,
+					manageProductCategoriesButton,
+					manageShopCategoriesButton;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +54,37 @@ public class DatabaseMenuActivity extends FragmentActivity {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if(event.getAction()==MotionEvent.ACTION_UP){
-					startActivity(new Intent(DatabaseMenuActivity.this, ManageBuyersActivity.class));
+					Intent intent=new Intent(DatabaseMenuActivity.this, ManageTableActivity.class);
+					intent.putExtra(ManageTableType.TAG, ManageTableType.USER);
+					startActivity(intent);
+				}
+				return false;
+			}
+		});
+		//Manage Product Categories Button
+		manageProductCategoriesButton=(Button) findViewById(R.id.manageProductCategoriesButton);
+		manageProductCategoriesButton.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if(event.getAction()==MotionEvent.ACTION_UP){
+					Intent intent=new Intent(DatabaseMenuActivity.this, ManageTableActivity.class);
+					intent.putExtra(ManageTableType.TAG, ManageTableType.PRODUCTCAT);
+					startActivity(intent);
+				}
+				return false;
+			}
+		});
+		//Manage Shop Types Button
+		manageShopCategoriesButton=(Button) findViewById(R.id.manageShopCategoriesButton);
+		manageShopCategoriesButton.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if(event.getAction()==MotionEvent.ACTION_UP){
+					Intent intent=new Intent(DatabaseMenuActivity.this, ManageTableActivity.class);
+					intent.putExtra(ManageTableType.TAG, ManageTableType.SHOPCAT);
+					startActivity(intent);
 				}
 				return false;
 			}

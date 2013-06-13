@@ -20,5 +20,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/buyer" />
+    
+     <Button
+         android:id="@+id/manageProductCategoriesButton"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:text="@string/product_categories" />
+
+      <Button
+          android:id="@+id/manageShopCategoriesButton"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/shop_types" />
 
 </LinearLayout>

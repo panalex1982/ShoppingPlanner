@@ -39,10 +39,10 @@ public class ScanBarcodeFragmentActivity extends FragmentActivity implements SPS
     private CameraPreview mPreview;
     private Handler autoFocusHandler;
 
-    TextView scanText;
-    Button scanButton;
+    private TextView scanText;
+    private Button cancelScanButton;
 
-    ImageScanner scanner;
+    private ImageScanner scanner;
 
     private boolean barcodeScanned = false;
     private boolean previewing = true;
@@ -77,18 +77,13 @@ public class ScanBarcodeFragmentActivity extends FragmentActivity implements SPS
 
         scanText = (TextView)findViewById(R.id.scanText);
 
-        scanButton = (Button)findViewById(R.id.ScanButton);
+        cancelScanButton = (Button)findViewById(R.id.cancelScanButton);
 
-        scanButton.setOnClickListener(new OnClickListener() {
+        cancelScanButton.setOnClickListener(new OnClickListener() {
                 @Override
 				public void onClick(View v) {
                     if (barcodeScanned) {
-                        barcodeScanned = false;
-                        scanText.setText("Scanning...");
-                        mCamera.setPreviewCallback(previewCb);
-                        mCamera.startPreview();
-                        previewing = true;
-                        mCamera.autoFocus(autoFocusCB);
+                    	returnToMain("cancel");
                     }
                 }
             });
@@ -157,17 +152,7 @@ public class ScanBarcodeFragmentActivity extends FragmentActivity implements SPS
 	                    }
                 }
                 if(barcodeScanned){
-                	Bundle barcodeBundle=new Bundle();
-                	barcodeBundle.putString("lastBarcodeScan", scan);
-                	Intent rIntent=getIntent();
-                	rIntent.putExtra("lastBarcodeScan", scan);
-                	setResult(1,rIntent);
-                	//Second way to pass barcode
-//                	SharedPreferences.Editor editor=barcodeShare.edit();
-//                	editor.putString(SCANNED_BARCODE, scan);
-//                	editor.commit();
-//                	setResult(1);
-                	finish();
+                	returnToMain(null);
                 }
             }
         };
@@ -179,5 +164,22 @@ public class ScanBarcodeFragmentActivity extends FragmentActivity implements SPS
                 autoFocusHandler.postDelayed(doAutoFocus, 1000);
             }
         };
+        
+        private void returnToMain(String message){
+        	//Bundle barcodeBundle=new Bundle();
+        	//barcodeBundle.putString("lastBarcodeScan", scan);
+        	Intent rIntent=getIntent();
+        	if(message==null)
+        		rIntent.putExtra("lastBarcodeScan", scan);
+        	else
+        		rIntent.putExtra("lastBarcodeScan", message);
+        	setResult(1,rIntent);
+        	//Second way to pass barcode
+//        	SharedPreferences.Editor editor=barcodeShare.edit();
+//        	editor.putString(SCANNED_BARCODE, scan);
+//        	editor.commit();
+//        	setResult(1);
+        	finish();
+        }
 
 }

@@ -168,6 +168,4 @@ public class ShopDescription {
 		readable.close();
 		return shopDescId;
 	}
-	
-
 }

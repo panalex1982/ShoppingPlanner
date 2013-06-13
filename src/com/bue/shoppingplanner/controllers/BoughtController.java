@@ -475,5 +475,10 @@ public class BoughtController {
 	public ArrayList<String> getAllUserNames(){
 		return (ArrayList<String>) User.getAllUserNames(db);
 	}
+	
+	public void persistProductKind(String kind) {
+		ProductKind newKind=new ProductKind(kind);
+		newKind.addProductKind(db);
+	}
 
 }

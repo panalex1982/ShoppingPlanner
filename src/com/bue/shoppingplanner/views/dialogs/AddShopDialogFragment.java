@@ -24,6 +24,7 @@ import android.widget.Spinner;
 
 public class AddShopDialogFragment extends DialogFragment {
 	private Dbh db;
+	private ShopController cController;
 	
 	// Use this instance of the interface to deliver action events
     private AddShopDialogListener mListener;
@@ -53,6 +54,7 @@ public class AddShopDialogFragment extends DialogFragment {
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
+		cController=new ShopController(getActivity());
 		db=new Dbh(getActivity());
 		//Shop tmpShop=new Shop();
 		//ShopDescription tmpDesc=new ShopDescription();
@@ -81,9 +83,7 @@ public class AddShopDialogFragment extends DialogFragment {
 		}
 		existingAddShopSpinner=SpinnerBuilder.createSpinnerFromArrayList(getActivity(), dialogMainView, R.id.existingAddShopSpinner, 
 				existingShopsArrayList, android.R.layout.simple_spinner_item,android.R.layout.simple_spinner_dropdown_item);
-		for(ShopDescription desc:ShopDescription.getAllShopDescription(db)){
-			shopTypeArrayList.add(desc.getName());
-		}
+		shopTypeArrayList.addAll(cController.getAllShopDescription());
 		typeAddShopSpinner=SpinnerBuilder.createSpinnerFromArrayList(getActivity(), dialogMainView, R.id.typeAddShopSpinner,
 				shopTypeArrayList, android.R.layout.simple_spinner_item,android.R.layout.simple_spinner_dropdown_item);
 		

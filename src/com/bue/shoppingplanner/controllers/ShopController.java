@@ -164,4 +164,21 @@ public class ShopController {
 				}
 		return shopId;
 	}
+	
+	/**
+	 * Returns a list with the names of all shopDescriptions.
+	 * @return
+	 */
+	public ArrayList<String> getAllShopDescription(){
+		ArrayList<String> shopTypeArrayList=new ArrayList<String>();
+		for(ShopDescription desc:ShopDescription.getAllShopDescription(db)){			
+			shopTypeArrayList.add(desc.getName());
+		}
+		return shopTypeArrayList;
+	}
+	
+	public void persistShopDescription(String shopDescription){
+		ShopDescription desc=new ShopDescription(shopDescription);
+		desc.addShopDescription(db);
+	}
 }
