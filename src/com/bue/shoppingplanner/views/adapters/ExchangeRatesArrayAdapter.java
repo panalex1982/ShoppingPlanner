@@ -52,10 +52,10 @@ public class ExchangeRatesArrayAdapter extends ArrayAdapter<String[]> {
 		}
 		String[] rowData = data.get(position);
 		String country=rowData[2].substring(0, 2);
-		//country=country.toLowerCase(Locale.US);
-		int resourceId=context.getResources().getIdentifier("eu", "drawable", context.getPackageName());
+		country=country.toLowerCase(Locale.US);
+		int resourceId=context.getResources().getIdentifier(country, "drawable", context.getPackageName());
 		try{
-			holder.flag.setBackgroundResource(resourceId);
+			holder.flag.setImageResource(resourceId);
 		}catch(Exception ex){
 			holder.flag.setBackgroundResource(context.getResources().getIdentifier("unknown", "drawable", context.getPackageName()));
 		}

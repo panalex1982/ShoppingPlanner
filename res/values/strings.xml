@@ -568,5 +568,9 @@
     <string name="title_activity_database_menu">Manage Local Database</string>
     <string name="title_activity_manage_products">Manage Products</string>
     <string name="title_activity_exchange_rates">Exchange Rates</string>
+    <string name="title_activity_manage_buyers">Manage Buyers</string>
+    <string name="buyer_name">Buyer Name</string>
+    <string name="add">Add</string>
+    <string name="buyers_list">Buyers</string>
 
 </resources>

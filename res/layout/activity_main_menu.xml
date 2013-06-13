@@ -8,10 +8,10 @@
 	    android:id="@+id/spendingMainTextView"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:layout_alignBaseline="@+id/textView1"
-	    android:layout_alignBottom="@+id/textView1"
+	    android:layout_alignBaseline="@+id/buyerAddUserLabelTextView"
+	    android:layout_alignBottom="@+id/buyerAddUserLabelTextView"
 	    android:layout_marginLeft="22dp"
-	    android:layout_toRightOf="@+id/textView1"
+	    android:layout_toRightOf="@+id/buyerAddUserLabelTextView"
 	    android:text="Medium Text"
 	    android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -48,7 +48,7 @@
 	    android:src="@android:drawable/ic_menu_edit" />
 
 	<TextView
-	    android:id="@+id/textView1"
+	    android:id="@+id/buyerAddUserLabelTextView"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_alignParentLeft="true"
@@ -62,7 +62,7 @@
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_alignParentLeft="true"
-	    android:layout_below="@+id/textView1"
+	    android:layout_below="@+id/buyerAddUserLabelTextView"
 	    android:layout_marginTop="20dp"
 	    android:text="@string/total_vat_payments"
 	    android:textAppearance="?android:attr/textAppearanceLarge" />

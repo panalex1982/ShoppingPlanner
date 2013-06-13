@@ -466,5 +466,14 @@ public class BoughtController {
 		
 		addProduct(element.getProduct(), barcode, productKind);
 	}
+	
+	public void persistUser(String username){
+		User user=new User(username);
+		user.addUser(db);
+	}
+	
+	public ArrayList<String> getAllUserNames(){
+		return (ArrayList<String>) User.getAllUserNames(db);
+	}
 
 }

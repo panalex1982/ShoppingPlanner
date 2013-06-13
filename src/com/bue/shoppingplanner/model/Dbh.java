@@ -20,7 +20,7 @@ import android.util.Log;
 public class Dbh extends SQLiteOpenHelper {
 	// All public static variables
 	// Database Version
-	private static final int DATABASE_VERSION = 8;
+	private static final int DATABASE_VERSION = 9;
 
 	// Database Name
 	public static final String DATABASE_NAME = "shoppingPlannerDB";
@@ -124,7 +124,7 @@ public class Dbh extends SQLiteOpenHelper {
 		String CREATE_TABLE_USER = "CREATE TABLE "
 				+ TABLE_USER + "(" + USER_ID
 				+ " INTEGER PRIMARY KEY AUTOINCREMENT ," + USER_NAME
-				+ " TEXT NOT NULL)";
+				+ " TEXT UNIQUE NOT NULL)";
 
 		// Product Kind Table
 		String CREATE_TABLE_PRODUCT_KIND = "CREATE TABLE " + TABLE_PRODUCT_KIND

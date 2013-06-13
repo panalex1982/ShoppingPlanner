@@ -1,62 +1,65 @@
 package com.bue.shoppingplanner.views;
 
+import java.util.ArrayList;
+
 import com.bue.shoppingplanner.R;
 import com.bue.shoppingplanner.R.layout;
 import com.bue.shoppingplanner.R.menu;
-import com.bue.shoppingplanner.utilities.ScanBarcodeFragmentActivity;
-import com.bue.shoppingplanner.views.dialogs.AddProductDialogFragment;
+import com.bue.shoppingplanner.controllers.BoughtController;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
-import android.content.Intent;
 import android.os.Build;
 
-public class DatabaseMenuActivity extends FragmentActivity {
-	private Button hanldeProductsButton,
-					manageBuyersButton;
+public class ManageBuyersActivity extends Activity {
+	private EditText buyerAddUserEditText;
+	private Button addUserButton;
+	
+	/**All Name of the available Buyers*/
+	private ListView buyersListView;
+	private ArrayList<String> buyersNamesList;
+	private ArrayAdapter<String> buyersArrayAdapter;
+	
+	private BoughtController bController;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_database_menu);
+		setContentView(R.layout.activity_manage_buyers);
+		bController=new BoughtController(this);
 		// Show the Up button in the action bar.
 		setupActionBar();
-		//Manage Product Button
-		hanldeProductsButton=(Button) findViewById(R.id.manageProductsButton);
-		hanldeProductsButton.setOnTouchListener(new View.OnTouchListener() {
+		buyerAddUserEditText=(EditText) findViewById(R.id.buyerAddUserEditText);
+		addUserButton=(Button) findViewById(R.id.addUserButton);
+		
+		//Create List view of buyers
+		buyersListView=(ListView) findViewById(R.id.buyersListView);
+		buyersNamesList=new ArrayList<String>();
+		buyersNamesList.addAll(bController.getAllUserNames());
+		buyersArrayAdapter=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,buyersNamesList);
+		buyersListView.setAdapter(buyersArrayAdapter);
+		
+		//Listeners
+		addUserButton.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				if(event.getAction()==MotionEvent.ACTION_UP){
-					startActivity(new Intent(DatabaseMenuActivity.this, ManageProductsActivity.class));
-				}
-				return false;
+			public void onClick(View v) {
+				bController.persistUser(buyerAddUserEditText.getText().toString());
+				buyerAddUserEditText.setText("");
+				buyersNamesList.clear();
+				buyersNamesList.addAll(bController.getAllUserNames());
+				buyersListView.invalidateViews();
 			}
 		});
-		
-		//Manage Buyers Button
-		manageBuyersButton=(Button) findViewById(R.id.manageBuyersButton);
-		manageBuyersButton.setOnTouchListener(new View.OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				if(event.getAction()==MotionEvent.ACTION_UP){
-					startActivity(new Intent(DatabaseMenuActivity.this, ManageBuyersActivity.class));
-				}
-				return false;
-			}
-		});
-		
 	}
 
 	/**
@@ -72,7 +75,7 @@ public class DatabaseMenuActivity extends FragmentActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.database_menu, menu);
+		getMenuInflater().inflate(R.menu.manage_buyers, menu);
 		return true;
 	}
 

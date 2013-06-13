@@ -9,7 +9,7 @@
     tools:context=".IntroActivity" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/buyerAddUserLabelTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -21,8 +21,8 @@
          style="?android:attr/buttonStyleSmall"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:layout_alignLeft="@+id/textView1"
-         android:layout_below="@+id/textView1"
+         android:layout_alignLeft="@+id/buyerAddUserLabelTextView"
+         android:layout_below="@+id/buyerAddUserLabelTextView"
          android:text="Button" />
 
      <com.androidplot.xy.XYPlot

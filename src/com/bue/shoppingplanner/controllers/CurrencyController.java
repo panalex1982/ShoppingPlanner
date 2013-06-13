@@ -156,7 +156,7 @@ public class CurrencyController implements SPSharedPreferences {
 					String[] tmp = new String[2];
 					tmp[0]=String.valueOf(currency.getRateToUsd());
 					tmp[1]=getCurrencySymbol(currency.getId());
-					tmp[2]=getCountryIso(currency.getId());
+					tmp[2]=currency.getId();
 					rates.add(tmp);
 				}
 			}
@@ -169,7 +169,7 @@ public class CurrencyController implements SPSharedPreferences {
 					String[] tmp = new String[3];
 					tmp[0]=String.valueOf((1/rateToUsd)*currency.getRateToUsd()); 
 					tmp[1]=getCurrencySymbol(currency.getId());
-					tmp[2]=getCountryIso(currency.getId());
+					tmp[2]=currency.getId();
 					rates.add(tmp);
 				}
 			}
