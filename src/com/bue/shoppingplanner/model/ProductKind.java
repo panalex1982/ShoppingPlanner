@@ -5,7 +5,9 @@ import java.util.List;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class ProductKind {
 	private int id;
@@ -151,6 +153,21 @@ public class ProductKind {
 		db.delete(Dbh.TABLE_PRODUCT_KIND, Dbh.PRODUCT_KIND_ID + " = ?",
 				new String[] { String.valueOf(getId()) });
 		db.close();
+	}
+
+	// Deleting single ProductKind
+	public static String deleteProductKind(Dbh handler, String kind) {
+		String error="";
+		SQLiteDatabase db = handler.getWritableDatabase();
+		try {
+			db.execSQL("pragma foreign_keys=on;");
+			db.delete(Dbh.TABLE_PRODUCT_KIND, Dbh.PRODUCT_KIND_NAME + " = ?",
+					new String[] { kind });
+		} catch (SQLiteConstraintException ex) {
+			error="constrain_error";
+		}
+		db.close();
+		return error;
 	}
 
 	// Getting ProductKind

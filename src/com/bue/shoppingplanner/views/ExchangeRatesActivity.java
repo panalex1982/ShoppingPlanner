@@ -100,7 +100,7 @@ public class ExchangeRatesActivity extends FragmentActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.exchange_rates, menu);
+		getMenuInflater().inflate(R.menu.action_menu, menu);
 		return true;
 	}
 

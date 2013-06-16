@@ -1,4 +1,4 @@
-package com.bue.shoppingplanner.views;
+package com.bue.shoppingplanner;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -10,6 +10,13 @@ import com.bue.shoppingplanner.R.layout;
 import com.bue.shoppingplanner.R.menu;
 import com.bue.shoppingplanner.controllers.BoughtController;
 import com.bue.shoppingplanner.model.*;
+import com.bue.shoppingplanner.views.DatabaseMenuActivity;
+import com.bue.shoppingplanner.views.ExchangeRatesActivity;
+import com.bue.shoppingplanner.views.SavedListsActivity;
+import com.bue.shoppingplanner.views.SettingsActivity;
+import com.bue.shoppingplanner.views.ShoppingListActivity;
+import com.bue.shoppingplanner.views.ShopsActivity;
+import com.bue.shoppingplanner.views.StatsActivity;
 import com.bue.shoppingplanner.views.dialogs.AddProductDialogFragment;
 
 import android.net.Uri;
@@ -37,118 +44,134 @@ public class MainMenuActivity extends FragmentActivity {
 	private ImageButton shopsImageButton;
 	private ImageButton savedListsImageButton;
 	private ImageButton dbButton;
-	
+
 	private TextView spendingMainTextView;
 	private TextView totalVatTextView;
 	private ImageButton settingsImageButton;
 	private ImageButton ratesImageButton;
 
+	private boolean startIntro;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		setContentView(R.layout.activity_main_menu);
 		// Show the Up button in the action bar.
 		setupActionBar();
-		//Shopping List Button
-		shoppingListImageButton=(ImageButton) findViewById(R.id.shoppingListImageButton);
-		shoppingListImageButton.setOnTouchListener(new View.OnTouchListener(){
+		startIntro = true;
+		// Shopping List Button
+		shoppingListImageButton = (ImageButton) findViewById(R.id.shoppingListImageButton);
+		shoppingListImageButton.setOnTouchListener(new View.OnTouchListener() {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				if(event.getAction()==MotionEvent.ACTION_UP){
-					startActivity(new Intent(MainMenuActivity.this, ShoppingListActivity.class));
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					startActivity(new Intent(MainMenuActivity.this,
+							ShoppingListActivity.class));
 				}
 				return true;
 			}
-			
+
 		});
-		
-		//Stats Button
-		statsImageButton=(ImageButton) findViewById(R.id.statsImageButton);
+
+		// Stats Button
+		statsImageButton = (ImageButton) findViewById(R.id.statsImageButton);
 		statsImageButton.setOnTouchListener(new View.OnTouchListener() {
-			
+
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				if(event.getAction()==MotionEvent.ACTION_UP){
-					startActivity(new Intent(MainMenuActivity.this, StatsActivity.class));
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					startActivity(new Intent(MainMenuActivity.this,
+							StatsActivity.class));
 				}
 				return false;
 			}
 		});
-		
-		//Shops ImageButton
-		shopsImageButton=(ImageButton) findViewById(R.id.shopsImageButton);
+
+		// Shops ImageButton
+		shopsImageButton = (ImageButton) findViewById(R.id.shopsImageButton);
 		shopsImageButton.setOnTouchListener(new View.OnTouchListener() {
-			
+
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				if(event.getAction()==MotionEvent.ACTION_UP){
-					startActivity(new Intent(MainMenuActivity.this, ShopsActivity.class));
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					startActivity(new Intent(MainMenuActivity.this,
+							ShopsActivity.class));
 				}
 				return false;
 			}
 		});
-		
-		//Saved Lists ImageButton
-		savedListsImageButton=(ImageButton) findViewById(R.id.savedListsImageButton);
+
+		// Saved Lists ImageButton
+		savedListsImageButton = (ImageButton) findViewById(R.id.savedListsImageButton);
 		savedListsImageButton.setOnTouchListener(new View.OnTouchListener() {
-			
+
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				if(event.getAction()==MotionEvent.ACTION_UP){
-					startActivity(new Intent(MainMenuActivity.this, SavedListsActivity.class));
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					startActivity(new Intent(MainMenuActivity.this,
+							SavedListsActivity.class));
 				}
 				return false;
 			}
 		});
-		
-		//Settings ImageButton
-		settingsImageButton=(ImageButton) findViewById(R.id.settingsImageButton);
+
+		// Settings ImageButton
+		settingsImageButton = (ImageButton) findViewById(R.id.settingsImageButton);
 		settingsImageButton.setOnTouchListener(new View.OnTouchListener() {
-			
+
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				if(event.getAction()==MotionEvent.ACTION_UP){
-					startActivity(new Intent(MainMenuActivity.this, SettingsActivity.class));
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					startActivity(new Intent(MainMenuActivity.this,
+							SettingsActivity.class));
 				}
 				return false;
 			}
 		});
-		
-		//DB Button ImageButton
-		dbButton=(ImageButton) findViewById(R.id.dbButton);
+
+		// DB Button ImageButton
+		dbButton = (ImageButton) findViewById(R.id.dbButton);
 		dbButton.setOnTouchListener(new View.OnTouchListener() {
-			
+
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				if(event.getAction()==MotionEvent.ACTION_UP){
-					startActivity(new Intent(MainMenuActivity.this, DatabaseMenuActivity.class));
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					startActivity(new Intent(MainMenuActivity.this,
+							DatabaseMenuActivity.class));
 				}
 				return false;
 			}
 		});
-		
-		//Exchange Rates ImagButton
-		ratesImageButton=(ImageButton) findViewById(R.id.ratesImageButton);
+
+		// Exchange Rates ImagButton
+		ratesImageButton = (ImageButton) findViewById(R.id.ratesImageButton);
 		ratesImageButton.setOnTouchListener(new View.OnTouchListener() {
-			
+
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				if(event.getAction()==MotionEvent.ACTION_UP){
-					startActivity(new Intent(MainMenuActivity.this, ExchangeRatesActivity.class));
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					startActivity(new Intent(MainMenuActivity.this,
+							ExchangeRatesActivity.class));
 				}
 				return false;
 			}
 		});
-		
-		//Main menu stats
-		BoughtController bController=new BoughtController(this);
-		spendingMainTextView=(TextView) findViewById(R.id.spendingMainTextView);
-		spendingMainTextView.setText(Double.toString(bController.getTotalSpending()));
-		
-		totalVatTextView=(TextView) findViewById(R.id.totalVatTextView);
-		totalVatTextView.setText(Double.toString(bController.getTotalVatPayment()));		
-        
+
+		// Main menu stats
+		BoughtController bController = new BoughtController(this);
+		spendingMainTextView = (TextView) findViewById(R.id.spendingMainTextView);
+		spendingMainTextView.setText(Double.toString(bController
+				.getTotalSpending()));
+
+		totalVatTextView = (TextView) findViewById(R.id.totalVatTextView);
+		totalVatTextView.setText(Double.toString(bController
+				.getTotalVatPayment()));
+		if (startIntro)
+			startActivityForResult(new Intent(MainMenuActivity.this,
+					IntroActivity.class), 0);
+
 	}
 
 	/**
@@ -164,8 +187,15 @@ public class MainMenuActivity extends FragmentActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main_menu, menu);
+		getMenuInflater().inflate(R.menu.action_menu, menu);
 		return true;
+	}
+
+	@Override
+	protected void onActivityResult(int arg0, int arg1, Intent arg2) {
+		super.onActivityResult(arg0, arg1, arg2);
+		if (arg0 == 0)
+			startIntro = false;
 	}
 
 	@Override
@@ -181,6 +211,9 @@ public class MainMenuActivity extends FragmentActivity {
 			//
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
+		case R.id.action_exit:
+			exit();
+			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -188,9 +221,17 @@ public class MainMenuActivity extends FragmentActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		Dbh db=new Dbh(this);
-		spendingMainTextView.setText(Double.toString(Buys.getTotalSpending(db)));
+		Dbh db = new Dbh(this);
+		spendingMainTextView
+				.setText(Double.toString(Buys.getTotalSpending(db)));
 	}
-	
-	
+
+	public void exit() {
+		// Intent exitIntent=new Intent(MainMenuActivity.this,
+		// IntroActivity.class);
+		// exitIntent.putExtra("exit", true);
+		// startActivity(exitIntent);
+		finish();
+	}
+
 }

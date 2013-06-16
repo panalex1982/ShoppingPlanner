@@ -86,7 +86,7 @@ public class ShopsActivity extends FragmentActivity implements AddShopDialogFrag
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.set_lists, menu);
+		getMenuInflater().inflate(R.menu.action_menu, menu);
 		return true;
 	}
 

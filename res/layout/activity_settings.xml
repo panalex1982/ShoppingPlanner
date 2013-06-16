@@ -17,11 +17,24 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textStyle="bold" />
 
-    <Spinner
-        android:id="@+id/currencySettingsSpinner"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:entries="@array/currency_names" />
+        android:orientation="horizontal" >
+
+        <Spinner
+            android:id="@+id/currencySettingsSpinner"
+            android:layout_width="193dp"
+            android:layout_height="wrap_content"
+            android:entries="@array/currency_names" />
+
+        <Button
+            android:id="@+id/unlockCurrecnyButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/unlock" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/vatStandrdSettingsTextView"
@@ -77,7 +90,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/export" />
-        
     </LinearLayout>
 
     <LinearLayout
@@ -89,7 +101,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/save" />
-
     </LinearLayout>
 
 </LinearLayout>

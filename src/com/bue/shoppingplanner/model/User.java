@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 
 /**
@@ -145,6 +146,22 @@ public class User {
 				new String[] { String.valueOf(getId()) });
 		db.close();
 	}
+	
+	// Deleting single User
+	public static String deleteUser(Dbh handler, String userName) {
+			String error="";
+			SQLiteDatabase db = handler.getWritableDatabase();
+			try {
+				db.execSQL("pragma foreign_keys=on;");
+				db.delete(Dbh.TABLE_USER, Dbh.USER_NAME + " = ?",
+						new String[] { userName });
+			} catch (SQLiteConstraintException ex) {
+				error="constrain_error";
+			}
+			
+			db.close();
+			return error;
+		}
 
 	// Getting User
 	public static int getUserCount(Dbh handler) {

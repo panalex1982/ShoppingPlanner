@@ -18,3 +18,6 @@ local.properties
 # Eclipse project files
 .classpath
 .project
+
+#keys
+src/com/bue/shoppingplanner/utilities/Keys.java

@@ -20,7 +20,7 @@ import android.util.Log;
 public class Dbh extends SQLiteOpenHelper {
 	// All public static variables
 	// Database Version
-	private static final int DATABASE_VERSION = 9;
+	private static final int DATABASE_VERSION = 10;
 
 	// Database Name
 	public static final String DATABASE_NAME = "shoppingPlannerDB";
@@ -149,9 +149,9 @@ public class Dbh extends SQLiteOpenHelper {
 				+ " TEXT NOT NULL," + PRODUCT_KIND + " INTEGER NOT NULL,"
 				+ "FOREIGN KEY("
 				+ PRODUCT_BARCODE + ") REFERENCES " + TABLE_COMMERCIAL_PRODUCT
-				+ "(" + COMMERCIAL_PRODUCT_BARCODE + ")," + "FOREIGN KEY("
+				+ "(" + COMMERCIAL_PRODUCT_BARCODE + ") ON DELETE RESTRICT," + "FOREIGN KEY("
 				+ PRODUCT_KIND + ") REFERENCES " + TABLE_PRODUCT_KIND + "("
-				+ PRODUCT_KIND_ID + ")" + ")";
+				+ PRODUCT_KIND_ID + ") ON DELETE RESTRICT" + ")";
 
 		// Shop Description
 		String CREATE_TABLE_SHOP_DESCRIPTION = "CREATE TABLE "
@@ -172,9 +172,9 @@ public class Dbh extends SQLiteOpenHelper {
 				+ " TEXT NOT NULL," + SHOP_ADDRESS + " INTEGER NOT NULL,"
 				+ SHOP_DESCRIPTION + " INTEGER NOT NULL," + "FOREIGN KEY("
 				+ SHOP_ADDRESS + ") REFERENCES " + TABLE_ADDRESS + "("
-				+ ADDRESS_ID + ")," + "FOREIGN KEY(" + SHOP_DESCRIPTION
+				+ ADDRESS_ID + ") ON DELETE RESTRICT," + "FOREIGN KEY(" + SHOP_DESCRIPTION
 				+ ") REFERENCES " + TABLE_SHOP_DESCRIPTION + "("
-				+ SHOP_DESCRIPTION_ID + ")" + ")";
+				+ SHOP_DESCRIPTION_ID + ") ON DELETE RESTRICT" + ")";
 
 		// Buys
 		String CREATE_TABLE_BUYS = "CREATE TABLE " + TABLE_BUYS + "(" + BUYS_ID
@@ -186,11 +186,11 @@ public class Dbh extends SQLiteOpenHelper {
 				+ BUYS_LIST_NAME+" TEXT, "
 				+ BUYS_VAT + " REAL NOT NULL, "
 				+ "FOREIGN KEY(" + BUYS_PRODUCT + ") REFERENCES "
-				+ TABLE_PRODUCT + "(" + PRODUCT_ID + ")," + "FOREIGN KEY("
+				+ TABLE_PRODUCT + "(" + PRODUCT_ID + ") ON DELETE RESTRICT," + "FOREIGN KEY("
 				+ BUYS_SHOP + ") REFERENCES " + TABLE_SHOP + "(" + SHOP_ID
-				+ ")" + "FOREIGN KEY(" + BUYS_USER_ID
+				+ ") ON DELETE RESTRICT, " + "FOREIGN KEY(" + BUYS_USER_ID
 				+ ") REFERENCES " + TABLE_USER + "("
-				+ USER_ID + ")" + ")";
+				+ USER_ID + ") ON DELETE RESTRICT" + ")";
 		
 		//UNKNOWN_BARCODE
 		String CREATE_TABLE_UNKNOWN_BARCODE="CREATE TABLE " + TABLE_UNKNOWN_BARCODE + "(" + UNKNOWN_BARCODE_ID
@@ -220,6 +220,17 @@ public class Dbh extends SQLiteOpenHelper {
 		db.execSQL(CREATE_TABLE_UNKNOWN_BARCODE);
 		db.execSQL(CREATE_TABLE_CURRENCIES);
 		db.execSQL(CREATE_TABLE_JSON_UPDATE);
+		Log.d("Initialize table: ", CREATE_TABLE_USER+"\n"
+				+CREATE_TABLE_PRODUCT_KIND+"\n"
+				+CREATE_TABLE_COMMERCIAL_PRODUCT+"\n"
+				+CREATE_TABLE_PRODUCT+"\n"
+				+CREATE_TABLE_SHOP_DESCRIPTION+"\n"
+				+CREATE_TABLE_ADDRESS+"\n"
+				+CREATE_TABLE_SHOP+"\n"
+				+CREATE_TABLE_BUYS+"\n"
+				+CREATE_TABLE_UNKNOWN_BARCODE+"\n"
+				+CREATE_TABLE_CURRENCIES+"\n"
+				+CREATE_TABLE_JSON_UPDATE+"\n");
 	}
 
 	// Upgrading database

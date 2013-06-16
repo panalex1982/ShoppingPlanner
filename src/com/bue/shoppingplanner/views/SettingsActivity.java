@@ -1,6 +1,10 @@
 package com.bue.shoppingplanner.views;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.app.Dialog;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -27,12 +31,14 @@ public class SettingsActivity extends FragmentActivity {
 	private Spinner currencySettingsSpinner;
 	private Button saveSettingsButton,
 				saveDBButton,
-				loadDBButton;
+				loadDBButton,				
+				unlockCurrecnyButton;
 	private EditText vatStandrdSettingsEditText,
 					vatReducedSettingsEditText;
 	
 	private CurrencyController cController;
 	private VatHelper vat;
+	private Dialog unlockWarning;
 	
 	/** Sample filters array */
 	final String[] mFileFilter = { "*.db"};
@@ -49,6 +55,7 @@ public class SettingsActivity extends FragmentActivity {
 		currencySettingsSpinner=(Spinner) findViewById(R.id.currencySettingsSpinner);
 		currencySettingsSpinner.setSelection(cController.getDefaultCurrencyPosition());
 		saveSettingsButton=(Button) findViewById(R.id.saveSettingsButton);
+		unlockCurrecnyButton=(Button) findViewById(R.id.unlockCurrecnyButton);
 		saveDBButton=(Button) findViewById(R.id.saveDBButton);
 		loadDBButton=(Button) findViewById(R.id.loadDBButton);
 		vatStandrdSettingsEditText=(EditText) findViewById(R.id.vatStandrdSettingsEditText);
@@ -76,10 +83,36 @@ public class SettingsActivity extends FragmentActivity {
 				cController.setDefaultCurrencyFromName(currencySettingsSpinner.getSelectedItem().toString());
 				vat.setRates(vatStandrdSettingsEditText.getText().toString(), 
 						vatReducedSettingsEditText.getText().toString());
+				finish();
 				
 			}
 		});
 		
+		unlockWarning=createDialog();
+		unlockCurrecnyButton.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				currencySettingsSpinner.setEnabled(true);
+				unlockWarning.show();
+				unlockCurrecnyButton.setEnabled(false);
+				unlockCurrecnyButton.setVisibility(View.INVISIBLE);
+				
+			}
+		});
+		Bundle extras=getIntent().getExtras();
+		if(extras!=null){
+			if(extras.getBoolean("initSettings")){
+				unlockCurrecnyButton.setEnabled(false);
+				unlockCurrecnyButton.setVisibility(View.INVISIBLE);
+				saveDBButton.setEnabled(false);
+				saveDBButton.setVisibility(View.INVISIBLE);
+			}
+			else{
+				currencySettingsSpinner.setEnabled(false);
+			}
+		}else{
+			currencySettingsSpinner.setEnabled(false);
+		}
 		
 	}
 
@@ -96,7 +129,7 @@ public class SettingsActivity extends FragmentActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.settings, menu);
+		getMenuInflater().inflate(R.menu.action_menu, menu);
 		return true;
 	}
 
@@ -127,10 +160,22 @@ public class SettingsActivity extends FragmentActivity {
 
 	OnHandleFileListener mSaveFileListener = new OnHandleFileListener() {
 		@Override
-		public void handleFile(final String filePath) {//TODO: create file
+		public void handleFile(final String filePath) {
 			SerializeObject.exportDB(filePath, getBaseContext());
 			Toast.makeText(SettingsActivity.this, "Save: " + filePath, Toast.LENGTH_SHORT).show();
 		}
 	};
+	
+	private Dialog createDialog(){
+		String unlock=getResources().getString(R.string.unlock);
+		String unlock_hint=getApplicationContext().getResources().getString(R.string.unlock_hint);
+		Builder builder=new AlertDialog.Builder(this);
+		builder.setTitle(unlock);
+		builder.setMessage(unlock_hint);
+		builder.setIcon(android.R.drawable.stat_notify_error);
+		builder.setPositiveButton(R.string.ok, null);
+		AlertDialog dialog=builder.create();
+		return dialog;
+	}
 
 }

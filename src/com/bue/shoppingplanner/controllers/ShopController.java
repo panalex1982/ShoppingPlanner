@@ -181,4 +181,8 @@ public class ShopController {
 		ShopDescription desc=new ShopDescription(shopDescription);
 		desc.addShopDescription(db);
 	}
+	
+	public String deleteShopDescription(String shopDescription){
+		return ShopDescription.deleteShopDescription(db, shopDescription);
+	}
 }

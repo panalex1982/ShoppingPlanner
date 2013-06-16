@@ -1,42 +1,34 @@
 package com.bue.shoppingplanner;
 
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 import com.bue.shoppingplanner.R;
 import com.bue.shoppingplanner.asynctascs.ExchangesAsyncTask;
-import com.bue.shoppingplanner.asynctascs.UpcDataAsyncTasc;
+import com.bue.shoppingplanner.controllers.BoughtController;
 import com.bue.shoppingplanner.controllers.CurrencyController;
+import com.bue.shoppingplanner.controllers.ShopController;
+import com.bue.shoppingplanner.helpers.ManageTableType;
 import com.bue.shoppingplanner.model.Address;
 import com.bue.shoppingplanner.model.CommercialProduct;
 import com.bue.shoppingplanner.model.Currencies;
 import com.bue.shoppingplanner.model.Dbh;
 import com.bue.shoppingplanner.model.JsonUpdate;
-import com.bue.shoppingplanner.model.User;
 import com.bue.shoppingplanner.model.ProductKind;
 import com.bue.shoppingplanner.model.Shop;
-import com.bue.shoppingplanner.model.ShopDescription;
 import com.bue.shoppingplanner.model.UnknownBarcode;
-import com.bue.shoppingplanner.utilities.ScanBarcodeFragmentActivity;
 import com.bue.shoppingplanner.utilities.plotformats.WeeklyXAxisFormat;
-import com.bue.shoppingplanner.utilities.plotformats.YearlyXAxisFormat;
-import com.bue.shoppingplanner.views.MainMenuActivity;
+import com.bue.shoppingplanner.views.ManageTableActivity;
 import com.bue.shoppingplanner.views.SettingsActivity;
 
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -45,12 +37,6 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MotionEvent;
-import android.view.View;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.widget.Button;
-import android.widget.Toast;
-
 import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.series.XYSeries;
 import com.androidplot.xy.*;
@@ -63,29 +49,29 @@ public class IntroActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//Test Barcode Scanner
+		// Test Barcode Scanner
 		setContentView(R.layout.activity_intro);
-        //Test Plot
+		// Test Plot
 		createPlot();
-		db=new Dbh(this);
-		initializeDatabase();
-		lastUpdate=JsonUpdate.getJsonUpdate(db);
-		String updateDateString=lastUpdate.getDate();
-		SimpleDateFormat format=new SimpleDateFormat("ddMMyyyyhhmmss");
+		db = new Dbh(this);
+		initializeDatabase(this);
+		lastUpdate = JsonUpdate.getJsonUpdate(db);
+		String updateDateString = lastUpdate.getDate();
+		SimpleDateFormat format = new SimpleDateFormat("ddMMyyyyhhmmss");
 		Date updateDate;
 		try {
 			updateDate = format.parse(updateDateString);
-			long differnce=getDifferenceFromNow(updateDate);
-			Log.i("Days differnece: ",""+differnce);
-			if(differnce>7){
-				ExchangesAsyncTask async=new ExchangesAsyncTask();
+			long differnce = getDifferenceFromNow(updateDate);
+			Log.i("Days differnece: ", "" + differnce);
+			if (differnce > 7) {
+				ExchangesAsyncTask async = new ExchangesAsyncTask();
 				async.execute("http://openexchangerates.org/api/latest.json?app_id=");
 				try {
-					ArrayList<Currencies> result=async.get();
-					for(Currencies item:result){
-						//Log.i(item.getId(),""+item.getRateToUsd());
+					ArrayList<Currencies> result = async.get();
+					for (Currencies item : result) {
+						// Log.i(item.getId(),""+item.getRateToUsd());
 						item.updateCurrencies(db);
-						lastUpdate=new JsonUpdate();
+						lastUpdate = new JsonUpdate();
 						lastUpdate.addJsonUpdate(db);
 					}
 				} catch (InterruptedException e) {
@@ -99,13 +85,13 @@ public class IntroActivity extends FragmentActivity {
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}		
+		}
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.intro, menu);
+		getMenuInflater().inflate(R.menu.action_menu, menu);
 		return true;
 	}
 
@@ -122,7 +108,10 @@ public class IntroActivity extends FragmentActivity {
 	 */
 	private void openMainApplication(){;
 		try{
-			startActivity(new Intent(IntroActivity.this, MainMenuActivity.class));
+			Intent main=new Intent(IntroActivity.this, MainMenuActivity.class);
+			//main.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			//startActivity(main);
+			finish();
 		}catch(Exception ex){
 			String exs=ex.toString();
 			Log.d("Exception", exs);
@@ -133,112 +122,52 @@ public class IntroActivity extends FragmentActivity {
 	 * Adds default records to the database.
 	 */
 	
-	public void initializeDatabase(){
+	public void initializeDatabase(Context context){		
 		try{
 			if(ProductKind.getProductKindCount(db)<=0){
+				BoughtController bController=new BoughtController(context);
+				ShopController sContreller=new ShopController(context);
+				String unknown=context.getResources().getString(R.string.unknown);
 				//Insert Groups
-				User group=new User();
-				group.setName("Home");//1
-				group.addUser(db);
+//				User group=new User();
+//				group.setName("Home");//1
+//				group.addUser(db);
 								
 				//Insert Kinds
-				ProductKind kind=new ProductKind();
-				kind.setName("Food");//1		
-				kind.addProductKind(db);
-				kind.setName("Drink");//2		
-				kind.addProductKind(db);
-				kind.setName("Health");//3		
-				kind.addProductKind(db);
-				kind.setName("Household");//4		
-				kind.addProductKind(db);
-				kind.setName("Clothes");//5		
-				kind.addProductKind(db);
-				kind.setName("Entertainment");//6		
-				kind.addProductKind(db);
-				kind.setName("Technology");//7		
-				kind.addProductKind(db);
-				kind.setName("Insurance");//8		
-				kind.addProductKind(db);
-				kind.setName("Loan");//9		
-				kind.addProductKind(db);
-				kind.setName("Home Equipment");//10		
-				kind.addProductKind(db);
-				kind.setName("Travel");//11		
-				kind.addProductKind(db);
-				kind.setName("Bills");//12		
-				kind.addProductKind(db);
-				kind.setName("Personal Care");//13		
-				kind.addProductKind(db);
-				kind.setName("Children Products");//14		
-				kind.addProductKind(db);
-				kind.setName("Rent");//15		
-				kind.addProductKind(db);
-				kind.setName("Subscriptions");//16		
-				kind.addProductKind(db);
-				kind.setName("Taxes");//17		
-				kind.addProductKind(db);
-				kind.setName("Electronics");//18		
-				kind.addProductKind(db);
-				kind.setName("Tobaccos");//19		
-				kind.addProductKind(db);
-				kind.setName("Vehicle");//20		
-				kind.addProductKind(db);
-				kind.setName("Pet");//21
-				kind.addProductKind(db);
-				kind.setName("Other");//22		
-				kind.addProductKind(db);
+				String[] kindArray=context.getResources().getStringArray(R.array.product_categories);
+				for(String kind:kindArray){
+					bController.persistProductKind(kind);
+				}
 				//Insert Unknown/No Specified barcode
-				CommercialProduct cp=new CommercialProduct("-1","Unknown", "Unknown");
+				CommercialProduct cp=new CommercialProduct("-1",unknown, unknown);
 				cp.addCommercialProduct(db);
 				UnknownBarcode ub=new UnknownBarcode(-1);
 				ub.addUnknownBarcode(db);				
 				//Insert Shop Description
-				ShopDescription desc=new ShopDescription();
-				desc.setName("Unknown");
-				desc.addShopDescription(db);//1
-				desc.setName("Local Store");
-				desc.addShopDescription(db);//2
-				desc.setName("Super Market");
-				desc.addShopDescription(db);//3
-				desc.setName("Mini Market");
-				desc.addShopDescription(db);//4
-				desc.setName("Speciality Store");
-				desc.addShopDescription(db);//5
-				desc.setName("Entertainment Center");
-				desc.addShopDescription(db);//6
-				desc.setName("Medical");
-				desc.addShopDescription(db);//7
-				desc.setName("Internet Store");
-				desc.addShopDescription(db);//8
-				desc.setName("Service Station");
-				desc.addShopDescription(db);//9
-				desc.setName("Official Store");
-				desc.addShopDescription(db);//10
-				desc.setName("Bill Payment Service");
-				desc.addShopDescription(db);//11
-				desc.setName("Tax Payment Service");
-				desc.addShopDescription(db);//12
-				desc.setName("Bank");
-				desc.addShopDescription(db);//13
-				desc.setName("Other");
-				desc.addShopDescription(db);//14
+				String[] shopCategoriesArray=context.getResources().getStringArray(R.array.shop_categories);
+				for(String shopCategory:shopCategoriesArray){
+					sContreller.persistShopDescription(shopCategory);
+				}
 				//Insert Address
 				Address address=new Address();
-				address.setStreetName("Unknown");
+				address.setStreetName(unknown);
 				address.setNumber("0");
-				address.setCity("Unknown");
-				address.setArea("Unknown");
-				address.setZip("Unknown");
-				address.setCountry("Unknown");
+				address.setCity(unknown);
+				address.setArea(unknown);
+				address.setZip(unknown);
+				address.setCountry(unknown);
 				address.addAddress(db);//1
 				Shop shop=new Shop();
-				shop.setName("Unknown");
+				shop.setName(unknown);
 				shop.setAddress(1);
 				shop.setShopDescription(1);
 				shop.addShop(db);//1
 				//Currencies
 				initializeCurrencies();
 				initializeDefaultCurrency();
+				Intent initializeSettings=new Intent(IntroActivity.this,SettingsActivity.class);
+				initializeSettings.putExtra("initSettings",true);
+				startActivityForResult(initializeSettings,0);
 			}
 		}catch(Exception ex){
 			Log.d("Initialize Exception", ex.toString());
@@ -246,6 +175,18 @@ public class IntroActivity extends FragmentActivity {
 		
 	}
 	
+	
+	
+	@Override
+	protected void onActivityResult(int arg0, int arg1, Intent arg2) {
+		super.onActivityResult(arg0, arg1, arg2);
+		if(arg0==0){
+			Intent initializeSettings=new Intent(IntroActivity.this,ManageTableActivity.class);
+			initializeSettings.putExtra(ManageTableType.TAG,ManageTableType.INIT_USER);
+			startActivityForResult(initializeSettings,1);
+		}
+	}
+
 	private void initializeCurrencies(){
 		ExchangesAsyncTask async=new ExchangesAsyncTask();
 		async.execute("http://openexchangerates.org/api/latest.json?app_id=");

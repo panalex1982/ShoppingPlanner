@@ -153,7 +153,7 @@ public class CurrencyController implements SPSharedPreferences {
 		if (toCurrencyIso.equals("USD")) {
 			for (Currencies currency : Currencies.getAllCurrencies(db)) {
 				if (!currency.getId().equals(toCurrencyIso)) {
-					String[] tmp = new String[2];
+					String[] tmp = new String[3];
 					tmp[0]=String.valueOf(currency.getRateToUsd());
 					tmp[1]=getCurrencySymbol(currency.getId());
 					tmp[2]=currency.getId();

@@ -5,22 +5,26 @@ import java.util.List;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 /**
  * Description examples: Supermarket, mini market, specialized shop...
+ * 
  * @author Panagiotis
- *
+ * 
  */
 public class ShopDescription {
 	private int id;
 	private String name;
+
 	public ShopDescription(int id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
 	}
-	
+
 	public ShopDescription(String name) {
 		super();
 		this.name = name;
@@ -29,22 +33,25 @@ public class ShopDescription {
 	public ShopDescription() {
 		super();
 	}
-	
+
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	//Database Operations
-	
+
+	// Database Operations
+
 	/*
 	 * "CREATE TABLE "+ TABLE_SHOP_DESCRIPTION +"("+ SHOP_DESCRIPTION_ID +
 	 * " INTEGER PRIMARY KEY AUTOINCREMENT ," + SHOP_DESCRIPTION_NAME+
@@ -52,9 +59,10 @@ public class ShopDescription {
 	 * 
 	 * Shop Description
 	 */
-	
+
 	/**
 	 * Add new shop description. Returns the PK or -1 if error occurred.
+	 * 
 	 * @param handler
 	 * @return
 	 */
@@ -74,14 +82,13 @@ public class ShopDescription {
 		SQLiteDatabase db = handler.getReadableDatabase();
 
 		Cursor cursor = db.query(Dbh.TABLE_SHOP_DESCRIPTION,
-				new String[] { Dbh.SHOP_DESCRIPTION_NAME, }, Dbh.SHOP_DESCRIPTION_ID
-						+ "=?", new String[] { String.valueOf(id) }, null,
-				null, null, null);
-		ShopDescription shopDescription=new ShopDescription();
+				new String[] { Dbh.SHOP_DESCRIPTION_NAME, },
+				Dbh.SHOP_DESCRIPTION_ID + "=?",
+				new String[] { String.valueOf(id) }, null, null, null, null);
+		ShopDescription shopDescription = new ShopDescription();
 		if (cursor != null)
-			if(cursor.moveToFirst()){
-				shopDescription = new ShopDescription(id,
-				cursor.getString(0));
+			if (cursor.moveToFirst()) {
+				shopDescription = new ShopDescription(id, cursor.getString(0));
 			}
 		cursor.close();
 		db.close();
@@ -137,6 +144,22 @@ public class ShopDescription {
 		db.close();
 	}
 
+	// Deleting single Shop Description
+	public static String deleteShopDescription(Dbh handler,
+			String shopDescription) {
+		String error = "";
+		SQLiteDatabase db = handler.getWritableDatabase();
+		try {
+			db.execSQL("pragma foreign_keys=on;");
+			db.delete(Dbh.TABLE_SHOP_DESCRIPTION, Dbh.SHOP_DESCRIPTION_NAME
+					+ " = ?", new String[] { shopDescription });
+		} catch (SQLiteConstraintException ex) {
+			error="constrain_error";
+		}
+		db.close();
+		return error;
+	}
+
 	// Getting Shop Description
 	public static int getShopDescriptiontCount(Dbh handler) {
 		String countQuery = "SELECT  * FROM " + Dbh.TABLE_SHOP_DESCRIPTION;
@@ -149,21 +172,24 @@ public class ShopDescription {
 		db.close();
 		return count;
 	}
-	
+
 	/**
 	 * Return PK of the ShopDescription.
+	 * 
 	 * @param db
 	 * @return
 	 */
-	public int getShopDescriptionId(Dbh db){
-		int shopDescId=-1;
-		SQLiteDatabase readable=db.getReadableDatabase();
-		Cursor cursor =readable.query(Dbh.TABLE_SHOP_DESCRIPTION, new String[]{Dbh.SHOP_DESCRIPTION_ID,},Dbh.SHOP_DESCRIPTION_NAME+"=?",
-				new String[] {String.valueOf(name)},null, null, null, null);
+	public int getShopDescriptionId(Dbh db) {
+		int shopDescId = -1;
+		SQLiteDatabase readable = db.getReadableDatabase();
+		Cursor cursor = readable.query(Dbh.TABLE_SHOP_DESCRIPTION,
+				new String[] { Dbh.SHOP_DESCRIPTION_ID, },
+				Dbh.SHOP_DESCRIPTION_NAME + "=?",
+				new String[] { String.valueOf(name) }, null, null, null, null);
 		if (cursor != null)
-            if(cursor.moveToFirst())
-            	shopDescId=cursor.getInt(0);
-		
+			if (cursor.moveToFirst())
+				shopDescId = cursor.getInt(0);
+
 		cursor.close();
 		readable.close();
 		return shopDescId;

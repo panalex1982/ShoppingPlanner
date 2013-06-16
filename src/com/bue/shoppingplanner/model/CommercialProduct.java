@@ -103,7 +103,7 @@ public class CommercialProduct {
 	public static List<CommercialProduct> getAllCommercialProduct(Dbh handler) {
 		List<CommercialProduct> commercialProductList = new ArrayList<CommercialProduct>();
 		// Select All Query
-		String selectQuery = "SELECT  * FROM " + Dbh.TABLE_COMMERCIAL_PRODUCT;
+		String selectQuery = "SELECT * FROM " + Dbh.TABLE_COMMERCIAL_PRODUCT;
 
 		SQLiteDatabase db = handler.getWritableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
@@ -124,6 +124,28 @@ public class CommercialProduct {
 		// return contact list
 		return commercialProductList;
 	}
+	
+	// Getting All Commercial Product
+		public static List<String> getAllCommercialProductBrandName(Dbh handler) {
+			List<String> commercialProductList = new ArrayList<String>();
+			// Select All Query
+			String selectQuery = "SELECT DISTINCT "+Dbh.COMMERCIAL_PRODUCT_COMPANY_BRAND+" FROM " + Dbh.TABLE_COMMERCIAL_PRODUCT;
+
+			SQLiteDatabase db = handler.getWritableDatabase();
+			Cursor cursor = db.rawQuery(selectQuery, null);
+
+			// looping through all rows and adding to list
+			if (cursor.moveToFirst()) {
+				do {
+					// Adding contact to list
+					commercialProductList.add(cursor.getString(0));
+				} while (cursor.moveToNext());
+			}
+			cursor.close();
+			db.close();
+			// return contact list
+			return commercialProductList;
+		}
 
 	// Updating single Commercial Product
 	public int updateCommercialProduct(Dbh handler) {

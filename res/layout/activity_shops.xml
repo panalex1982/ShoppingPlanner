@@ -7,17 +7,16 @@
         android:id="@+id/addShopShopsImageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_alignParentBottom="true"
-        android:src="@android:drawable/ic_menu_add" />
+        android:src="@drawable/ic_pencil" />
 
     <ListView
         android:id="@+id/shopsShopsListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="4"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" >
+        android:layout_alignParentTop="true" 
+        android:layout_above="@+id/addShopShopsImageButton">
     </ListView>
 
 </RelativeLayout>

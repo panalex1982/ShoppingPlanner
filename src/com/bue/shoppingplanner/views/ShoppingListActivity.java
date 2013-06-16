@@ -252,7 +252,7 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.shopping_list, menu);
+		getMenuInflater().inflate(R.menu.action_menu, menu);
 		return true;
 	}
 
@@ -298,11 +298,16 @@ public class ShoppingListActivity extends FragmentActivity implements AddProduct
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if(requestCode==1){
-			Bundle extras=data.getExtras();
-			String barcode=(extras.getString("lastBarcodeScan")==null?"noBarcode":extras.getString("lastBarcodeScan"));
-//			String barcode=barcodeShare.getString(SCANNED_BARCODE,"noBarcode");
-			if(!barcode.equals("noBarcode") && !barcode.equals("") && !barcode.equals("cancel")){				
-				showAddProductDialog(barcode);
+			try{
+				Bundle extras=data.getExtras();
+				String barcode=(extras.getString("lastBarcodeScan")==null?"noBarcode":extras.getString("lastBarcodeScan"));
+	//			String barcode=barcodeShare.getString(SCANNED_BARCODE,"noBarcode");
+				if(!barcode.equals("noBarcode") && !barcode.equals("")){				
+					showAddProductDialog(barcode);
+				}
+			}catch(Exception ex){
+				Toast toast=Toast.makeText(this, getResources().getString(R.string.cancel_scan), Toast.LENGTH_LONG);
+				toast.show();				
 			}
 		}
 	}

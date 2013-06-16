@@ -577,5 +577,53 @@
     <string name="product_category">Product Category</string>
     <string name="shop_type">Shop Type</string>
     <string name="shop_types">Shop Types</string>
+    <string name="delete">Delete</string>
+    <string name="constraint_error">Cannot delete values because they are in use:</string>
+    <string-array name="shop_categories">
+        <item >Unknown</item>
+        <item >Local Store</item>
+        <item >Super Market</item>
+        <item >Mini Market</item>
+        <item >Specialitty Store</item>
+        <item >Entertainment Center</item>
+        <item >Medical</item>
+        <item >Internet Store</item>
+        <item >Service Station</item>
+        <item >Official Store</item>
+        <item >Bill Payment Service</item>
+        <item >Tax Payment Service</item>
+        <item >Bank</item>
+        <item >Other</item>
+    </string-array>
+    <string-array name="product_categories">
+        <item >Food</item>
+        <item >Drink</item>
+        <item >Health</item>
+        <item >Household</item>
+        <item >Clothes</item>
+        <item >Entertainment</item>
+        <item >Office</item>
+        <item >Insurance</item>
+        <item >Loan</item>
+        <item >Home Equipment</item>
+        <item >Travel</item>
+        <item >Bills</item>
+        <item >Personal Care</item>
+        <item >Children/Baby Products</item>
+        <item >Rent</item>
+        <item >Subscriptions</item>
+        <item >Taxes</item>
+        <item >Electronics</item>
+        <item >Tobaccos</item>
+        <item >Vehicle</item>
+        <item >Pet</item>
+        <item >Other</item>
+    </string-array>
+    <string name="unknown">Unknown</string>
+    <string name="unlock">Unlock</string>
+    <string name="unlock_hint">Changing Home Currency, will not convert existing entries, to the new Home Currency.</string>
+    <string name="ok">Ok</string>
+    <string name="cancel_scan">Scan Cancelled!</string>
+    <string name="exit">Exit</string>
 
 </resources>

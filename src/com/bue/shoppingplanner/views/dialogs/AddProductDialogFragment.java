@@ -14,6 +14,7 @@ import com.bue.shoppingplanner.model.Dbh;
 import com.bue.shoppingplanner.model.Product;
 import com.bue.shoppingplanner.model.User;
 import com.bue.shoppingplanner.model.ProductKind;
+import com.bue.shoppingplanner.utilities.Keys;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -387,7 +388,7 @@ public class AddProductDialogFragment extends DialogFragment {
     			brandAddDialogEditText.requestFocus();
     	}else{
     		UpcDataAsyncTasc asyncUpc=new UpcDataAsyncTasc();
-    		asyncUpc.execute("http://api.upcdatabase.org/json/783cc13a52d57e32aa9cc5bd16a592df/"+barcode);
+    		asyncUpc.execute("http://api.upcdatabase.org/json/"+Keys.UPC_DATA+"/"+barcode);
     		try {
 				ShoppingListElementHelper elementHelper=asyncUpc.get();
 				if(!elementHelper.getBarcode().equals("invalid")){

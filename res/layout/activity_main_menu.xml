@@ -1,103 +1,119 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-	android:layout_height="match_parent" android:paddingTop="@dimen/activity_vertical_margin"
-	tools:context=".MainMenuActivity">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MainMenuActivity" >
 
-	<TextView
-	    android:id="@+id/spendingMainTextView"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_alignBaseline="@+id/buyerAddUserLabelTextView"
-	    android:layout_alignBottom="@+id/buyerAddUserLabelTextView"
-	    android:layout_marginLeft="22dp"
-	    android:layout_toRightOf="@+id/buyerAddUserLabelTextView"
-	    android:text="Medium Text"
-	    android:textAppearance="?android:attr/textAppearanceMedium" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
 
-	<ImageButton
-	    android:id="@+id/statsImageButton"
-	    android:layout_width="60dp"
-	    android:layout_height="60dp"
-	    android:layout_alignTop="@+id/shoppingListImageButton"
-	    android:layout_toRightOf="@+id/shoppingListImageButton"
-	    android:src="@drawable/ic_stats_icon" />
+        <ImageButton
+            android:id="@+id/shoppingListImageButton"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="7dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_add_list" />
 
-	<ImageButton
-	    android:id="@+id/shopsImageButton"
-	    android:layout_width="60dp"
-	    android:layout_height="60dp"
-	    android:layout_alignTop="@+id/statsImageButton"
-	    android:layout_toRightOf="@+id/statsImageButton"
-	    android:src="@drawable/ic_shop" />
+        <ImageButton
+            android:id="@+id/statsImageButton"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="7dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_stats_icon" />
 
-	<ImageButton
-	    android:id="@+id/savedListsImageButton"
-	    android:layout_width="60dp"
-	    android:layout_height="60dp"
-	    android:layout_alignTop="@+id/shopsImageButton"
-	    android:layout_toRightOf="@+id/shopsImageButton"
-	    android:src="@android:drawable/btn_star_big_on" />
+        <ImageButton
+            android:id="@+id/savedListsImageButton"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="7dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_stored_lists" />
 
-	<ImageButton
-	    android:id="@+id/shoppingListImageButton"
-	    android:layout_width="60dp"
-	    android:layout_height="60dp"
-	    android:layout_alignParentLeft="true"
-	    android:layout_alignParentTop="true"
-	    android:src="@android:drawable/ic_menu_edit" />
+        <ImageButton
+            android:id="@+id/ratesImageButton"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="7dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_rates" />
+        </LinearLayout>
+        
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+        
 
-	<TextView
-	    android:id="@+id/buyerAddUserLabelTextView"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_alignParentLeft="true"
-	    android:layout_below="@+id/settingsImageButton"
-	    android:layout_marginTop="21dp"
-	    android:text="@string/total_spending"
-	    android:textAppearance="?android:attr/textAppearanceLarge" />
+        <ImageButton
+            android:id="@+id/shopsImageButton"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="20dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_shop" />
 
-	<TextView
-	    android:id="@+id/totalVatLabelTextView"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_alignParentLeft="true"
-	    android:layout_below="@+id/buyerAddUserLabelTextView"
-	    android:layout_marginTop="20dp"
-	    android:text="@string/total_vat_payments"
-	    android:textAppearance="?android:attr/textAppearanceLarge" />
+        <ImageButton
+            android:id="@+id/dbButton"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="20dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_db" />
 
-	<TextView
-	    android:id="@+id/totalVatTextView"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_alignLeft="@+id/spendingMainTextView"
-	    android:layout_alignTop="@+id/totalVatLabelTextView"
-	    android:text="Medium Text"
-	    android:textAppearance="?android:attr/textAppearanceMedium" />
+        <ImageButton
+            android:id="@+id/settingsImageButton"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="20dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_settings" />
+    </LinearLayout>
 
-	<ImageButton
-	    android:id="@+id/settingsImageButton"
-	    android:layout_width="60dp"
-	    android:layout_height="60dp"
-	    android:layout_below="@+id/statsImageButton"
-	    android:layout_toRightOf="@+id/shoppingListImageButton"
-	    android:src="@android:drawable/ic_menu_manage" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
 
-	<ImageButton
-	    android:id="@+id/dbButton"
-	    android:layout_width="60dp"
-	    android:layout_height="60dp"
-	    android:layout_alignLeft="@+id/savedListsImageButton"
-	    android:layout_below="@+id/savedListsImageButton"
-	    android:src="@drawable/ic_db" />
+        <TextView
+            android:id="@+id/buyerAddUserLabelTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/total_spending"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-	<ImageButton
-	    android:id="@+id/ratesImageButton"
-	    android:layout_width="60dp"
-	    android:layout_height="60dp"
-	    android:layout_alignTop="@+id/settingsImageButton"
-	    android:layout_toRightOf="@+id/settingsImageButton"
-	    android:src="@drawable/ic_exchange_rates" />
+        <TextView
+            android:id="@+id/spendingMainTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Medium Text"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
 
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/totalVatLabelTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/total_vat_payments"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/totalVatTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Medium Text"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
+</LinearLayout>
