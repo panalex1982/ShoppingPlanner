@@ -625,5 +625,8 @@
     <string name="ok">Ok</string>
     <string name="cancel_scan">Scan Cancelled!</string>
     <string name="exit">Exit</string>
+    <string name="main_chart_one_title">Spending vs VAT Payment</string>
+    <string name="main_chart_two_title">Top 5 Spending Categories</string>
+    <string name="about">About</string>
 
 </resources>
