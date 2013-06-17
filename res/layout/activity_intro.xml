@@ -16,11 +16,12 @@
         android:layout_centerHorizontal="true"
         android:text="@string/intro_message" />
 
-     <com.androidplot.xy.XYPlot
+    <!--  <com.androidplot.xy.XYPlot
          android:id="@+id/mySimpleXYPlot"
          android:layout_width="360dp"
          android:layout_height="360dp"
          android:layout_below="@+id/buyerAddUserLabelTextView"
          android:layout_marginTop="42dp" />
+    -->
 
 </RelativeLayout>
