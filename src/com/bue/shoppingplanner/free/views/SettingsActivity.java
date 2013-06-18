@@ -20,11 +20,14 @@ import android.widget.Toast;
 
 import com.bue.shoppingplanner.free.R;
 import com.bue.shoppingplanner.free.controllers.CurrencyController;
+import com.bue.shoppingplanner.free.helpers.AdMobCreator;
+import com.bue.shoppingplanner.free.helpers.DialogOpener;
 import com.bue.shoppingplanner.free.helpers.VatHelper;
 import com.bue.shoppingplanner.free.utilities.SerializeObject;
 import com.bue.shoppingplanner.free.utilities.fileselector.FileOperation;
 import com.bue.shoppingplanner.free.utilities.fileselector.FileSelector;
 import com.bue.shoppingplanner.free.utilities.fileselector.OnHandleFileListener;
+import com.google.ads.AdView;
 import com.google.analytics.tracking.android.EasyTracker;
 
 public class SettingsActivity extends FragmentActivity {
@@ -40,6 +43,7 @@ public class SettingsActivity extends FragmentActivity {
 	private CurrencyController cController;
 	private VatHelper vat;
 	private Dialog unlockWarning;
+	private AdView adView;
 	
 	/** Sample filters array */
 	final String[] mFileFilter = { "*.db"};
@@ -107,15 +111,29 @@ public class SettingsActivity extends FragmentActivity {
 				unlockCurrecnyButton.setVisibility(View.INVISIBLE);
 				saveDBButton.setEnabled(false);
 				saveDBButton.setVisibility(View.INVISIBLE);
+				loadDBButton.setEnabled(false);
+				loadDBButton.setVisibility(View.INVISIBLE);
 			}
 			else{
 				currencySettingsSpinner.setEnabled(false);
+				AdMobCreator.createAd(this, adView, R.id.settingsAdMob);
 			}
 		}else{
 			currencySettingsSpinner.setEnabled(false);
+			AdMobCreator.createAd(this, adView, R.id.settingsAdMob);
 		}
 		
 	}
+	
+	
+
+	@Override
+	protected void onDestroy() {
+		AdMobCreator.destroyAd(adView);
+		super.onDestroy();
+	}
+
+
 
 	/**
 	 * Set up the {@link android.app.ActionBar}, if the API is available.
@@ -154,6 +172,7 @@ public class SettingsActivity extends FragmentActivity {
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
 		case R.id.action_only_about:
+			DialogOpener.showAboutDialog(getSupportFragmentManager());
 			break;
 		}
 		return super.onOptionsItemSelected(item);

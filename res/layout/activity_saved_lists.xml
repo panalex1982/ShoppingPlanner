@@ -1,8 +1,7 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".SavedListsActivity" >
 
     <LinearLayout
@@ -19,7 +18,7 @@
         </ListView>
     </LinearLayout>
 
-    <LinearLayout
+    <!--  <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -31,6 +30,14 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_pencil" />
 
+    </LinearLayout>-->
+    <LinearLayout
+        android:id="@+id/savedListsAdMob"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

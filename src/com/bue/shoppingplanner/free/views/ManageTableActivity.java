@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import com.bue.shoppingplanner.free.R;
 import com.bue.shoppingplanner.free.controllers.BoughtController;
 import com.bue.shoppingplanner.free.controllers.ShopController;
+import com.bue.shoppingplanner.free.helpers.AdMobCreator;
+import com.bue.shoppingplanner.free.helpers.DialogOpener;
 import com.bue.shoppingplanner.free.helpers.ManageTableType;
+import com.google.ads.AdView;
 import com.google.analytics.tracking.android.EasyTracker;
 
 import android.os.Bundle;
@@ -21,11 +24,12 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
 import android.os.Build;
 
-public class ManageTableActivity extends Activity {
+public class ManageTableActivity extends FragmentActivity {
 	private TextView addColumnManageTableLabelTextView,
 			columnManageTableListLabelTextView;
 
@@ -43,6 +47,8 @@ public class ManageTableActivity extends Activity {
 	private int functionality;
 
 	private LinearLayout itemsListLinearLayout;
+	
+	private AdView adView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -173,6 +179,8 @@ public class ManageTableActivity extends Activity {
 				}
 			}
 		});
+		
+		AdMobCreator.createAd(this, adView, R.id.manageTableAdMob);
 	}
 
 	/**
@@ -212,6 +220,7 @@ public class ManageTableActivity extends Activity {
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
 		case R.id.action_only_about:
+			DialogOpener.showAboutDialog(getSupportFragmentManager());
 			break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -275,6 +284,14 @@ public class ManageTableActivity extends Activity {
 		itemsListView.invalidateViews();
 		return error;
 	}
+
+	@Override
+	protected void onDestroy() {
+		AdMobCreator.destroyAd(adView);
+		super.onDestroy();
+	}
+	
+	
 	
 	
 

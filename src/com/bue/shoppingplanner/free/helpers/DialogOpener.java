@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 
+import com.bue.shoppingplanner.free.views.dialogs.AboutDialogFragment;
 import com.bue.shoppingplanner.free.views.dialogs.AddProductDialogFragment;
 
 public class DialogOpener {
@@ -34,4 +35,13 @@ public class DialogOpener {
 		dialog.setArguments(barcodeBundle);
         dialog.show(manager, "AddProductDialogFragment");        
     }
+	
+	/**
+	 * Shows about dialog.
+	 * @param manager
+	 */
+	public static void showAboutDialog(FragmentManager manager){
+		AboutDialogFragment dialog = new AboutDialogFragment();
+	    dialog.show(manager, "AboutDialogFragment");
+	}
 }

@@ -1,14 +1,10 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".IntroActivity" >
 
-    <TextView
+   <!--  <TextView
         android:id="@+id/buyerAddUserLabelTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,7 +12,7 @@
         android:layout_centerHorizontal="true"
         android:text="@string/intro_message" />
 
-    <!--  <com.androidplot.xy.XYPlot
+     <com.androidplot.xy.XYPlot
          android:id="@+id/mySimpleXYPlot"
          android:layout_width="360dp"
          android:layout_height="360dp"
@@ -24,4 +20,11 @@
          android:layout_marginTop="42dp" />
     -->
 
-</RelativeLayout>
+    <LinearLayout
+        android:id="@+id/intro_ad_mob"
+        android:layout_width="320dp"
+        android:layout_height="50dp"
+        android:padding="0dp"
+        android:orientation="vertical" >
+    </LinearLayout>
+</LinearLayout>

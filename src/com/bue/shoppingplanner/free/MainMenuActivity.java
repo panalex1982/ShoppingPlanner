@@ -9,6 +9,7 @@ import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.renderer.SimpleSeriesRenderer;
 
 import com.bue.shoppingplanner.free.controllers.BoughtController;
+import com.bue.shoppingplanner.free.helpers.DialogOpener;
 import com.bue.shoppingplanner.free.views.DatabaseMenuActivity;
 import com.bue.shoppingplanner.free.views.ExchangeRatesActivity;
 import com.bue.shoppingplanner.free.views.SavedListsActivity;
@@ -16,6 +17,8 @@ import com.bue.shoppingplanner.free.views.SettingsActivity;
 import com.bue.shoppingplanner.free.views.ShoppingListActivity;
 import com.bue.shoppingplanner.free.views.ShopsActivity;
 import com.bue.shoppingplanner.free.views.StatsActivity;
+import com.bue.shoppingplanner.free.views.dialogs.AboutDialogFragment;
+import com.bue.shoppingplanner.free.views.dialogs.AddProductDialogFragment;
 import com.google.analytics.tracking.android.EasyTracker;
 
 import android.os.Bundle;
@@ -26,7 +29,8 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.support.v4.app.DialogFragment;
+//import android.widget.TextView;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.annotation.TargetApi;
@@ -41,8 +45,8 @@ public class MainMenuActivity extends FragmentActivity {
 	private ImageButton savedListsImageButton;
 	private ImageButton dbButton;
 
-	private TextView spendingMainTextView;
-	private TextView totalVatTextView;
+	//private TextView spendingMainTextView;
+	//private TextView totalVatTextView;
 	private ImageButton settingsImageButton;
 	private ImageButton ratesImageButton;
 
@@ -62,7 +66,6 @@ public class MainMenuActivity extends FragmentActivity {
 	private GraphicalView mChartView2;
 	private LinearLayout chartLayout;
 	private LinearLayout chartLayout2;
-	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +74,8 @@ public class MainMenuActivity extends FragmentActivity {
 		setContentView(R.layout.activity_main_menu);
 		// Show the Up button in the action bar.
 		setupActionBar();
-		
-		//Initialize Objects
+
+		// Initialize Objects
 		startIntro = true;
 		mSeries = new CategorySeries("");
 		mSeries2 = new CategorySeries("");
@@ -186,15 +189,16 @@ public class MainMenuActivity extends FragmentActivity {
 		// totalVatTextView = (TextView) findViewById(R.id.totalVatTextView);
 		// totalVatTextView.setText(Double.toString(bController
 		// .getTotalVatPayment()));
-		
+
 		// Chart
 		// set the start angle for the first slice in the pie chart
 		mRenderer.setStartAngle(90);
 		// display values on the pie slices
 		mRenderer.setDisplayValues(true);
 		mRenderer.setLabelsColor(Color.BLACK);
-		mRenderer.setLabelsTextSize(12f);		
-		mRenderer.setChartTitle(getResources().getString(R.string.main_chart_one_title));
+		mRenderer.setLabelsTextSize(12f);
+		mRenderer.setChartTitle(getResources().getString(
+				R.string.main_chart_one_title));
 
 		// set the start angle for the first slice in the pie chart
 		mRenderer2.setStartAngle(180);
@@ -202,7 +206,8 @@ public class MainMenuActivity extends FragmentActivity {
 		mRenderer2.setDisplayValues(true);
 		mRenderer2.setLabelsColor(Color.BLACK);
 		mRenderer2.setLabelsTextSize(12f);
-		mRenderer2.setChartTitle(getResources().getString(R.string.main_chart_two_title));
+		mRenderer2.setChartTitle(getResources().getString(
+				R.string.main_chart_two_title));
 	}
 
 	/**
@@ -245,6 +250,9 @@ public class MainMenuActivity extends FragmentActivity {
 		case R.id.action_exit:
 			exit();
 			break;
+		case R.id.action_about:
+			DialogOpener.showAboutDialog(getSupportFragmentManager());
+			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -264,15 +272,15 @@ public class MainMenuActivity extends FragmentActivity {
 		String[] vatItem = { "VAT",
 				String.valueOf(bController.getTotalVatPayment()) };
 		chart1Items.add(vatItem);
-		ArrayList<String[]> kindArray=bController.getTotalByKind();
-		for(int i=0;i<6;i++){
-			if(kindArray.size()>i)
+		ArrayList<String[]> kindArray = bController.getTotalByKind();
+		for (int i = 0; i < 6; i++) {
+			if (kindArray.size() > i)
 				chart2Items.add(kindArray.get(i));
 		}
 		createPieChart1(chart1Items);
 		createPieChart2(chart2Items);
 	}
-	
+
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
@@ -280,20 +288,22 @@ public class MainMenuActivity extends FragmentActivity {
 	}
 
 	@Override
-	  protected void onRestoreInstanceState(Bundle savedState) {
-	    super.onRestoreInstanceState(savedState);
-	    startIntro=savedState.getBoolean("startIntro");
-//	    mSeries = (CategorySeries) savedState.getSerializable("current_series");
-//	    mRenderer = (DefaultRenderer) savedState.getSerializable("current_renderer");
-	  }
+	protected void onRestoreInstanceState(Bundle savedState) {
+		super.onRestoreInstanceState(savedState);
+		startIntro = savedState.getBoolean("startIntro");
+		// mSeries = (CategorySeries)
+		// savedState.getSerializable("current_series");
+		// mRenderer = (DefaultRenderer)
+		// savedState.getSerializable("current_renderer");
+	}
 
-	  @Override
-	  protected void onSaveInstanceState(Bundle outState) {
-	    super.onSaveInstanceState(outState);
-	    outState.putBoolean("startIntro", startIntro);
-//	    outState.putSerializable("current_series", mSeries);
-//	    outState.putSerializable("current_renderer", mRenderer);
-	  }
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putBoolean("startIntro", startIntro);
+		// outState.putSerializable("current_series", mSeries);
+		// outState.putSerializable("current_renderer", mRenderer);
+	}
 
 	public void exit() {
 		finish();
@@ -338,14 +348,14 @@ public class MainMenuActivity extends FragmentActivity {
 		renderer.setColor(COLORS[(mSeries.getItemCount() - 1) % COLORS.length]);
 		mRenderer.addSeriesRenderer(renderer);
 	}
-	
+
 	public void addItemToChart2(String name, double value) {
 		mSeries2.add(name, value);
 		SimpleSeriesRenderer renderer = new SimpleSeriesRenderer();
 		renderer.setColor(COLORS[(mSeries2.getItemCount() - 1) % COLORS.length]);
 		mRenderer2.addSeriesRenderer(renderer);
 	}
-	
+
 	@Override
 	protected void onStart() {
 		super.onStart();

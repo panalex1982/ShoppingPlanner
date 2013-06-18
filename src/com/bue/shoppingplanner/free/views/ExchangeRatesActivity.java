@@ -4,7 +4,10 @@ import java.util.ArrayList;
 
 import com.bue.shoppingplanner.free.R;
 import com.bue.shoppingplanner.free.controllers.CurrencyController;
+import com.bue.shoppingplanner.free.helpers.AdMobCreator;
+import com.bue.shoppingplanner.free.helpers.DialogOpener;
 import com.bue.shoppingplanner.free.views.adapters.ExchangeRatesArrayAdapter;
+import com.google.ads.AdView;
 import com.google.analytics.tracking.android.EasyTracker;
 
 import android.os.Bundle;
@@ -33,6 +36,8 @@ public class ExchangeRatesActivity extends FragmentActivity {
 	private ArrayList<String[]> ratesArrayList;
 	/**Currency Controller*/
 	private CurrencyController cController;
+	
+	private AdView adView;
 	
 
 	@Override
@@ -84,7 +89,18 @@ public class ExchangeRatesActivity extends FragmentActivity {
 			i++;
 		}
 		rateToCurrencySpinner.setSelection(position);	
+		AdMobCreator.createAd(this, adView, R.id.exchangesAdMob);
 	}
+	
+	
+
+	@Override
+	protected void onDestroy() {
+		AdMobCreator.destroyAd(adView);
+		super.onDestroy();
+	}
+
+
 
 	/**
 	 * Set up the {@link android.app.ActionBar}, if the API is available.
@@ -123,6 +139,7 @@ public class ExchangeRatesActivity extends FragmentActivity {
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
 		case R.id.action_only_about:
+			DialogOpener.showAboutDialog(getSupportFragmentManager());
 			break;
 		}
 		return super.onOptionsItemSelected(item);

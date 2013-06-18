@@ -1,9 +1,12 @@
 package com.bue.shoppingplanner.free.views;
 
 import com.bue.shoppingplanner.free.R;
+import com.bue.shoppingplanner.free.helpers.AdMobCreator;
+import com.bue.shoppingplanner.free.helpers.DialogOpener;
 import com.bue.shoppingplanner.free.helpers.ManageTableType;
 import com.bue.shoppingplanner.free.utilities.ScanBarcodeFragmentActivity;
 import com.bue.shoppingplanner.free.views.dialogs.AddProductDialogFragment;
+import com.google.ads.AdView;
 import com.google.analytics.tracking.android.EasyTracker;
 
 import android.os.Bundle;
@@ -26,6 +29,8 @@ public class DatabaseMenuActivity extends FragmentActivity {
 					manageBuyersButton,
 					manageProductCategoriesButton,
 					manageShopCategoriesButton;
+	
+	private AdView adView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +94,19 @@ public class DatabaseMenuActivity extends FragmentActivity {
 			}
 		});
 		
+		AdMobCreator.createAd(this, adView, R.id.manageDatabaseAdMob);
+		
 	}
+	
+	
+
+	@Override
+	protected void onDestroy() {
+		AdMobCreator.destroyAd(adView);
+		super.onDestroy();
+	}
+
+
 
 	/**
 	 * Set up the {@link android.app.ActionBar}, if the API is available.
@@ -128,6 +145,7 @@ public class DatabaseMenuActivity extends FragmentActivity {
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
 		case R.id.action_only_about:
+			DialogOpener.showAboutDialog(getSupportFragmentManager());
 			break;
 		}
 		return super.onOptionsItemSelected(item);
