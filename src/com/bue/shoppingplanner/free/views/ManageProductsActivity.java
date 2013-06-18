@@ -7,10 +7,12 @@ import java.util.Map;
 
 import com.bue.shoppingplanner.free.R;
 import com.bue.shoppingplanner.free.controllers.BoughtController;
+import com.bue.shoppingplanner.free.helpers.AdMobCreator;
 import com.bue.shoppingplanner.free.helpers.DialogOpener;
 import com.bue.shoppingplanner.free.helpers.ShoppingListElementHelper;
 import com.bue.shoppingplanner.free.utilities.ScanBarcodeFragmentActivity;
 import com.bue.shoppingplanner.free.views.dialogs.AddProductDialogFragment;
+import com.google.ads.AdView;
 import com.google.analytics.tracking.android.EasyTracker;
 
 import android.os.Bundle;
@@ -41,6 +43,8 @@ public class ManageProductsActivity extends FragmentActivity implements AddProdu
 	
 	private List<Map<String, String>> kindList;
 	private List<List<Map<String, String>>>	productList;
+	
+	private AdView adView;
 	
 
 	private BoughtController boughtController;
@@ -98,6 +102,7 @@ public class ManageProductsActivity extends FragmentActivity implements AddProdu
 		productsManageProductExpandableListView.setAdapter(productsAdapter);
 		
 		updateKindAndProductArrayLists();
+		AdMobCreator.createAd(this, adView, R.id.manageProductsAdMob);
 	}
 
 	/**
@@ -137,6 +142,7 @@ public class ManageProductsActivity extends FragmentActivity implements AddProdu
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
 		case R.id.action_only_about:
+			DialogOpener.showAboutDialog(getSupportFragmentManager());
 			break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -187,6 +193,14 @@ public class ManageProductsActivity extends FragmentActivity implements AddProdu
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	protected void onDestroy() {
+		AdMobCreator.destroyAd(adView);
+		super.onDestroy();
+	}
+	
+	
 	
 //	public void updateKindAndProductArrayLists(){
 //		kindList.addAll(boughtController.getAllKindNames());

@@ -1,16 +1,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <item
+    <item android:id="@+id/action_about" android:orderInCategory="100" android:showAsAction="never" android:title="@string/about">
+    </item><item
         android:id="@+id/action_exit"
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/exit">
     </item>
-    <item
-        android:id="@+id/action_about"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/about">
-    </item>
+    
 
 </menu>

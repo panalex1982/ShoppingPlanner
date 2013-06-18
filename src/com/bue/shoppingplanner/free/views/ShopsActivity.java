@@ -4,8 +4,11 @@ import java.util.ArrayList;
 
 import com.bue.shoppingplanner.free.R;
 import com.bue.shoppingplanner.free.controllers.ShopController;
+import com.bue.shoppingplanner.free.helpers.AdMobCreator;
+import com.bue.shoppingplanner.free.helpers.DialogOpener;
 import com.bue.shoppingplanner.free.helpers.ShopElementHelper;
 import com.bue.shoppingplanner.free.views.dialogs.AddShopDialogFragment;
+import com.google.ads.AdView;
 import com.google.analytics.tracking.android.EasyTracker;
 
 import android.os.Bundle;
@@ -30,6 +33,8 @@ public class ShopsActivity extends FragmentActivity implements AddShopDialogFrag
 	
 	private ArrayAdapter<String> shopsAdapter;
 	private ArrayList<String> shopsList;
+	
+	private AdView adView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +69,18 @@ public class ShopsActivity extends FragmentActivity implements AddShopDialogFrag
 		}
 		shopsAdapter=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, shopsList);
 		shopsShopsListView.setAdapter(shopsAdapter);
+		AdMobCreator.createAd(this, adView, R.id.shopsAdMob);
 	}
+	
+	
+
+	@Override
+	protected void onDestroy() {
+		AdMobCreator.destroyAd(adView);
+		super.onDestroy();
+	}
+
+
 
 	private void intitialize() {
 		shopsList=new ArrayList<String>();
@@ -108,6 +124,7 @@ public class ShopsActivity extends FragmentActivity implements AddShopDialogFrag
 			NavUtils.navigateUpFromSameTask(this);
 			return true;
 		case R.id.action_only_about:
+			DialogOpener.showAboutDialog(getSupportFragmentManager());
 			break;
 		}
 		return super.onOptionsItemSelected(item);
