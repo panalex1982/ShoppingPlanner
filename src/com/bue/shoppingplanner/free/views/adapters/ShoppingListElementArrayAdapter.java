@@ -1,6 +1,5 @@
 package com.bue.shoppingplanner.free.views.adapters;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.bue.shoppingplanner.free.R;
@@ -14,15 +13,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.support.v4.app.FragmentActivity;
 
@@ -32,6 +27,8 @@ public class ShoppingListElementArrayAdapter extends ArrayAdapter<ShoppingListEl
 	 protected int layoutResourceId;   
 	 protected List<ShoppingListElementHelper> data = null;
 	 protected boolean listItemChanged;
+	 
+	 private TextView parentCostTextView;
 
 	public ShoppingListElementArrayAdapter(Context context,	int textViewResourceId, List<ShoppingListElementHelper> data) {
 		super(context, textViewResourceId, data);
@@ -121,6 +118,7 @@ public class ShoppingListElementArrayAdapter extends ArrayAdapter<ShoppingListEl
 				data.add(pos,listElement);
 				listItemChanged=true;
 				notifyDataSetChanged();
+				changeCostTextView();
 			}
 		});
        listElementRemoveImageView.setOnClickListener(new View.OnClickListener() {
@@ -139,6 +137,7 @@ public class ShoppingListElementArrayAdapter extends ArrayAdapter<ShoppingListEl
 			data.add(pos,listElement);
 			listItemChanged=true;
 			notifyDataSetChanged();
+			changeCostTextView();
 		}
        });
        
@@ -156,6 +155,7 @@ public class ShoppingListElementArrayAdapter extends ArrayAdapter<ShoppingListEl
 					notifyDataSetChanged();
 					elementTableLayout.removeView(hiddingTableRow);
 					hiddingTableRow.setVisible(false);
+					changeCostTextView();
 				}else{
 					hidePriceEditText.setText(String.valueOf(listElement.getPrice()));
 					elementTableLayout.addView(hiddingTableRow);
@@ -176,6 +176,7 @@ public class ShoppingListElementArrayAdapter extends ArrayAdapter<ShoppingListEl
 	    		data.add(pos,listElement);
 	    		listItemChanged=true;
 	    		notifyDataSetChanged();
+	    		changeCostTextView();
 	    		elementTableLayout.removeView(hiddingTableRow);
 	    		hiddingTableRow.setVisible(false);		
 			}
@@ -192,10 +193,28 @@ public class ShoppingListElementArrayAdapter extends ArrayAdapter<ShoppingListEl
        
         return row;
     }
+	
 
     public boolean isListItemChanged() {
 		return listItemChanged;
 	}
+    
+    public void setCostTextView(TextView parentCostTextView){
+    	this.parentCostTextView=parentCostTextView;
+    }
+    
+    private void changeCostTextView(){
+    	if(parentCostTextView!=null)
+    		parentCostTextView.setText( String.valueOf(getTotalCost()));
+    }
+    
+    private double getTotalCost(){
+    	double total=0.0;
+    	for(ShoppingListElementHelper element:data){
+    		total=total+element.getPrice()*element.getQuantity();
+    	}
+    	return total;
+    }	
 	
 
 }

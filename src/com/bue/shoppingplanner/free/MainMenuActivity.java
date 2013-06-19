@@ -321,6 +321,9 @@ public class MainMenuActivity extends FragmentActivity {
 				addItemToChart(item[0], Double.parseDouble(item[1]));
 			mChartView.repaint();
 		} else {
+			clearChart1();
+			for (String[] item : chartItems)
+				addItemToChart(item[0], Double.parseDouble(item[1]));
 			mChartView.repaint();
 		}
 	}
@@ -338,6 +341,9 @@ public class MainMenuActivity extends FragmentActivity {
 				addItemToChart2(item[0], Double.parseDouble(item[1]));
 			mChartView2.repaint();
 		} else {
+			clearChart2();
+			for (String[] item : chartItems)
+				addItemToChart2(item[0], Double.parseDouble(item[1]));
 			mChartView2.repaint();
 		}
 	}
@@ -348,12 +354,20 @@ public class MainMenuActivity extends FragmentActivity {
 		renderer.setColor(COLORS[(mSeries.getItemCount() - 1) % COLORS.length]);
 		mRenderer.addSeriesRenderer(renderer);
 	}
-
+	
+	public void clearChart1(){
+		mSeries.clear();
+	}
+	
 	public void addItemToChart2(String name, double value) {
 		mSeries2.add(name, value);
 		SimpleSeriesRenderer renderer = new SimpleSeriesRenderer();
 		renderer.setColor(COLORS[(mSeries2.getItemCount() - 1) % COLORS.length]);
 		mRenderer2.addSeriesRenderer(renderer);
+	}
+	
+	public void clearChart2(){
+		mSeries2.clear();
 	}
 
 	@Override

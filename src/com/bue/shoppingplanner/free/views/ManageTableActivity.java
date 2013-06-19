@@ -83,6 +83,8 @@ public class ManageTableActivity extends FragmentActivity {
 				bController = new BoughtController(this);
 				itemsList.addAll(bController.getAllUserNames());
 				itemsListView.invalidateViews();
+				if(itemsList.size()<2)
+					deleteColumnButton.setEnabled(false);				
 				break;
 			case ManageTableType.PRODUCTCAT:
 				addColumnManageTableLabelTextView
@@ -117,22 +119,27 @@ public class ManageTableActivity extends FragmentActivity {
 
 		// Listeners
 		addColumnButton.setOnClickListener(new View.OnClickListener() {
-
+			
 			@Override
 			public void onClick(View v) {
-				switch (functionality) {
-				case ManageTableType.USER:
-					persistUser();
-					break;
-				case ManageTableType.PRODUCTCAT:
-					persistProductKind();
-					break;
-				case ManageTableType.SHOPCAT:
-					persistShopType();
-					break;
-				case ManageTableType.INIT_USER:
-					persistInitialUser();
-					break;
+				if(!addColumnEditText.getText().toString().equals("")){
+					switch (functionality) {
+					case ManageTableType.USER:
+						persistUser();
+						break;
+					case ManageTableType.PRODUCTCAT:
+						persistProductKind();
+						break;
+					case ManageTableType.SHOPCAT:
+						persistShopType();
+						break;
+					case ManageTableType.INIT_USER:
+						persistInitialUser();
+						break;
+					}
+				}else{
+					Toast toast=Toast.makeText(getBaseContext(), getBaseContext().getResources().getString(R.string.provide_data), Toast.LENGTH_LONG);
+					toast.show();
 				}
 
 			}
@@ -145,30 +152,24 @@ public class ManageTableActivity extends FragmentActivity {
 				SparseBooleanArray sparseArray = itemsListView
 						.getCheckedItemPositions();
 				String error="";
+				String tmp[]=prepareDelete(sparseArray);
 				switch (functionality) {
 				case ManageTableType.USER:
-					for (int i = 0; i < sparseArray.size(); i++) {
-						if (sparseArray.valueAt(i)) {
-							String tmp=itemsList.get(sparseArray.keyAt(i));
-							error=(deleteUser(tmp)=="")?"":tmp+"\n";
-						}
+					if(tmp.length<itemsList.size())
+						for(int i=0;i<tmp.length;i++)
+							error=(deleteUser(tmp[i])=="")?"":tmp[i]+"\n";
+					else{
+						Toast toast=Toast.makeText(getBaseContext(), getBaseContext().getResources().getText(R.string.zero_user_warning), Toast.LENGTH_LONG);
+						toast.show();
 					}
 					break;
 				case ManageTableType.PRODUCTCAT:
-					for (int i = 0; i < sparseArray.size(); i++) {
-						if (sparseArray.valueAt(i)) {
-							String tmp=itemsList.get(sparseArray.keyAt(i));
-							error=(deleteProductKind(tmp)=="")?"":tmp+"\n";
-						}
-					}
+					for(int i=0;i<tmp.length;i++)
+							error=(deleteProductKind(tmp[i])=="")?"":tmp[i]+"\n";					
 					break;
 				case ManageTableType.SHOPCAT:
-					for (int i = 0; i < sparseArray.size(); i++) {
-						if (sparseArray.valueAt(i)) {
-							String tmp=itemsList.get(sparseArray.keyAt(i));
-							error=(deleteShopType(tmp)=="")?"":tmp+"\n";
-						}
-					}
+					for(int i=0;i<tmp.length;i++)
+							error=(deleteShopType(tmp[i])=="")?"":tmp[i]+"\n";
 					break;
 				}
 				itemsListView.clearChoices();
@@ -238,6 +239,8 @@ public class ManageTableActivity extends FragmentActivity {
 		itemsList.clear();
 		itemsList.addAll(bController.getAllUserNames());
 		itemsListView.invalidateViews();
+		if(itemsList.size()>1 && !deleteColumnButton.isEnabled())
+					deleteColumnButton.setEnabled(true);
 	}
 
 	private void persistProductKind() {
@@ -263,6 +266,8 @@ public class ManageTableActivity extends FragmentActivity {
 		itemsList.clear();
 		itemsList.addAll(bController.getAllUserNames());
 		itemsListView.invalidateViews();
+		if(itemsList.size()<2)
+			deleteColumnButton.setEnabled(false);
 		return error;
 	}
 
@@ -283,6 +288,16 @@ public class ManageTableActivity extends FragmentActivity {
 		itemsList.addAll(sController.getAllShopDescription());
 		itemsListView.invalidateViews();
 		return error;
+	}
+	
+	private String[] prepareDelete(SparseBooleanArray sparseArray){
+		String tmp[]=new String[sparseArray.size()];
+		for (int i = 0; i < sparseArray.size(); i++) {
+			if (sparseArray.valueAt(i)) {
+				tmp[i]=itemsList.get(sparseArray.keyAt(i));
+			}
+		}
+		return tmp;
 	}
 
 	@Override
