@@ -41,6 +41,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.google.ads.*;
@@ -50,13 +52,14 @@ public class IntroActivity extends FragmentActivity {
 	private Dbh db;
 	private JsonUpdate lastUpdate;
 	private AdView adView;
-	private AdView adView2;
+	private Button startButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// Test Barcode Scanner
 		setContentView(R.layout.activity_intro);
+		startButton=(Button)findViewById(R.id.startButton);
 		// Test Plot
 		db = new Dbh(this);
 		initializeDatabase(this);
@@ -92,15 +95,14 @@ public class IntroActivity extends FragmentActivity {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		startButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				openMainApplication();				
+			}
+		});
 		AdMobCreator.createAd(this, adView, R.id.intro_ad_mob);
-	}
-
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		if (event.getAction() == MotionEvent.ACTION_UP) {
-			openMainApplication();
-		}
-		return true;
 	}
 
 	/**

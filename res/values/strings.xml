@@ -630,5 +630,9 @@
     <string name="about">About</string>
     <string name="about_text">Version 1.0. Copyright 2013.</string>
     <string name="manage_shops">Manage Shops</string>
+    <string name="provide_product">Product is mandatory field.</string>
+    <string name="zero_user_warning">Cannot perform this Action. There must be at least one Buyer.</string>
+    <string name="provide_data">No data provided. Please try again.</string>
+    <string name="start">Main Menu</string>
 
 </resources>

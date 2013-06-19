@@ -2,9 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".IntroActivity" >
 
-   <!--  <TextView
+    <!--
+     <TextView
         android:id="@+id/buyerAddUserLabelTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,7 +26,29 @@
         android:id="@+id/intro_ad_mob"
         android:layout_width="320dp"
         android:layout_height="50dp"
-        android:padding="0dp"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:padding="0dp" >
     </LinearLayout>
+
+    <Button
+        android:id="@+id/startButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/start" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="match_parent"
+        android:layout_height="321dp"
+        android:layout_weight="0.76"
+        android:src="@drawable/logo_intro" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/about_text"
+        android:gravity="center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
 </LinearLayout>
