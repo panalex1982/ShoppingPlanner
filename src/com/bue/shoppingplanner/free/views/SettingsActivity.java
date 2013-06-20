@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -33,6 +34,9 @@ import com.google.analytics.tracking.android.EasyTracker;
 public class SettingsActivity extends FragmentActivity {
 	
 	private Spinner currencySettingsSpinner;
+	
+	private LinearLayout dbSettingsLayout;
+	
 	private Button saveSettingsButton,
 				saveDBButton,
 				loadDBButton,				
@@ -61,12 +65,16 @@ public class SettingsActivity extends FragmentActivity {
 		currencySettingsSpinner.setSelection(cController.getDefaultCurrencyPosition());
 		saveSettingsButton=(Button) findViewById(R.id.saveSettingsButton);
 		unlockCurrecnyButton=(Button) findViewById(R.id.unlockCurrecnyButton);
+		dbSettingsLayout=(LinearLayout) findViewById(R.id.dbSettingsLayout);
 		saveDBButton=(Button) findViewById(R.id.saveDBButton);
 		loadDBButton=(Button) findViewById(R.id.loadDBButton);
 		vatStandrdSettingsEditText=(EditText) findViewById(R.id.vatStandrdSettingsEditText);
 		vatReducedSettingsEditText=(EditText) findViewById(R.id.vatReducedSettingsEditText);
 		vatStandrdSettingsEditText.setText(vat.getStandardRate());
 		vatReducedSettingsEditText.setText(vat.getReducedRate());
+		
+		//This is disabled for version 1
+		dbSettingsLayout.removeAllViews();
 		
 		saveDBButton.setOnClickListener(new OnClickListener() {
 			@Override
@@ -109,10 +117,11 @@ public class SettingsActivity extends FragmentActivity {
 			if(extras.getBoolean("initSettings")){
 				unlockCurrecnyButton.setEnabled(false);
 				unlockCurrecnyButton.setVisibility(View.INVISIBLE);
-				saveDBButton.setEnabled(false);
-				saveDBButton.setVisibility(View.INVISIBLE);
-				loadDBButton.setEnabled(false);
-				loadDBButton.setVisibility(View.INVISIBLE);
+//				Disabled on version 1 free
+//				saveDBButton.setEnabled(false);
+//				saveDBButton.setVisibility(View.INVISIBLE);
+//				loadDBButton.setEnabled(false);
+//				loadDBButton.setVisibility(View.INVISIBLE);
 			}
 			else{
 				currencySettingsSpinner.setEnabled(false);
