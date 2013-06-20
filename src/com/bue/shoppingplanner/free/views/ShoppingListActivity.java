@@ -121,7 +121,20 @@ public class ShoppingListActivity extends FragmentActivity implements
 				}
 			} else {
 				shoppingListArrayList = new ArrayList<ShoppingListElementHelper>();
-			}
+			}					
+		}
+		if (!shopElement.hasName()){
+			//Add unknown shop to a new list or saved list
+			String unknown = getResources().getString(
+					R.string.unknown);	
+			shopElement.setName(unknown);
+			shopElement.setAddress(unknown);
+			shopElement.setType(unknown);
+			shopElement.setArea(unknown);
+			shopElement.setCity(unknown);
+			shopElement.setCountry(unknown);
+			shopElement.setZip(unknown);
+			shopElement.setNumber("0");
 		}
 		setContentView(R.layout.activity_shopping_list);
 		// Show the Up button in the action bar.
@@ -186,8 +199,7 @@ public class ShoppingListActivity extends FragmentActivity implements
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
 					showAddShopDialog();
-					shopNameTextView.setText(shopElement.getName() + "@"
-							+ shopElement.getCity());
+					shopNameTextView.setText(shopElement.getName());
 				}
 				return false;
 			}
@@ -394,8 +406,7 @@ public class ShoppingListActivity extends FragmentActivity implements
 				.equalsIgnoreCase("AddShopDialogFragment")) {
 			AddShopDialogFragment addShopDialog = (AddShopDialogFragment) dialog;
 			shopElement = addShopDialog.getShopElement();
-			shopNameTextView.setText(shopElement.getName() + " @ "
-					+ shopElement.getCity());
+			shopNameTextView.setText(shopElement.getName());
 		} else if (dialog.getClass().getSimpleName()
 				.equalsIgnoreCase("SetListNameDialogFragment")) {
 			SetListNameDialogFragment setListNameDialogFragment = (SetListNameDialogFragment) dialog;
@@ -455,8 +466,7 @@ public class ShoppingListActivity extends FragmentActivity implements
 	public void refreshElements() {
 		try {
 			if (shopElement.getName() != null) {
-				shopNameTextView.setText(shopElement.getName() + " @ "
-						+ shopElement.getCity());
+				shopNameTextView.setText(shopElement.getName());
 			} else {
 				shopNameTextView.setText(R.string.no_shop);
 			}

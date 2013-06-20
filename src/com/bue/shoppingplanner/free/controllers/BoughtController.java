@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -30,6 +31,8 @@ public class BoughtController {
 	private Context context;
 	private Dbh db = null;
 	private String listName;
+	private Resources res; 
+	private int purchasesCount;
 
 	public BoughtController(Context context,
 			ArrayList<ShoppingListElementHelper> products,
@@ -38,12 +41,14 @@ public class BoughtController {
 		this.products = products;
 		this.shop = shop;
 		this.context = context;
+		res=context.getResources();
 		db = new Dbh(context);
 	}
 
 	public BoughtController(Context context) {
 		super();
 		this.context = context;
+		res=context.getResources();
 		db = new Dbh(context);
 	}
 
@@ -98,6 +103,7 @@ public class BoughtController {
 	 */
 	public int persistBought(int persistType) throws NullPointerException {
 		int shopId;
+		purchasesCount=0;
 		if (persistType == 0) {
 			ShopController shopController = new ShopController(context);
 			shopController.setElement(shop);
@@ -129,10 +135,7 @@ public class BoughtController {
 				int userId = user.getUserId(db);
 				Buys buys = null;
 				// Convert Price to local currency
-				CurrencyController cController = new CurrencyController(
-						context, element.getCurrency());
-				double price = cController.getPriceToDefaultCurrency(element
-						.getPrice());
+				double price = element.getPrice();
 				if (persistType == 0) {
 					SimpleDateFormat s = new SimpleDateFormat("ddMMyyyyhhmmss");
 					String timestamp = s.format(new Date());
@@ -144,25 +147,22 @@ public class BoughtController {
 							element.getQuantity(), userId, "", listName,
 							element.getVat());
 				}
-				buysId = buys.addBuys(db);// TODO: Currently this method returns
-											// the records number and not the PK
-											// of buys
-				// Make a method that checks if buys stored and then count them
+				buysId = buys.addBuys(db);
+				if(buysId>0)
+					purchasesCount++;
 
 			}
 		}
 
 		// Create Toast
-		CharSequence text = "ShopId: " + shopId + ": ";
+		CharSequence text = "";
 		if (shopId == -1) {
-			text = text + "Shop did't saved!\n";
+			text = text +res.getString(R.string.shop_did_not_saved)+ "\n";
 		} else if (shopId == -2) {
-			text = "Shopping list " + listName + " saved!";
+			text = res.getString(R.string.shoping_list_with_name, listName);//"Shopping list " + listName + " saved!";
 		} else {
-			text = text + shop.getType() + " " + shop.getName() + " at "
-					+ shop.getAddress() + ", " + shop.getNumber() + ", "
-					+ shop.getCity() + " saved!\n";
-			text = text + " Total Records persisted: " + buysId;
+			text = text + res.getString(R.string.persisted_shop_type_name, shop.getType(), shop.getName())+"\n";//shop.getType() + " " + shop.getName() +" saved!\n";
+			text = text + res.getString(R.string.items_bought_itemsnum,purchasesCount);//" You bought: " + buysId+" items.";
 		}
 
 		int duration = Toast.LENGTH_LONG;
@@ -208,6 +208,7 @@ public class BoughtController {
 	}
 
 	public double getTotalSpending() {
+		
 		return Buys.getTotalSpending(db);
 	}
 

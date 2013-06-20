@@ -132,10 +132,6 @@ public class IntroActivity extends FragmentActivity {
 				ShopController sContreller = new ShopController(context);
 				String unknown = context.getResources().getString(
 						R.string.unknown);
-				// Insert Groups
-				// User group=new User();
-				// group.setName("Home");//1
-				// group.addUser(db);
 
 				// Insert Kinds
 				String[] kindArray = context.getResources().getStringArray(
@@ -197,7 +193,7 @@ public class IntroActivity extends FragmentActivity {
 
 	private void initializeCurrencies() {
 		ExchangesAsyncTask async = new ExchangesAsyncTask();
-		async.execute("http://openexchangerates.org/api/latest.json?app_id=");
+		async.execute("http://openexchangerates.org/api/latest.json?app_id="+Keys.OPEN_RATES);
 		try {
 			ArrayList<Currencies> result = async.get();
 			for (Currencies item : result) {

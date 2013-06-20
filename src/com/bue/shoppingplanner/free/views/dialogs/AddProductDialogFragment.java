@@ -62,6 +62,7 @@ public class AddProductDialogFragment extends DialogFragment {
 	private VatHelper vat;
 
 	private BoughtController bController;
+	private CurrencyController cController;
 
 	private String barcode;
 
@@ -107,6 +108,7 @@ public class AddProductDialogFragment extends DialogFragment {
 
 		// Add Adapters to auto-complete text views
 		bController = new BoughtController(getActivity());
+		cController = new CurrencyController(getActivity());
 		ArrayList<String> productNames = new ArrayList<String>();
 		for (Product product : bController.getProductList()) {
 			productNames.add(product.getName());
@@ -147,8 +149,7 @@ public class AddProductDialogFragment extends DialogFragment {
 						android.R.layout.simple_spinner_dropdown_item);
 		currencyAddDialogSpinner = (Spinner) dialogMainView
 				.findViewById(R.id.currencyAddDialogSpinner);
-		CurrencyController controller = new CurrencyController(getActivity());
-		currencyAddDialogSpinner.setSelection(controller
+		currencyAddDialogSpinner.setSelection(cController
 				.getDefaultCurrencyPosition());
 
 		// Vat Adapter
@@ -157,6 +158,9 @@ public class AddProductDialogFragment extends DialogFragment {
 		ArrayAdapter vatAdapter = new ArrayAdapter(getActivity(),
 				android.R.layout.simple_dropdown_item_1line, vat.getVatRates());
 		vatAddDialogSpinner.setAdapter(vatAdapter);
+		
+		//Set default vat to vatAddDialogAutoCompleteTextView
+		vatAddDialogAutoCompleteTextView.setText(vat.getStandardRate());
 
 		// ImageButtons initialize
 		numberAddAddDialogImageButton = (ImageButton) dialogMainView
@@ -225,9 +229,16 @@ public class AddProductDialogFragment extends DialogFragment {
 								.toString());
 						if (priceAddDialogEditText.isEnabled()) {
 							try {
-								listElement.setPrice(Double
-										.parseDouble(priceAddDialogEditText
-												.getText().toString()));
+								if(cController.getDefaultCurrency().equals(currencyAddDialogSpinner
+								.getSelectedItem().toString()))
+									listElement.setPrice(Double
+											.parseDouble(priceAddDialogEditText
+													.getText().toString()));
+								else{//Change the value to the default currency
+									double price = cController.getPriceToDefaultCurrency(
+											Double.parseDouble(priceAddDialogEditText.getText().toString()));
+									listElement.setPrice(price);
+								}
 							} catch (Exception ex) {
 								listElement.setPrice(0.0);
 							}
@@ -247,7 +258,7 @@ public class AddProductDialogFragment extends DialogFragment {
 							listElement.setBarcode(barcode);
 
 						listElement.setCurrency(currencyAddDialogSpinner
-								.getSelectedItem().toString());
+								.getSelectedItem().toString());//This attribute is not used in 1.0 version
 						listElement.setVat(Double
 								.parseDouble(vatAddDialogAutoCompleteTextView
 										.getText().toString()) / 100);

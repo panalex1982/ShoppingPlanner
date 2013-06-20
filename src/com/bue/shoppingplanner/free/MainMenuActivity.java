@@ -9,6 +9,7 @@ import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.renderer.SimpleSeriesRenderer;
 
 import com.bue.shoppingplanner.free.controllers.BoughtController;
+import com.bue.shoppingplanner.free.controllers.CurrencyController;
 import com.bue.shoppingplanner.free.helpers.DialogOpener;
 import com.bue.shoppingplanner.free.views.DatabaseMenuActivity;
 import com.bue.shoppingplanner.free.views.ExchangeRatesActivity;
@@ -55,7 +56,7 @@ public class MainMenuActivity extends FragmentActivity {
 	// Pie Chat
 	/** Colors to be used for the pie slices. */
 	private static int[] COLORS = new int[] { Color.BLUE, Color.RED,
-			Color.YELLOW, Color.GREEN, Color.MAGENTA };
+			Color.YELLOW, Color.GREEN, Color.MAGENTA, Color.CYAN, Color.GRAY, Color.DKGRAY };
 	/** The main series that will include all the data. */
 	private CategorySeries mSeries;
 	private CategorySeries mSeries2;
@@ -66,6 +67,8 @@ public class MainMenuActivity extends FragmentActivity {
 	private GraphicalView mChartView2;
 	private LinearLayout chartLayout;
 	private LinearLayout chartLayout2;
+	
+	private CurrencyController cController;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +84,7 @@ public class MainMenuActivity extends FragmentActivity {
 		mSeries2 = new CategorySeries("");
 		mRenderer = new DefaultRenderer();
 		mRenderer2 = new DefaultRenderer();
+		cController=new CurrencyController(this);
 		// Shopping List Button
 		shoppingListImageButton = (ImageButton) findViewById(R.id.shoppingListImageButton);
 		shoppingListImageButton.setOnTouchListener(new View.OnTouchListener() {
@@ -267,15 +271,22 @@ public class MainMenuActivity extends FragmentActivity {
 		ArrayList<String[]> chart1Items = new ArrayList<String[]>();
 		ArrayList<String[]> chart2Items = new ArrayList<String[]>();
 		String[] totalItem = { "Total Spending",
-				String.valueOf(bController.getTotalSpending()) };
+				(bController.getTotalSpending()==0?"1":String.valueOf(bController.getTotalSpending())) };
 		chart1Items.add(totalItem);
 		String[] vatItem = { "VAT",
-				String.valueOf(bController.getTotalVatPayment()) };
+				(bController.getTotalVatPayment()==0?"1":String.valueOf(bController.getTotalVatPayment()))};
 		chart1Items.add(vatItem);
 		ArrayList<String[]> kindArray = bController.getTotalByKind();
-		for (int i = 0; i < 6; i++) {
-			if (kindArray.size() > i)
-				chart2Items.add(kindArray.get(i));
+		if(kindArray.size()==0){
+			String noPurchase[]=new String[2];
+			noPurchase[0]=getResources().getString(R.string.no_purchases_yet);
+			noPurchase[1]="1";
+			chart2Items.add(noPurchase);
+		}else{
+			for (int i = 0; i < 5; i++) {
+				if (kindArray.size() > i)
+					chart2Items.add(kindArray.get(i));
+			}
 		}
 		createPieChart1(chart1Items);
 		createPieChart2(chart2Items);
@@ -342,6 +353,8 @@ public class MainMenuActivity extends FragmentActivity {
 			mChartView2.repaint();
 		} else {
 			clearChart2();
+			while(mRenderer2.getSeriesRendererCount()>0)
+				mRenderer2.removeSeriesRenderer(mRenderer2.getSeriesRendererAt(0));
 			for (String[] item : chartItems)
 				addItemToChart2(item[0], Double.parseDouble(item[1]));
 			mChartView2.repaint();
@@ -349,6 +362,7 @@ public class MainMenuActivity extends FragmentActivity {
 	}
 
 	public void addItemToChart(String name, double value) {
+		value=Double.parseDouble(cController.formatCurrecy(String.valueOf(value)));
 		mSeries.add(name, value);
 		SimpleSeriesRenderer renderer = new SimpleSeriesRenderer();
 		renderer.setColor(COLORS[(mSeries.getItemCount() - 1) % COLORS.length]);
@@ -360,6 +374,7 @@ public class MainMenuActivity extends FragmentActivity {
 	}
 	
 	public void addItemToChart2(String name, double value) {
+		value=Double.parseDouble(cController.formatCurrecy(String.valueOf(value)));
 		mSeries2.add(name, value);
 		SimpleSeriesRenderer renderer = new SimpleSeriesRenderer();
 		renderer.setColor(COLORS[(mSeries2.getItemCount() - 1) % COLORS.length]);

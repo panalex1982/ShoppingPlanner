@@ -5,38 +5,38 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="intro_message">Plan your needs, make Economy!</string>
-    <string name="title_activity_main_menu">Main Menu</string>
-    <string name="title_activity_shopping_list">Shopping List</string>
-    <string name="product">Product</string>
-    <string name="quantity">Quantity</string>
-    <string name="product_kind">Category</string>
-    <string name="price">Price</string>
-    <string name="brand">Brand</string>
-    <string name="name">Name:</string>
-    <string name="existing">Existing:</string>
-    <string name="type">Type:</string>
-    <string name="address">Address:</string>
-    <string name="area">Area:</string>
-    <string name="country">Country:</string>
-    <string name="city">City</string>
-    <string name="zip">Zip</string>
-    <string name="total_spending">Total Spending:</string>
-    <string name="shop">Shop: </string>
-    <string name="no_shop">no shop provided</string>
-    <string name="title_activity_stats">StatsActivity</string>
-    <string name="euro">Euro</string>
+    <string name="title_activity_main_menu">Κύριως Μενού</string>
+    <string name="title_activity_shopping_list">Λίστα Αγορών</string>
+    <string name="product">Προϊόν</string>
+    <string name="quantity">Ποσότητα</string>
+    <string name="product_kind">Κατηγορία</string>
+    <string name="price">Τιμή</string>
+    <string name="brand">Ονομασία</string>
+    <string name="name">Όνομα</string>
+    <string name="existing">Υπάρχων</string>
+    <string name="type">Τύπος:</string>
+    <string name="address">Διεύθυνση</string>
+    <string name="area">Περιοχή</string>
+    <string name="country">Χώρα</string>
+    <string name="city">Πόλη</string>
+    <string name="zip">ΤΚ</string>
+    <string name="total_spending">Σύνολο εξόδων:</string>
+    <string name="shop">Κατάστημα: </string>
+    <string name="no_shop">παρακαλώ εισάγετε το κατάστημα</string>
+    <string name="title_activity_stats">Στατιστικά εξόδων</string>
+    <string name="euro">Ευρώ</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="total_cost">Total Cost:</string>
+    <string name="total_cost">Συνολικό Κόστος:</string>
     <string name="zero">0</string>
-    <string name="title_activity_set_lists">Favorite Shopping Lists</string>
-    <string name="available_shops">Available Shops</string>
-    <string name="title_activity_saved_lists">Saved Lists</string>
-    <string name="list_name">List Name:</string>
+    <string name="title_activity_set_lists">Λίστες Αγορών</string>
+    <string name="available_shops">Διαθέσιμα Καταστήματα</string>
+    <string name="title_activity_saved_lists">Αποθηκευμένες Λίστες Αγορών</string>
+    <string name="list_name">Όνομα Λίστας:</string>
     <string name="one">1</string>
-    <string name="street_name">street</string>
-    <string name="street_number">number</string>
+    <string name="street_name">οδός</string>
+    <string name="street_number">αριθμός</string>
     <string name="title_activity_fool_main">FoolMainActivity</string>
-    <string name="pick_date">Pick Date</string>
+    <string name="pick_date">Επιλογή Ημερομηνίας</string>
 
     <string-array name="currencies">
         <item>USD</item>
@@ -206,10 +206,10 @@
         <item>ZWL</item>
     </string-array>
 
-    <string name="title_activity_settings">Settings Activity</string>
-    <string name="currency">Currency</string>
-    <string name="settings">Settings</string>
-    <string name="save">Save</string>
+    <string name="title_activity_settings">Ρυθμίσεις</string>
+    <string name="currency">Νόμισμα</string>
+    <string name="settings">Ρυθμίσεις</string>
+    <string name="save">Αποθήκευση</string>
 
     <string-array name="currency_names">
         <item>United States Dollar</item>
@@ -546,100 +546,100 @@
         <item>ZWL</item>
     </string-array>
 
-    <string name="standard_rate">VAT Standard Rate (%)</string>
-    <string name="reduced_rate">VAT Reduced Rate (%)</string>
-    <string name="vat">VAT</string>
-    <string name="vat_percent">VAT (%)</string>
-    <string name="total_vat_payments">VAT Payments: </string>
-    <string name="buyer">Buyer</string>
+    <string name="standard_rate">Συντελεστής ΦΠΑ (%)</string>
+    <string name="reduced_rate">Μειωμένος Συντελεστής ΦΠΑ (%)</string>
+    <string name="vat">ΦΠΑ</string>
+    <string name="vat_percent">ΦΠΑ (%)</string>
+    <string name="total_vat_payments">Πόσο που πάει στο ΦΠΑ: </string>
+    <string name="buyer">Αγοραστής</string>
     <string name="export">Export</string>
     <string name="load">Load</string>
     <string name="cancel">Cancel</string>
     <string name="enter_file_name">Enter file name</string>
     <string name="new_folder">New folder</string>
-    <string name="create">Create</string>
+    <string name="create">Δημιουργία</string>
     <string name="folder_created">Folder created</string>
     <string name="folder_error">Folder creation error</string>
-    <string name="select_file">Select File</string>
-    <string name="import_db">Import</string>
-    <string name="database">Database</string>
-    <string name="category">Category</string>
-    <string name="barcode">Barcode</string>
-    <string name="title_activity_database_menu">Manage Local Database</string>
-    <string name="title_activity_manage_products">Manage Products</string>
-    <string name="title_activity_exchange_rates">Exchange Rates</string>
-    <string name="title_activity_manage_buyers">Manage Buyers</string>
-    <string name="buyer_name">Buyer Name</string>
-    <string name="add">Add</string>
-    <string name="buyers_list">Buyers</string>
-    <string name="product_categories">Product Categories</string>
-    <string name="title_activity_manage_product_categories">Manage Product Categories</string>
-    <string name="product_category">Product Category</string>
-    <string name="shop_type">Shop Type</string>
-    <string name="shop_types">Shop Types</string>
-    <string name="delete">Delete</string>
-    <string name="constraint_error">Cannot delete values because they are in use:</string>
+    <string name="select_file">Επιλογή Αρχείου</string>
+    <string name="import_db">Εισαγωγή</string>
+    <string name="database">Βάση Δεδομένων</string>
+    <string name="category">Κατηγορία</string>
+    <string name="barcode">Γραμμοκώδικας</string>
+    <string name="title_activity_database_menu">Διαχείρηση Τοπικής Βάσης Δεδομένων</string>
+    <string name="title_activity_manage_products">Διαχείρηση Προϊόντων</string>
+    <string name="title_activity_exchange_rates">Ισοτιμίες</string>
+    <string name="title_activity_manage_buyers">Διαχείρηση Καταναλωτών</string>
+    <string name="buyer_name">Καταναλωτής</string>
+    <string name="add">Προσθήκη</string>
+    <string name="buyers_list">Καταναλωτές</string>
+    <string name="product_categories">Κατηγορίες Προϊόντων</string>
+    <string name="title_activity_manage_product_categories">Διαχείρηση Κατηγοριών Προϊόντων</string>
+    <string name="product_category">Κατηγορία Προϊόντος</string>
+    <string name="shop_type">Τύπος Καταστήματος</string>
+    <string name="shop_types">Τύποι Καταστημάτων</string>
+    <string name="delete">Διαγραφή</string>
+    <string name="constraint_error">Τα δεδομένα χρησιμοποιούνται, δεν μπορεί να γίνει η διαγραφή.</string>
     <string-array name="shop_categories">
-        <item >Unknown</item>
-        <item >Local Store</item>
-        <item >Super Market</item>
-        <item >Mini Market</item>
-        <item >Specialitty Store</item>
-        <item >Entertainment Center</item>
-        <item >Medical</item>
-        <item >Internet Store</item>
-        <item >Service Station</item>
+        <item >Άγνωστο</item>
+        <item >Ψιλικά</item>
+        <item >Σούπερ Μάρκετ</item>
+        <item >Μίνι Μάρκετ</item>
+        <item >Εμπορικό Κατάστημα</item>
+        <item >Χώρος/Κέντρο Διασκέδασης</item>
+        <item >Νοσοκομείο/Φαρμακείο</item>
+        <item >Ηλεκτρονικό Κατάστημα</item>
+        <item >Πρατήριο</item>
         <item >Official Store</item>
-        <item >Bill Payment Service</item>
-        <item >Tax Payment Service</item>
-        <item >Bank</item>
-        <item >Other</item>
+        <item >Υπηρεσία Πληρωμής Λογαριασμών</item>
+        <item >Υπηρεσία Πληρωμής Φόρων</item>
+        <item >Τράπεζα</item>
+        <item >Άλλο</item>
     </string-array>
     <string-array name="product_categories">
-        <item >Food</item>
-        <item >Drink</item>
-        <item >Health</item>
-        <item >Household</item>
-        <item >Clothes</item>
-        <item >Entertainment</item>
-        <item >Office</item>
-        <item >Insurance</item>
-        <item >Loan</item>
-        <item >Home Equipment</item>
-        <item >Travel</item>
-        <item >Bills</item>
-        <item >Personal Care</item>
-        <item >Children/Baby Products</item>
-        <item >Rent</item>
-        <item >Subscriptions</item>
-        <item >Taxes</item>
-        <item >Electronics</item>
-        <item >Tobaccos</item>
-        <item >Vehicle</item>
-        <item >Pet</item>
-        <item >Other</item>
+        <item >Φαγητό</item>
+        <item >Ροφήμα</item>
+        <item >Υγεία</item>
+        <item >Νοικοκυριο</item>
+        <item >Ρουχισμός</item>
+        <item >Διασκέδαση</item>
+        <item >Γραφείο</item>
+        <item >Ασφάλεια</item>
+        <item >Δάνειο</item>
+        <item >Εξοπλισμός Σπιτιού</item>
+        <item >Ταξίδι</item>
+        <item >Λογαριασμός</item>
+        <item >Προσωπική Φροντίδα</item>
+        <item >Παιδικά/Βρεφικά</item>
+        <item >Ενοίκιο</item>
+        <item >Συνδρομή</item>
+        <item >Φόρος</item>
+        <item >Ηλεκτρονικά</item>
+        <item >Είδη Καπνιστού</item>
+        <item >Όχημα</item>
+        <item >Κατοικίδιο</item>
+        <item >Άλλο</item>
     </string-array>
-    <string name="unknown">Unknown</string>
-    <string name="unlock">Unlock</string>
-    <string name="unlock_hint">Changing Home Currency, won\'t convert already purchased items to the new currency.</string>
-    <string name="ok">Ok</string>
-    <string name="cancel_scan">Scan Cancelled!</string>
-    <string name="exit">Exit</string>
-    <string name="main_chart_one_title">Spending vs VAT Payment</string>
-    <string name="main_chart_two_title">Top 5 Spending Categories</string>
-    <string name="about">About</string>
-    <string name="about_text">Version 1.0. Copyright 2013.</string>
-    <string name="manage_shops">Manage Shops</string>
-    <string name="provide_product">Product is mandatory field.</string>
-    <string name="zero_user_warning">Cannot perform this Action. There must be at least one Buyer.</string>
-    <string name="provide_data">No data provided. Please try again.</string>
-    <string name="start">Main Menu</string>
-    <string name="shop_did_not_saved">Shop did\'t saved!</string>
-    <string name="shoping_list_with_name">Shopping list %1$s saved!</string>
-    <string name="persisted_shop_type_name">%1$s %2$s saved!</string>
-    <string name="items_bought_itemsnum">You bought: %1$s items.</string>
-    <string name="no_purchases_yet">You didn\'t purchase anything yet.</string>
-    <string name="set_filters">Filters</string>
-    <string name="statistics_list_label">Spendings</string>
+    <string name="unknown">Άγνωστο</string>
+    <string name="unlock">Ξεκλείδωμα</string>
+    <string name="unlock_hint">Η αλλάγη του τοπικού νομίσματος, δεν αλλάζει τις τιμές στις υπαρχουσες αγορές.</string>
+    <string name="ok">ΟΚ</string>
+    <string name="cancel_scan">Ακυρώθηκε η Σάρωση!</string>
+    <string name="exit">Έξοδος</string>
+    <string name="main_chart_one_title">Έξοδα / ΦΠΑ</string>
+    <string name="main_chart_two_title">Οι 5 πιο δαπανηρές κατηγορίες.</string>
+    <string name="about">Σχετικά</string>
+    <string name="about_text">Έκδοση 1.0. Copyright 2013.</string>
+    <string name="manage_shops">Διαχείρηση Καταστημάτων</string>
+    <string name="provide_product">Το προϊόν είναι υποχρεωτικό πεδίο.</string>
+    <string name="zero_user_warning">Μη έγκυρη ενέργεια. Πρέπει να υπάρχει τουλάχιστον ένας καταναλωτής.</string>
+    <string name="provide_data">Δεν υπαρχουν δεδομένα. Παρακαλώ προπαθήστε ξανά.</string>
+    <string name="start">Κυρίως Μενού</string>
+    <string name="shop_did_not_saved">Δεν αποθηκεύτηκε το κατάστημα!</string>
+    <string name="shoping_list_with_name">Η λίστα αγορών %1$s αποθηκεύτηκε!</string>
+    <string name="persisted_shop_type_name">%1$s %2$s αποθηκεύτηκε</string>
+    <string name="items_bought_itemsnum">Αγοράσατε: %1$s είδη προϊόντων.</string>
+    <string name="no_purchases_yet">Δεν αγόρασατε τίποτα προς το παρών.</string>
+    <string name="set_filters">Φίλτρα</string>
+    <string name="statistics_list_label">Έξοδα</string>
 
 </resources>

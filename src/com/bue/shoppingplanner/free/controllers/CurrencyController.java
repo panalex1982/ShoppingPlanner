@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
+import android.util.Log;
 
 import com.bue.shoppingplanner.free.R;
 import com.bue.shoppingplanner.free.helpers.CurrencyHelper;
@@ -137,7 +138,7 @@ public class CurrencyController implements SPSharedPreferences {
 			} else if (selectedCurrency.equals("USD")) {
 				price = price * rateToDef;
 			} else {
-				price = price / rateToDef;
+				price = (price /rateToUsd)*rateToDef;
 			}
 		}
 		return price;
@@ -272,16 +273,16 @@ public class CurrencyController implements SPSharedPreferences {
 	public String formatCurrecy(String price) {
 		DecimalFormat format = new DecimalFormat();
 		Currency currency = Currency.getInstance(defaultCurrency);
-		// DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-		// symbols.setCurrency(currency);
+		DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+		//symbols.setCurrency(currency);
+		symbols.setDecimalSeparator('.');
 		format.setGroupingUsed(false);
 		format.setMaximumFractionDigits(currency.getDefaultFractionDigits());
 		format.setMinimumFractionDigits(currency.getDefaultFractionDigits());
-		// Log.d("Currency test: ",currency.getCurrencyCode()+" "+currency.getSymbol()+" "+currency.getDefaultFractionDigits());
+		Log.d("Currency test: ",currency.getCurrencyCode()+" "+currency.getSymbol()+" "+currency.getDefaultFractionDigits());
 		format.setCurrency(currency);
-		// format.setDecimalFormatSymbols(symbols);
+		format.setDecimalFormatSymbols(symbols);
 		String formatted = format.format(Double.parseDouble(price));
 		return formatted;
 	}
-
 }
