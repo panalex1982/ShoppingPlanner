@@ -1,0 +1,18 @@
+root { 
+    display: block; 
+}
+html{
+    border-color: blue;
+    border-style:solid;
+    border-width:1px;
+}
+.bordered{margin-bottom:0px;
+    margin-top: 3px;
+    border-top-color: red;
+    border-top-style:dashed;
+    border-top-width:2px;
+}
+.note{
+    margin:0px;
+}
+

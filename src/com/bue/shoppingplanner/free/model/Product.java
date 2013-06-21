@@ -165,13 +165,20 @@ public class Product {
 		return productList;
 	}
 
-	// Getting All Product
+	//This function must moved to Commercial Product
+	/**
+	 * Returns all products combined with Commercial product name.
+	 * @param handler
+	 * @param kind
+	 * @return
+	 */
 	public static List<String> getAllProductNamesOfKind(Dbh handler, String kind) {
 		List<String> productList = new ArrayList<String>();
 		// Select All Query
 		String selectQuery = "SELECT  " +Dbh.TABLE_PRODUCT+"."
-				+ Dbh.PRODUCT_NAME + " FROM "
+				+ Dbh.PRODUCT_NAME +", "+Dbh.TABLE_COMMERCIAL_PRODUCT+"." +Dbh.COMMERCIAL_PRODUCT_COMPANY_BRAND+" FROM "
 				+ Dbh.TABLE_PRODUCT +" "+ Dbh.JOIN_PRODUCT_KIND
+				+" "+ Dbh.JOIN_COMMERCIALPRODUCT
 				+" WHERE "+Dbh.TABLE_PRODUCT_KIND+"."
 				+ Dbh.PRODUCT_KIND_NAME + " = \"" + kind+"\"";
 
@@ -181,7 +188,7 @@ public class Product {
 		// looping through all rows and adding to list
 		while (cursor.moveToNext()) {
 			// Adding product name to list
-			productList.add(cursor.getString(0));
+			productList.add(cursor.getString(0)+": "+cursor.getString(1));
 		}
 		cursor.close();
 		db.close();
