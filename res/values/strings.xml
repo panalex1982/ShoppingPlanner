@@ -641,5 +641,14 @@
     <string name="no_purchases_yet">You didn\'t purchase anything yet.</string>
     <string name="set_filters">Filters</string>
     <string name="statistics_list_label">Spendings</string>
+    <string name="new_list">New List</string>
+    <string name="statistics">Statistics</string>
+    <string name="favorite_lists">Favorite Lists</string>
+    <string name="help">Help</string>
+    <string name="add_entries">Add purchase entries</string>
+    <string name="save_favorite_list">Save List to Favorite lists</string>
+    <string name="save_temporary">Temporary save list for next time you open application</string>
+    <string name="scan_barcode">Scan Barcode</string>
+    <string name="add_product">Add new product to list</string>
 
 </resources>

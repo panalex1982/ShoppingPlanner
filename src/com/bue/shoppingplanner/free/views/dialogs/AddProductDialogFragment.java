@@ -229,15 +229,17 @@ public class AddProductDialogFragment extends DialogFragment {
 								.toString());
 						if (priceAddDialogEditText.isEnabled()) {
 							try {
-								if(cController.getDefaultCurrency().equals(currencyAddDialogSpinner
-								.getSelectedItem().toString()))
+								cController.setSelectedCurrency(currencyAddDialogSpinner
+										.getSelectedItem().toString());
+								if(cController.getSelectedCurrency().equals(cController.getDefaultCurrency()))
 									listElement.setPrice(Double
 											.parseDouble(priceAddDialogEditText
 													.getText().toString()));
 								else{//Change the value to the default currency
+									
 									double price = cController.getPriceToDefaultCurrency(
 											Double.parseDouble(priceAddDialogEditText.getText().toString()));
-									listElement.setPrice(price);
+									listElement.setPrice(Double.parseDouble(cController.formatCurrecy(String.valueOf(price))));
 								}
 							} catch (Exception ex) {
 								listElement.setPrice(0.0);

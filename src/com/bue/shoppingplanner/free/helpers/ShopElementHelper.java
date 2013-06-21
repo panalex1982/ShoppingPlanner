@@ -53,6 +53,8 @@ public class ShopElementHelper implements Serializable{
 	}
 
 	public String getName() {
+		if(name==null)
+			return "";
 		return name;
 	}
 

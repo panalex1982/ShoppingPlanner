@@ -484,7 +484,7 @@ public class Buys {
 				+ "FROM " + Dbh.TABLE_BUYS + " ";
 		String[] clauses = joinWhereBuilder(users, kinds, null, shops, brands,
 				null);
-		String joins = clauses[0] + Dbh.JOIN_PRODUCT;
+		String joins = (brands==null?Dbh.JOIN_PRODUCT+clauses[0]:clauses[0]);
 		String whereClause = clauses[1];
 		whereClause = (whereClause == " WHERE ") ? whereClause : whereClause
 				+ " AND ";

@@ -21,7 +21,7 @@
     <string name="city">Πόλη</string>
     <string name="zip">ΤΚ</string>
     <string name="total_spending">Σύνολο εξόδων:</string>
-    <string name="shop">Κατάστημα: </string>
+    <string name="shop">Κατάστημα</string>
     <string name="no_shop">παρακαλώ εισάγετε το κατάστημα</string>
     <string name="title_activity_stats">Στατιστικά εξόδων</string>
     <string name="euro">Ευρώ</string>
@@ -551,7 +551,7 @@
     <string name="vat">ΦΠΑ</string>
     <string name="vat_percent">ΦΠΑ (%)</string>
     <string name="total_vat_payments">Πόσο που πάει στο ΦΠΑ: </string>
-    <string name="buyer">Αγοραστής</string>
+    <string name="buyer">Καταναλωτής</string>
     <string name="export">Export</string>
     <string name="load">Load</string>
     <string name="cancel">Cancel</string>
@@ -641,5 +641,14 @@
     <string name="no_purchases_yet">Δεν αγόρασατε τίποτα προς το παρών.</string>
     <string name="set_filters">Φίλτρα</string>
     <string name="statistics_list_label">Έξοδα</string>
-
+    <string name="new_list">Νέα Λίστα</string>
+	<string name="statistics">Στατιστικά</string>
+	<string name="favorite_lists">Αγαπημένες Λίστες</string>
+	<string name="help">Βοήθεια</string>
+	<string name="add_entries">Αποθήκευση Αγορών</string>
+	<string name="save_favorite_list">Αποθήκευση λίστας στις Αγαπημένες</string>
+	<string name="save_temporary">Προσωρινή αποθήκευση της λίστας για το επόμενη φορά που θα ανοίξει η εφαρμογή.</string>
+	<string name="scan_barcode">Σάρωση γραμμοκώδικα</string>
+	<string name="add_product">Προσθήκη νέου προϊόντος στην λίστα</string>
+	
 </resources>

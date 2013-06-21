@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import com.bue.shoppingplanner.free.R;
 import com.bue.shoppingplanner.free.controllers.BoughtController;
+import com.bue.shoppingplanner.free.controllers.CurrencyController;
 import com.bue.shoppingplanner.free.helpers.ShopElementHelper;
 import com.bue.shoppingplanner.free.helpers.ShoppingListElementHelper;
 import com.bue.shoppingplanner.free.utilities.SPSharedPreferences;
@@ -55,6 +56,8 @@ public class ShoppingListActivity extends FragmentActivity implements
 	private ShoppingListElementArrayAdapter shoppingListAdapter;
 	private ArrayList<ShoppingListElementHelper> shoppingListArrayList;
 	private ShopElementHelper shopElement;
+	
+	private CurrencyController cController;
 
 	private SharedPreferences savedShoppingList;
 	// Second way to pass barcode
@@ -79,7 +82,8 @@ public class ShoppingListActivity extends FragmentActivity implements
 		boolean hasList = savedShoppingList.getBoolean(PREFS_HAS_SAVED_FILE,
 				false);
 		editList = false;
-
+		
+		cController=new CurrencyController(this);
 		shopElement = new ShopElementHelper();
 		if (savedInstanceState != null) {
 			shoppingListArrayList = new ArrayList<ShoppingListElementHelper>();
@@ -313,7 +317,8 @@ public class ShoppingListActivity extends FragmentActivity implements
 	@Override
 	protected void onPause() {
 		super.onPause();
-		shoppingListAdapter = null;
+		//TODO: Why I had this null?
+		//shoppingListAdapter = null;
 	}
 
 	@Override
@@ -521,6 +526,7 @@ public class ShoppingListActivity extends FragmentActivity implements
 		double total = 0.0;
 		for (ShoppingListElementHelper element : shoppingListArrayList) {
 			total = total + element.getPrice() * element.getQuantity();
+			total=Double.parseDouble(cController.formatCurrecy(String.valueOf(total)));
 		}
 		return total;
 	}
