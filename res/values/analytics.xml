@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
 <resources>
-  <!--Replace placeholder ID with your tracking ID-->
-  <string name="ga_trackingId">UA-37279697-3</string>
+  <!--Replace placeholder ID with your tracking ID UA-37279697-2-->
+  <string name="ga_trackingId"></string>
 
   <!--Enable automatic activity tracking-->
   <bool name="ga_autoActivityTracking">true</bool>

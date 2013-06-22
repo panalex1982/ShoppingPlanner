@@ -650,5 +650,7 @@
 	<string name="save_temporary">Προσωρινή αποθήκευση της λίστας για το επόμενη φορά που θα ανοίξει η εφαρμογή.</string>
 	<string name="scan_barcode">Σάρωση γραμμοκώδικα</string>
 	<string name="add_product">Προσθήκη νέου προϊόντος στην λίστα</string>
+	<string name="price_chart">Γράφιμα τιμών</string>
+	<string name="title_activity_price_in_time_chart">Διάγραμμα τιμών στο χρόνο</string>
 	
 </resources>

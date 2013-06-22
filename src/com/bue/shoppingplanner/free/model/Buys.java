@@ -1050,4 +1050,45 @@ public class Buys {
 		clauses[1] = whereClause;
 		return clauses;
 	}
+	
+	/**
+	 * Returns an array list with the date and the purchase price of a specific product in a given time interval.
+	 * 
+	 * @param handler
+	 * @param barcode
+	 * @param fromDate
+	 * @param toDate
+	 * @return
+	 */
+	public static ArrayList<String[]> getCommercialProductPrices(Dbh handler, String commercialName, String fromDate, String toDate){
+		ArrayList<String[]> pricesList=new ArrayList<String[]>();
+		String query = "SELECT " + Dbh.TABLE_PRODUCT + "." + Dbh.PRODUCT_NAME
+				+ ","+Dbh.TABLE_BUYS + "." + Dbh.BUYS_UNIT_PRICE
+				+ ","+Dbh.TABLE_BUYS + "." + Dbh.BUYS_DATE
+				+ " FROM " + Dbh.TABLE_BUYS + " "
+				+ Dbh.JOIN_PRODUCT+Dbh.JOIN_COMMERCIALPRODUCT
+				+ " WHERE "+Dbh.TABLE_COMMERCIAL_PRODUCT+"."+Dbh.COMMERCIAL_PRODUCT_COMPANY_BRAND+" = "
+				+"\""+commercialName+"\""+" AND "+ Dbh.TABLE_BUYS + "."
+				+ Dbh.BUYS_LIST_NAME + " =\"-1\"" +/* " AND " + Dbh.TABLE_BUYS
+				+ "." + Dbh.BUYS_DATE + " > \"" + fromDate + "\"" + " AND "
+				+ Dbh.TABLE_BUYS + "." + Dbh.BUYS_DATE + " < \"" + toDate
+				+ "\"" + */" GROUP BY " + Dbh.TABLE_BUYS + "." + Dbh.BUYS_DATE 
+				+ " ORDER BY "+Dbh.TABLE_BUYS + "." + Dbh.BUYS_DATE;
+
+		Log.i("Query : ", query);
+		SQLiteDatabase db = handler.getReadableDatabase();
+		Cursor cursor = db.rawQuery(query, null);
+
+		if (cursor != null)
+			while (cursor.moveToNext()) {
+				String[] row = new String[3];
+				row[2] = String.valueOf(cursor.getDouble(2));
+				row[0] = cursor.getString(0);
+				row[1] = String.valueOf(cursor.getDouble(1));
+				pricesList.add(row);
+			}
+		cursor.close();
+		db.close();
+		return pricesList;
+	}
 }

@@ -64,7 +64,8 @@ public class AddProductDialogFragment extends DialogFragment {
 	private BoughtController bController;
 	private CurrencyController cController;
 
-	private String barcode;
+	private String barcode,
+					unknown;
 
 	/**
 	 * This variable prevents from change value on vatEditText when first time
@@ -82,6 +83,7 @@ public class AddProductDialogFragment extends DialogFragment {
 		listElement = new ShoppingListElementHelper();
 		vat = new VatHelper(getActivity());
 		spinnerBug = true;
+		unknown = getResources().getString(R.string.unknown);
 
 		// Create main dialog
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -255,7 +257,7 @@ public class AddProductDialogFragment extends DialogFragment {
 						listElement.setChecked(true);
 						// the barcode or "unknown" for not known barcodes
 						if (barcode == "" || barcode == "No Barcode Provided.")
-							listElement.setBarcode("unknown");
+							listElement.setBarcode(unknown);
 						else
 							listElement.setBarcode(barcode);
 

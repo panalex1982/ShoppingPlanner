@@ -35,10 +35,10 @@ public class StatsCategoriesFragment extends Fragment {
 		String kind = getResources().getString(R.string.product_kind);
 
 		// Create Fragments
-		StatsMainFragment buyerFragment = new StatsMainFragment();
-		StatsMainFragment productFragment = new StatsMainFragment();
-		StatsMainFragment shopFragment = new StatsMainFragment();
-		StatsMainFragment kindFragment = new StatsMainFragment();
+//		StatsMainFragment buyerFragment = new StatsMainFragment();
+//		StatsMainFragment productFragment = new StatsMainFragment();
+//		StatsMainFragment shopFragment = new StatsMainFragment();
+//		StatsMainFragment kindFragment = new StatsMainFragment();
 		
 //		setFragmetIds();
 //		getFragmentManager().beginTransaction()
@@ -78,24 +78,24 @@ public class StatsCategoriesFragment extends Fragment {
 			return true;
 	}
 
-	private void setFragmetIds() {
-		while (checkIdExistance(buyerFragmentId)) {
-			buyerFragmentId += 1;
-		}
-		if (buyerFragmentId != 0xffffffc0) {
-			productFragmentId = buyerFragmentId + 1;
-			while (checkIdExistance(productFragmentId)) {
-				productFragmentId += 1;
-			}
-			shopFragmentId = productFragmentId + 1;
-			while (checkIdExistance(shopFragmentId)) {
-				shopFragmentId += 1;
-			}
-			kindFragmentId = shopFragmentId + 1;
-			while (checkIdExistance(kindFragmentId)) {
-				kindFragmentId += 1;
-			}
-		}
-	}
+//	private void setFragmetIds() {
+//		while (checkIdExistance(buyerFragmentId)) {
+//			buyerFragmentId += 1;
+//		}
+//		if (buyerFragmentId != 0xffffffc0) {
+//			productFragmentId = buyerFragmentId + 1;
+//			while (checkIdExistance(productFragmentId)) {
+//				productFragmentId += 1;
+//			}
+//			shopFragmentId = productFragmentId + 1;
+//			while (checkIdExistance(shopFragmentId)) {
+//				shopFragmentId += 1;
+//			}
+//			kindFragmentId = shopFragmentId + 1;
+//			while (checkIdExistance(kindFragmentId)) {
+//				kindFragmentId += 1;
+//			}
+//		}
+//	}
 
 }

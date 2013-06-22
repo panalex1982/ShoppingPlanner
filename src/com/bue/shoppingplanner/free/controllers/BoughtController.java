@@ -501,5 +501,17 @@ public class BoughtController {
 	public String deleteProductKind(String kind) {
 		return ProductKind.deleteProductKind(db, kind);
 	}
+	
+	public ArrayList<String[]> getCommercialProductPrices(String commercialName, String fromDate, String toDate){
+		return Buys.getCommercialProductPrices(db, commercialName, fromDate, toDate);
+	}
+
+	/**
+	 * Get distinct all product names and return them to ArrayList<Stirng>
+	 * @return
+	 */
+	public ArrayList<String> getProductNameList() {
+		return (ArrayList<String>) Product.getAllProductNames(db);
+	}
 
 }
