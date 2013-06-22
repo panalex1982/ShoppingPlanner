@@ -164,6 +164,33 @@ public class Product {
 		// return contact list
 		return productList;
 	}
+	
+	/**
+	 * Get distinct all product names.
+	 * @param handler
+	 * @return
+	 */
+		public static List<String> getAllProductNames(Dbh handler) {
+			List<String> productList = new ArrayList<String>();
+			// Select All Query
+			String selectQuery = "SELECT DISTINCT "+Dbh.PRODUCT_NAME+" FROM " + Dbh.TABLE_PRODUCT;
+
+			SQLiteDatabase db = handler.getWritableDatabase();
+			Cursor cursor = db.rawQuery(selectQuery, null);
+
+			// looping through all rows and adding to list
+			if (cursor.moveToFirst()) {
+				do {
+					String name=cursor.getString(0);
+
+					// Adding product name to list
+					productList.add(name);
+				} while (cursor.moveToNext());
+			}
+			cursor.close();
+			db.close();
+			return productList;
+		}
 
 	//This function must moved to Commercial Product
 	/**

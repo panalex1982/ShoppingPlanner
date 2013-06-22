@@ -17,6 +17,7 @@ import com.bue.shoppingplanner.free.views.SavedListsActivity;
 import com.bue.shoppingplanner.free.views.SettingsActivity;
 import com.bue.shoppingplanner.free.views.ShoppingListActivity;
 import com.bue.shoppingplanner.free.views.ShopsActivity;
+import com.bue.shoppingplanner.free.views.StatisticsMenuActivity;
 import com.bue.shoppingplanner.free.views.StatsActivity;
 import com.bue.shoppingplanner.free.views.dialogs.AboutDialogFragment;
 import com.bue.shoppingplanner.free.views.dialogs.AddProductDialogFragment;
@@ -108,7 +109,7 @@ public class MainMenuActivity extends FragmentActivity {
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
 					startActivity(new Intent(MainMenuActivity.this,
-							StatsActivity.class));
+							StatisticsMenuActivity.class));
 				}
 				return false;
 			}

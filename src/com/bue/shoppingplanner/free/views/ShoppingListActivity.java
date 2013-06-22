@@ -41,6 +41,8 @@ public class ShoppingListActivity extends FragmentActivity implements
 		AddShopDialogFragment.AddShopDialogListener,
 		SetListNameDialogFragment.SetListNameDialogListener,
 		SPSharedPreferences {
+	
+	private String unknown;
 
 	private ImageButton addProductButton;
 	private ImageButton saveProductButton;
@@ -83,6 +85,7 @@ public class ShoppingListActivity extends FragmentActivity implements
 				false);
 		editList = false;
 		
+		unknown = getResources().getString(R.string.unknown);
 		cController=new CurrencyController(this);
 		shopElement = new ShopElementHelper();
 		if (savedInstanceState != null) {
@@ -128,9 +131,7 @@ public class ShoppingListActivity extends FragmentActivity implements
 			}					
 		}
 		if (!shopElement.hasName()){
-			//Add unknown shop to a new list or saved list
-			String unknown = getResources().getString(
-					R.string.unknown);	
+			//Add unknown shop to a new list or saved list				
 			shopElement.setName(unknown);
 			shopElement.setAddress(unknown);
 			shopElement.setType(unknown);
@@ -488,8 +489,9 @@ public class ShoppingListActivity extends FragmentActivity implements
 		int persist = -1;
 		if (persistType == 0) {
 			if (!shopElement.hasName()) {
-				shopElement = new ShopElementHelper("Unknown", "Unknown", "0",
-						"Unknown", "Unknown", "Unknown", "Unknown", "Unknown");
+				
+				shopElement = new ShopElementHelper(unknown, unknown, "0",
+						unknown, unknown, unknown, unknown, unknown);
 			}
 			controller.setShop(shopElement);
 			persist = controller.persistBought(0);

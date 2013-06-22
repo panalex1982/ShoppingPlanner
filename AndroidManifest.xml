@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.bue.shoppingplanner.free"
+    android:installLocation="preferExternal"
     android:versionCode="2"
-    android:versionName="0.9.1" android:installLocation="preferExternal">
+    android:versionName="0.9.1" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -12,36 +13,40 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <!-- <uses-permission android:name="com.android.vending.CHECK_LICENSE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> -->
-    
+    <!--
+    <uses-permission android:name="com.android.vending.CHECK_LICENSE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    -->
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
+        android:allowClearUserData="false"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" android:allowClearUserData="false">
-        <activity android:name="com.bue.shoppingplanner.free.MainMenuActivity"
-            android:label="@string/app_name">
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.bue.shoppingplanner.free.MainMenuActivity"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.bue.shoppingplanner.free.MainMenuActivity" />
         </activity>
-        
         <activity
             android:name="com.bue.shoppingplanner.free.IntroActivity"
             android:label="@string/app_name"
-            android:parentActivityName="com.bue.shoppingplanner.free.MainMenuActivity">
-            <meta-data android:name="android.support.PARENT_ACTIVITY"
-                 android:value="com.bue.shoppingplanner.free.MainMenuActivity" />
+            android:parentActivityName="com.bue.shoppingplanner.free.MainMenuActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bue.shoppingplanner.free.MainMenuActivity" />
         </activity>
-        
         <activity
             android:name="com.bue.shoppingplanner.free.views.ShoppingListActivity"
             android:label="@string/title_activity_shopping_list"
@@ -127,6 +132,18 @@
         <activity
             android:name="com.google.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
+        <activity
+            android:name="com.bue.shoppingplanner.free.views.StatisticsMenuActivity"
+            android:label="@string/title_activity_statistics_menu" >
+        </activity>
+        <activity
+            android:name="com.bue.shoppingplanner.free.views.PriceInTimeChartActivity"
+            android:label="@string/title_activity_price_in_time_chart"
+            android:parentActivityName="com.bue.shoppingplanner.free.views.StatsActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bue.shoppingplanner.free.views.StatsActivity" />
+        </activity>
     </application>
 
 </manifest>

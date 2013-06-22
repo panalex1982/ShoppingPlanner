@@ -579,46 +579,48 @@
     <string name="shop_types">Shop Types</string>
     <string name="delete">Delete</string>
     <string name="constraint_error">Cannot delete values because they are in use:</string>
+
     <string-array name="shop_categories">
-        <item >Unknown</item>
-        <item >Local Store</item>
-        <item >Super Market</item>
-        <item >Mini Market</item>
-        <item >Specialitty Store</item>
-        <item >Entertainment Center</item>
-        <item >Medical</item>
-        <item >Internet Store</item>
-        <item >Service Station</item>
-        <item >Official Store</item>
-        <item >Bill Payment Service</item>
-        <item >Tax Payment Service</item>
-        <item >Bank</item>
-        <item >Other</item>
+        <item>Unknown</item>
+        <item>Local Store</item>
+        <item>Super Market</item>
+        <item>Mini Market</item>
+        <item>Specialitty Store</item>
+        <item>Entertainment Center</item>
+        <item>Medical</item>
+        <item>Internet Store</item>
+        <item>Service Station</item>
+        <item>Official Store</item>
+        <item>Bill Payment Service</item>
+        <item>Tax Payment Service</item>
+        <item>Bank</item>
+        <item>Other</item>
     </string-array>
     <string-array name="product_categories">
-        <item >Food</item>
-        <item >Drink</item>
-        <item >Health</item>
-        <item >Household</item>
-        <item >Clothes</item>
-        <item >Entertainment</item>
-        <item >Office</item>
-        <item >Insurance</item>
-        <item >Loan</item>
-        <item >Home Equipment</item>
-        <item >Travel</item>
-        <item >Bills</item>
-        <item >Personal Care</item>
-        <item >Children/Baby Products</item>
-        <item >Rent</item>
-        <item >Subscriptions</item>
-        <item >Taxes</item>
-        <item >Electronics</item>
-        <item >Tobaccos</item>
-        <item >Vehicle</item>
-        <item >Pet</item>
-        <item >Other</item>
+        <item>Food</item>
+        <item>Drink</item>
+        <item>Health</item>
+        <item>Household</item>
+        <item>Clothes</item>
+        <item>Entertainment</item>
+        <item>Office</item>
+        <item>Insurance</item>
+        <item>Loan</item>
+        <item>Home Equipment</item>
+        <item>Travel</item>
+        <item>Bills</item>
+        <item>Personal Care</item>
+        <item>Children/Baby Products</item>
+        <item>Rent</item>
+        <item>Subscriptions</item>
+        <item>Taxes</item>
+        <item>Electronics</item>
+        <item>Tobaccos</item>
+        <item>Vehicle</item>
+        <item>Pet</item>
+        <item>Other</item>
     </string-array>
+
     <string name="unknown">Unknown</string>
     <string name="unlock">Unlock</string>
     <string name="unlock_hint">Changing Home Currency, won\'t convert already purchased items to the new currency.</string>
@@ -650,5 +652,8 @@
     <string name="save_temporary">Temporary save list for next time you open application</string>
     <string name="scan_barcode">Scan Barcode</string>
     <string name="add_product">Add new product to list</string>
+    <string name="price_chart">Price Chart</string>
+    <string name="title_activity_statistics_menu">Statistics Menu</string>
+    <string name="title_activity_price_in_time_chart">PriceIn Time Chart</string>
 
 </resources>

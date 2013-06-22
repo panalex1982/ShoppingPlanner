@@ -89,6 +89,7 @@ public class ManageTableActivity extends FragmentActivity {
 			case ManageTableType.PRODUCTCAT:
 				addColumnManageTableLabelTextView
 						.setText(R.string.product_category);
+				addColumnEditText.setHint(R.string.product_category);
 				columnManageTableListLabelTextView
 						.setText(R.string.product_categories);
 				bController = new BoughtController(this);
@@ -97,6 +98,7 @@ public class ManageTableActivity extends FragmentActivity {
 				break;
 			case ManageTableType.SHOPCAT:
 				addColumnManageTableLabelTextView.setText(R.string.shop_type);
+				addColumnEditText.setHint(R.string.shop_type);
 				columnManageTableListLabelTextView.setText(R.string.shop_types);
 				sController = new ShopController(this);
 				itemsList.addAll(sController.getAllShopDescription());

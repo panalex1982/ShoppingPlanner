@@ -4,6 +4,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import org.achartengine.ChartFactory;
+import org.achartengine.GraphicalView;
+import org.achartengine.chart.PointStyle;
+import org.achartengine.model.SeriesSelection;
+import org.achartengine.model.XYMultipleSeriesDataset;
+import org.achartengine.model.XYSeries;
+import org.achartengine.renderer.XYMultipleSeriesRenderer;
+import org.achartengine.renderer.XYSeriesRenderer;
+
 import com.bue.shoppingplanner.free.R;
 import com.bue.shoppingplanner.free.controllers.BoughtController;
 import com.bue.shoppingplanner.free.utilities.FilterMode;
@@ -11,14 +20,18 @@ import com.bue.shoppingplanner.free.views.adapters.StatsArrayAdapter;
 import com.bue.shoppingplanner.free.views.dialogs.StatsFilterDialogFragment;
 
 import android.app.DatePickerDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Use the
@@ -72,8 +85,8 @@ public class StatsMainFragment extends Fragment {
 	/**
 	 * Controller used for queries connected with bought.
 	 */
-	BoughtController bController;
-
+	private BoughtController bController;
+	
 	/**
 	 * Use this factory method to create a new instance of this fragment using
 	 * the provided parameters.
@@ -105,13 +118,13 @@ public class StatsMainFragment extends Fragment {
 			mParam2 = getArguments().getString(ARG_PARAM2);
 		}
 
-		fragmentTag=getTag();
-		
+		fragmentTag = getTag();
+
 		// filter ArrayList
-				filter1 = null;
-				filter2 = null;
-				filter3 = null;
-				filter4 = null;
+		filter1 = null;
+		filter2 = null;
+		filter3 = null;
+		filter4 = null;
 
 		// Initialize Dates
 		dateFormater = new SimpleDateFormat("ddMMyyyyhhmmss");
