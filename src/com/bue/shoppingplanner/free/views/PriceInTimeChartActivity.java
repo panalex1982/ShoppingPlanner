@@ -194,24 +194,7 @@ public class PriceInTimeChartActivity extends FragmentActivity {
 			double x = Double.parseDouble(price[1]);
 	        double y = Double.parseDouble(price[2]);
 	        mCurrentSeries.add(x, y);
-//	        try {
-//	          x = Double.parseDouble("8.0");//mX.getText().toString());
-//	        } catch (NumberFormatException e) {
-//	         // mX.requestFocus();
-//	          return;
-//	        }
-//	        try {
-//	          y = Double.parseDouble("22.9");//mY.getText().toString());
-//	        } catch (NumberFormatException e) {
-//	         // mY.requestFocus();
-//	          return;
-//	        }
-	        // add a new data point to the current series
-	       
 		}
-       // mX.setText("");
-       // mY.setText("");
-      //  mX.requestFocus();
         // repaint the chart such as the newly added point to be visible
         mChartView.repaint();
 	}
