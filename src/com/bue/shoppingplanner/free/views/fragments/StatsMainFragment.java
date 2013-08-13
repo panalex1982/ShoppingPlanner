@@ -127,7 +127,7 @@ public class StatsMainFragment extends Fragment {
 		filter4 = null;
 
 		// Initialize Dates
-		dateFormater = new SimpleDateFormat("ddMMyyyyhhmmss");
+		dateFormater = new SimpleDateFormat("ddMMyyyyHHmmss");
 		editTextDateFormater = new SimpleDateFormat("dd-MM-yyyy");
 		fromDate = Calendar.getInstance();
 		toDate = Calendar.getInstance();

@@ -5,7 +5,9 @@ import com.bue.shoppingplanner.free.R;
 import com.bue.shoppingplanner.free.R.layout;
 import com.bue.shoppingplanner.free.R.menu;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
@@ -21,6 +23,7 @@ public class StatisticsMenuActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_statistics_menu);
+		setupActionBar();
 		sumsButton=(Button)findViewById(R.id.sumsButton);
 		chartButton=(Button)findViewById(R.id.chartsButton);
 		sumsButton.setOnTouchListener(new View.OnTouchListener() {
@@ -52,6 +55,16 @@ public class StatisticsMenuActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.statistics_menu, menu);
 		return true;
+	}
+	
+	/**
+	 * Set up the {@link android.app.ActionBar}, if the API is available.
+	 */
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	private void setupActionBar() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			getActionBar().setDisplayHomeAsUpEnabled(true);
+		}
 	}
 
 }

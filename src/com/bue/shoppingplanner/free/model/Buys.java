@@ -1082,7 +1082,7 @@ public class Buys {
 		if (cursor != null)
 			while (cursor.moveToNext()) {
 				String[] row = new String[3];
-				row[2] = String.valueOf(cursor.getDouble(2));
+				row[2] = cursor.getString(2);
 				row[0] = cursor.getString(0);
 				row[1] = String.valueOf(cursor.getDouble(1));
 				pricesList.add(row);

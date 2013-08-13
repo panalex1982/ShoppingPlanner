@@ -22,7 +22,7 @@ public class JsonUpdate {
 	public JsonUpdate() {
 		super();
 		id=1;
-		SimpleDateFormat dateFormater = new SimpleDateFormat("ddMMyyyyhhmmss");		
+		SimpleDateFormat dateFormater = new SimpleDateFormat("ddMMyyyyHHmmss");		
 		date=dateFormater.format(new Date());
 	}
 	

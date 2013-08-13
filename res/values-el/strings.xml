@@ -653,5 +653,6 @@
 	<string name="price_chart">Γράφιμα τιμών</string>
 	<string name="title_activity_statistics_menu">Μενού Στατιστικών</string>
 	<string name="title_activity_price_in_time_chart">Διάγραμμα τιμών στο χρόνο</string>
+	<string name="date">Ημερομηνία</string>
 	
 </resources>
