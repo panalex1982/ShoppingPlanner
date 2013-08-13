@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.bue.shoppingplanner.free"
     android:installLocation="preferExternal"
-    android:versionCode="2"
+    android:versionCode="3"
     android:versionName="0.9.1" >
 
     <uses-sdk
@@ -12,8 +12,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <!--
+    <!--<uses-permission android:name="android.permission.VIBRATE" />    
     <uses-permission android:name="com.android.vending.CHECK_LICENSE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     -->
@@ -58,10 +57,10 @@
         <activity
             android:name="com.bue.shoppingplanner.free.views.StatsActivity"
             android:label="@string/title_activity_stats"
-            android:parentActivityName="com.bue.shoppingplanner.free.MainMenuActivity" >
+            android:parentActivityName="com.bue.shoppingplanner.free.views.StatisticsMenuActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.bue.shoppingplanner.free.MainMenuActivity" />
+                android:value="com.bue.shoppingplanner.free.views.StatisticsMenuActivity" />
         </activity>
         <activity
             android:name="com.bue.shoppingplanner.free.views.ShopsActivity"
@@ -85,7 +84,7 @@
             android:parentActivityName="com.bue.shoppingplanner.free.MainMenuActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.bue.shoppingplanner.free.views.MainMenuActivity" />
+                android:value="com.bue.shoppingplanner.free.MainMenuActivity" />
         </activity>
         <activity
             android:name="com.bue.shoppingplanner.free.utilities.fileselector.FileSelectorActivity"
@@ -103,7 +102,7 @@
             android:parentActivityName="com.bue.shoppingplanner.free.MainMenuActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.bue.shoppingplanner.free.views.MainMenuActivity" />
+                android:value="com.bue.shoppingplanner.free.MainMenuActivity" />
         </activity>
         <activity
             android:name="com.bue.shoppingplanner.free.views.ManageProductsActivity"
@@ -119,7 +118,7 @@
             android:parentActivityName="com.bue.shoppingplanner.free.MainMenuActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.bue.shoppingplanner.free.views.MainMenuActivity" />
+                android:value="com.bue.shoppingplanner.free.MainMenuActivity" />
         </activity>
         <activity
             android:name="com.bue.shoppingplanner.free.views.ManageTableActivity"
@@ -134,15 +133,19 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
         <activity
             android:name="com.bue.shoppingplanner.free.views.StatisticsMenuActivity"
-            android:label="@string/title_activity_statistics_menu" >
+            android:label="@string/title_activity_statistics_menu" 
+            android:parentActivityName="com.bue.shoppingplanner.free.MainMenuActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.bue.shoppingplanner.free.MainMenuActivity" />
         </activity>
         <activity
             android:name="com.bue.shoppingplanner.free.views.PriceInTimeChartActivity"
             android:label="@string/title_activity_price_in_time_chart"
-            android:parentActivityName="com.bue.shoppingplanner.free.views.StatsActivity" >
+            android:parentActivityName="com.bue.shoppingplanner.free.views.StatisticsMenuActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.bue.shoppingplanner.free.views.StatsActivity" />
+                android:value="com.bue.shoppingplanner.free.views.StatisticsMenuActivity" />
         </activity>
     </application>
 

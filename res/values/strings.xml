@@ -654,6 +654,7 @@
     <string name="add_product">Add new product to list</string>
     <string name="price_chart">Price Chart</string>
     <string name="title_activity_statistics_menu">Statistics Menu</string>
-    <string name="title_activity_price_in_time_chart">PriceIn Time Chart</string>
+    <string name="title_activity_price_in_time_chart">Prices In Time Chart</string>
+    <string name="date">Date</string>
 
 </resources>

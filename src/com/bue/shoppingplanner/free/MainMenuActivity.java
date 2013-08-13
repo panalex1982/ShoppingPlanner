@@ -11,6 +11,7 @@ import org.achartengine.renderer.SimpleSeriesRenderer;
 import com.bue.shoppingplanner.free.controllers.BoughtController;
 import com.bue.shoppingplanner.free.controllers.CurrencyController;
 import com.bue.shoppingplanner.free.helpers.DialogOpener;
+import com.bue.shoppingplanner.free.utilities.GlobalVars;
 import com.bue.shoppingplanner.free.views.DatabaseMenuActivity;
 import com.bue.shoppingplanner.free.views.ExchangeRatesActivity;
 import com.bue.shoppingplanner.free.views.SavedListsActivity;
@@ -52,7 +53,7 @@ public class MainMenuActivity extends FragmentActivity {
 	private ImageButton settingsImageButton;
 	private ImageButton ratesImageButton;
 
-	private boolean startIntro;
+	//private boolean startIntro;
 
 	// Pie Chat
 	/** Colors to be used for the pie slices. */
@@ -80,7 +81,7 @@ public class MainMenuActivity extends FragmentActivity {
 		setupActionBar();
 
 		// Initialize Objects
-		startIntro = true;
+		//startIntro = true;
 		mSeries = new CategorySeries("");
 		mSeries2 = new CategorySeries("");
 		mRenderer = new DefaultRenderer();
@@ -236,7 +237,7 @@ public class MainMenuActivity extends FragmentActivity {
 	protected void onActivityResult(int arg0, int arg1, Intent arg2) {
 		super.onActivityResult(arg0, arg1, arg2);
 		if (arg0 == 0)
-			startIntro = false;
+			GlobalVars.startIntro = false;
 	}
 
 	@Override
@@ -265,7 +266,7 @@ public class MainMenuActivity extends FragmentActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (startIntro)
+		if (GlobalVars.startIntro)
 			startActivityForResult(new Intent(MainMenuActivity.this,
 					IntroActivity.class), 0);
 		BoughtController bController = new BoughtController(this);
@@ -302,7 +303,7 @@ public class MainMenuActivity extends FragmentActivity {
 	@Override
 	protected void onRestoreInstanceState(Bundle savedState) {
 		super.onRestoreInstanceState(savedState);
-		startIntro = savedState.getBoolean("startIntro");
+		//GlobalVars.startIntro = savedState.getBoolean("startIntro");
 		// mSeries = (CategorySeries)
 		// savedState.getSerializable("current_series");
 		// mRenderer = (DefaultRenderer)
@@ -312,7 +313,7 @@ public class MainMenuActivity extends FragmentActivity {
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putBoolean("startIntro", startIntro);
+		//outState.putBoolean("startIntro", GlobalVars.startIntro);
 		// outState.putSerializable("current_series", mSeries);
 		// outState.putSerializable("current_renderer", mRenderer);
 	}

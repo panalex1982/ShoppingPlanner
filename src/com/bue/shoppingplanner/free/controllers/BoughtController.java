@@ -137,7 +137,7 @@ public class BoughtController {
 				// Convert Price to local currency
 				double price = element.getPrice();
 				if (persistType == 0) {
-					SimpleDateFormat s = new SimpleDateFormat("ddMMyyyyhhmmss");
+					SimpleDateFormat s = new SimpleDateFormat("ddMMyyyyHHmmss");
 					String timestamp = s.format(new Date());
 					buys = new Buys(productId, shopId, price,
 							element.getQuantity(), userId, timestamp, "-1",
@@ -447,7 +447,7 @@ public class BoughtController {
 		// Set the commercial
 		// Does not have Barcode
 		if(brand.equals(""))
-			brand=context.getResources().getString(R.string.unknown);
+			brand=context.getResources().getString(R.string.unknown)+" "+commercialName;
 		if (barcode.equalsIgnoreCase(context.getResources().getString(R.string.unknown))) {
 			// productName=element.getProduct();
 			UnknownBarcode unBarcode = new UnknownBarcode(db);

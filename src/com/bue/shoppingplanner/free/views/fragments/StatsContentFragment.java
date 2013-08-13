@@ -50,7 +50,7 @@ public class StatsContentFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// Initialize Dates
-		dateFormater = new SimpleDateFormat("ddMMyyyyhhmmss");
+		dateFormater = new SimpleDateFormat("ddMMyyyyHHmmss");
 		editTextDateFormater = new SimpleDateFormat("dd-MM-yyyy");
 		fromDate = Calendar.getInstance();
 		toDate = Calendar.getInstance();
