@@ -21,7 +21,7 @@
     <string name="city">City</string>
     <string name="zip">Zip</string>
     <string name="total_spending">Total Spending:</string>
-    <string name="shop">Shop: </string>
+    <string name="shop">Shop</string>
     <string name="no_shop">no shop provided</string>
     <string name="title_activity_stats">StatsActivity</string>
     <string name="euro">Euro</string>
@@ -630,7 +630,7 @@
     <string name="main_chart_one_title">Spending vs VAT Payment</string>
     <string name="main_chart_two_title">Top 5 Spending Categories</string>
     <string name="about">About</string>
-    <string name="about_text">Version 1.0. Copyright 2013.</string>
+    <string name="about_text">Version 0.9.2. Copyright 2013.</string>
     <string name="manage_shops">Manage Shops</string>
     <string name="provide_product">Product is mandatory field.</string>
     <string name="zero_user_warning">Cannot perform this Action. There must be at least one Buyer.</string>
@@ -654,7 +654,9 @@
     <string name="add_product">Add new product to list</string>
     <string name="price_chart">Price Chart</string>
     <string name="title_activity_statistics_menu">Statistics Menu</string>
-    <string name="title_activity_price_in_time_chart">Prices In Time Chart</string>
+    <string name="title_activity_price_in_time_chart">Prices Over the Time Chart</string>
     <string name="date">Date</string>
+    <string name="no_autofocus">Scan possibly will not work, because your device does not support autofocus for clear picture.</string>
+    <string name="scan">Scan</string>
 
 </resources>

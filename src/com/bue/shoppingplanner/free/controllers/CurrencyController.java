@@ -279,7 +279,7 @@ public class CurrencyController implements SPSharedPreferences {
 		format.setGroupingUsed(false);
 		format.setMaximumFractionDigits(currency.getDefaultFractionDigits());
 		format.setMinimumFractionDigits(currency.getDefaultFractionDigits());
-		Log.d("Currency test: ",currency.getCurrencyCode()+" "+currency.getSymbol()+" "+currency.getDefaultFractionDigits());
+		//Log.d("Currency test: ",currency.getCurrencyCode()+" "+currency.getSymbol()+" "+currency.getDefaultFractionDigits());
 		format.setCurrency(currency);
 		format.setDecimalFormatSymbols(symbols);
 		String formatted = format.format(Double.parseDouble(price));

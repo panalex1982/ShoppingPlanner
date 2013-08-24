@@ -292,11 +292,13 @@ public class AddProductDialogFragment extends DialogFragment {
 	}
 
 	protected void updateProductDialog() {
-		Product selectedProduct = bController
-				.getProduct(productAddDialogEditText.getText().toString());
-		productKindAddDialogSpinner.setSelection(selectedProduct.getKind() - 1);
+//		Product selectedProduct = bController
+//				.getProduct(productAddDialogEditText.getText().toString());
+//		productKindAddDialogSpinner.setSelection(selectedProduct.getKind() - 1);
+//		String[] price = bController
+//				.getLastPriceAndVat(selectedProduct.getId());
 		String[] price = bController
-				.getLastPriceAndVat(selectedProduct.getId());
+				.getLastPriceAndVat(productAddDialogEditText.getText().toString());
 		if (Double.parseDouble(price[0]) != 0.0) {
 			priceAddDialogEditText.setText(price[0]);
 			int vatAddDialogSpinnerIndex = vat.getVatRates().indexOf(price[1]);

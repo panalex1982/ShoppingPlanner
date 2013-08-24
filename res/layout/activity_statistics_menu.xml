@@ -3,23 +3,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".StatisticsMenuActivity" >
-<LinearLayout 
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
 
-    <Button
-        android:id="@+id/sumsButton"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/sumsButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/statistics" />
+
+        <Button
+            android:id="@+id/chartsButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_activity_price_in_time_chart" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/statistics_main_ad_mob"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/statistics" />
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal" >
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/chartsButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/title_activity_price_in_time_chart" />
-
-</LinearLayout>
 </RelativeLayout>

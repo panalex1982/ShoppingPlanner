@@ -196,22 +196,26 @@ public class Buys {
 		return buys;
 	}
 
-	public static Buys getLastBought(Dbh handler, int productId) {
+	public static Buys getLastBought(Dbh handler, String productName) {
 		SQLiteDatabase db = handler.getReadableDatabase();
-		Cursor cursor = db.query(Dbh.TABLE_BUYS,
-				new String[] { Dbh.BUYS_USER_ID, Dbh.BUYS_SHOP,
-						Dbh.BUYS_UNIT_PRICE, Dbh.BUYS_AMOUNT, Dbh.BUYS_DATE,
-						Dbh.BUYS_PRODUCT, Dbh.BUYS_VAT, }, Dbh.BUYS_ID
-						+ "=? AND " + Dbh.BUYS_LIST_NAME + " = \"-1\"",
-				new String[] { String.valueOf(productId) }, null, null, null,
-				null);
+		String query="SELECT "+Dbh.TABLE_BUYS+"."+Dbh.BUYS_USER_ID+", "
+						+Dbh.TABLE_BUYS+"."+ Dbh.BUYS_SHOP+", "+Dbh.TABLE_BUYS+"."+
+						Dbh.BUYS_UNIT_PRICE+", "+Dbh.TABLE_BUYS+"." + Dbh.BUYS_AMOUNT
+						+", "+Dbh.TABLE_BUYS+"."+ Dbh.BUYS_DATE+", "+Dbh.TABLE_BUYS+"."+
+						Dbh.BUYS_USER_ID+", "+Dbh.TABLE_BUYS+"."+
+						Dbh.BUYS_PRODUCT+", "+Dbh.TABLE_BUYS+"."+ Dbh.BUYS_VAT
+						+" FROM "+Dbh.TABLE_BUYS+" "+Dbh.JOIN_PRODUCT
+						+" WHERE "+Dbh.TABLE_PRODUCT+"."+Dbh.PRODUCT_NAME+" = \""+productName
+						+"\" AND " +Dbh.TABLE_BUYS+"."+ Dbh.BUYS_LIST_NAME + " = \"-1\" ORDER BY "
+						+Dbh.TABLE_BUYS+"."+Dbh.BUYS_DATE+" ASC";
+		Cursor cursor=db.rawQuery(query,null);
 		Buys buys = new Buys();
 		if (cursor != null)
 			if (cursor.moveToLast()) {
-				buys = new Buys(cursor.getInt(0), productId, cursor.getInt(1),
+				buys = new Buys(cursor.getInt(0), cursor.getInt(6), cursor.getInt(1),
 						cursor.getDouble(2), cursor.getInt(3),
 						cursor.getString(4), cursor.getInt(5),
-						cursor.getDouble(6));
+						cursor.getDouble(7));
 			}
 		cursor.close();
 		db.close();
@@ -400,7 +404,7 @@ public class Buys {
 				+ ","+SUM_RESULT+ ","+VAT_SUM_RESULT
 				+ "FROM " + Dbh.TABLE_BUYS + " ";
 		String[] clauses = joinWhereBuilder(null, kinds, products, shops,
-				brands, null);
+				brands, null, true,false);
 		String joins = clauses[0] + Dbh.JOIN_USER;
 		String whereClause = clauses[1];
 		whereClause = (whereClause == " WHERE ") ? whereClause : whereClause
@@ -483,8 +487,9 @@ public class Buys {
 				+ ","+SUM_RESULT+ ","+VAT_SUM_RESULT
 				+ "FROM " + Dbh.TABLE_BUYS + " ";
 		String[] clauses = joinWhereBuilder(users, kinds, null, shops, brands,
-				null);
-		String joins = (brands==null?Dbh.JOIN_PRODUCT+clauses[0]:clauses[0]);
+				null, false, false);
+		//String joins = (brands==null?Dbh.JOIN_PRODUCT+clauses[0]:clauses[0]);
+		String joins = Dbh.JOIN_PRODUCT+clauses[0];
 		String whereClause = clauses[1];
 		whereClause = (whereClause == " WHERE ") ? whereClause : whereClause
 				+ " AND ";
@@ -560,7 +565,7 @@ public class Buys {
 				+ ","+SUM_RESULT+ ","+VAT_SUM_RESULT
 				+ "FROM " + Dbh.TABLE_BUYS + " ";
 		String[] clauses = joinWhereBuilder(users, kinds, products, null, brands,
-				null);
+				null, true, false);
 		String joins = clauses[0] + Dbh.JOIN_SHOP;
 		String whereClause = clauses[1];
 		whereClause = (whereClause == " WHERE ") ? whereClause : whereClause
@@ -673,9 +678,9 @@ public class Buys {
 				+ ","+SUM_RESULT+ ","+VAT_SUM_RESULT
 				+ "FROM " + Dbh.TABLE_BUYS + " ";
 		String[] clauses = joinWhereBuilder(users, null, products, shops, brands,
-				null);
+				null, true, true);
 		String joins = clauses[0] + Dbh.JOIN_PRODUCT_KIND;
-		if(products==null)
+		//if(products==null)
 			joins=joins+Dbh.JOIN_PRODUCT;
 		String whereClause = clauses[1];
 		whereClause = (whereClause == " WHERE ") ? whereClause : whereClause
@@ -976,12 +981,14 @@ public class Buys {
 	 * @param kinds
 	 * @param shops
 	 * @param brands
+	 * @param joinProduct it is false only if the created query returns column from Product table
+	 * @param returnKindColumn
 	 * @return the [0] is the join clause and the [1] is the where clause
 	 */
 	private static String[] joinWhereBuilder(ArrayList<String> users,
 			ArrayList<String> kinds, ArrayList<String> products,
 			ArrayList<String> shops, ArrayList<String> brands,
-			ArrayList<String> shopTypes) {
+			ArrayList<String> shopTypes, boolean joinProduct, boolean returnKindColumn) {
 		String[] clauses = new String[2];
 		String joins = "";
 		String whereClause = " WHERE ";
@@ -994,6 +1001,8 @@ public class Buys {
 				whereClause = whereClause + " AND " + ins;
 
 		}
+		if(products==null && (kinds!=null || brands!=null) && joinProduct && !returnKindColumn) 
+			joins = joins + Dbh.JOIN_PRODUCT;
 		if (kinds != null) {
 			joins = joins + Dbh.JOIN_PRODUCT_KIND;
 			String ins = inBuilder(Dbh.PRODUCT_KIND_NAME,
@@ -1002,7 +1011,6 @@ public class Buys {
 				whereClause = whereClause + ins;
 			else
 				whereClause = whereClause + " AND " + ins;
-
 		}
 		if (shops != null) {
 			joins = joins + Dbh.JOIN_SHOP;
@@ -1015,9 +1023,6 @@ public class Buys {
 		}
 		if (brands != null) {
 			joins = joins + Dbh.JOIN_COMMERCIALPRODUCT;
-			if(products==null){
-				joins=joins+Dbh.JOIN_PRODUCT;
-			}
 			String ins = inBuilder(Dbh.COMMERCIAL_PRODUCT_COMPANY_BRAND,
 					Dbh.TABLE_COMMERCIAL_PRODUCT, brands);
 			if (whereClause.equalsIgnoreCase(" WHERE "))
@@ -1027,7 +1032,8 @@ public class Buys {
 
 		}
 		if (products != null) {
-			joins = joins + Dbh.JOIN_PRODUCT;
+			if(!returnKindColumn)
+				joins = joins + Dbh.JOIN_PRODUCT;
 			String ins = inBuilder(Dbh.PRODUCT_NAME, Dbh.TABLE_PRODUCT,
 					products);
 			if (whereClause.equalsIgnoreCase(" WHERE "))

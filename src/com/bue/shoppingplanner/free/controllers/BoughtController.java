@@ -295,8 +295,8 @@ public class BoughtController {
 	 * @param productId
 	 * @return
 	 */
-	public String[] getLastPriceAndVat(int productId) {
-		Buys lastBought = Buys.getLastBought(db, productId);
+	public String[] getLastPriceAndVat(String productName) {
+		Buys lastBought = Buys.getLastBought(db, productName);
 		String[] price = new String[2];
 		price[0] = String.valueOf(lastBought.getUnitPrice());
 		price[1] = String.valueOf((int) (lastBought.getVat() * 100));

@@ -6,6 +6,7 @@ import java.util.List;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 /**
  * General Product, does not include the firm
@@ -127,7 +128,7 @@ public class Product {
 				null, null, null);
 		Product product = new Product();
 		if (cursor != null)
-			if (cursor.moveToFirst()) {
+			while (cursor.moveToFirst()) {
 				product = new Product(cursor.getInt(0), productName,
 						cursor.getString(1), cursor.getInt(2));
 			}

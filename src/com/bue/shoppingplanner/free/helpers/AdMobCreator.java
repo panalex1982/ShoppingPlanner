@@ -22,7 +22,7 @@ public class AdMobCreator {
 		
 		// Initiate a generic request to load it with an ad
 		AdRequest adRequest = new AdRequest();
-		adRequest.addTestDevice(AdRequest.TEST_EMULATOR);               // Emulator                      // Test Android Device
+		//adRequest.addTestDevice(AdRequest.TEST_EMULATOR);               // Emulator                      // Test Android Device
 		// Initiate a generic request to load it with an ad
 		adview.loadAd(adRequest);
 	}
