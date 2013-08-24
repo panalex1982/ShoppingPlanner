@@ -71,6 +71,7 @@ public class MainMenuActivity extends FragmentActivity {
 	private LinearLayout chartLayout2;
 	
 	private CurrencyController cController;
+	private BoughtController bController;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +88,7 @@ public class MainMenuActivity extends FragmentActivity {
 		mRenderer = new DefaultRenderer();
 		mRenderer2 = new DefaultRenderer();
 		cController=new CurrencyController(this);
+		bController = new BoughtController(this);
 		// Shopping List Button
 		shoppingListImageButton = (ImageButton) findViewById(R.id.shoppingListImageButton);
 		shoppingListImageButton.setOnTouchListener(new View.OnTouchListener() {
@@ -214,6 +216,7 @@ public class MainMenuActivity extends FragmentActivity {
 		mRenderer2.setLabelsTextSize(12f);
 		mRenderer2.setChartTitle(getResources().getString(
 				R.string.main_chart_two_title));
+		autoEnableFavoritesAndStats();	
 	}
 
 	/**
@@ -269,7 +272,7 @@ public class MainMenuActivity extends FragmentActivity {
 		if (GlobalVars.startIntro)
 			startActivityForResult(new Intent(MainMenuActivity.this,
 					IntroActivity.class), 0);
-		BoughtController bController = new BoughtController(this);
+		
 		ArrayList<String[]> chart1Items = new ArrayList<String[]>();
 		ArrayList<String[]> chart2Items = new ArrayList<String[]>();
 		String[] totalItem = { "Total Spending",
@@ -292,6 +295,7 @@ public class MainMenuActivity extends FragmentActivity {
 		}
 		createPieChart1(chart1Items);
 		createPieChart2(chart2Items);
+		autoEnableFavoritesAndStats();
 	}
 
 	@Override
@@ -385,6 +389,25 @@ public class MainMenuActivity extends FragmentActivity {
 	
 	public void clearChart2(){
 		mSeries2.clear();
+	}
+	
+	/**
+	 * Enables or disables Favorites or Statistics buttons
+	 * according to the existence of records in the database
+	 */
+	private void autoEnableFavoritesAndStats(){
+		if(bController.getTotalSpending()==0){
+			statsImageButton.setEnabled(false);
+		}else{
+			if(!statsImageButton.isEnabled())
+				statsImageButton.setEnabled(true);
+		}
+		if(bController.getShoppingListNames().isEmpty()){
+			savedListsImageButton.setEnabled(false);
+		}else{
+			if(!savedListsImageButton.isEnabled())
+				savedListsImageButton.setEnabled(true);
+		}
 	}
 
 	@Override

@@ -250,7 +250,7 @@ public class PriceInTimeChartActivity extends FragmentActivity {
 	        Date x;
 			try {
 				x = s.parse(price[2]);
-				Log.i(x.toString()+": ",y+" euro.");
+				//Log.i(x.toString()+": ",y+" euro.");
 		        series.add(x,y);
 		        if(firstTime&&colorIndex==0){
 		        	limits[0]=x.getTime();
@@ -303,9 +303,10 @@ public class PriceInTimeChartActivity extends FragmentActivity {
 		          LayoutParams.FILL_PARENT));
 		      boolean enabled = mDataset.getSeriesCount() > 0;
 		      //setSeriesWidgetsEnabled(enabled);
-		      if(!seriesNames.isEmpty())
-		        	for(String commercialName:seriesNames)
-			    		addData(commercialName);
+		      if(seriesNames!=null)
+			      if(!seriesNames.isEmpty())
+			        	for(String commercialName:seriesNames)
+				    		addData(commercialName);
 		    } else {
 		    	mChartView.repaint();
 		    }

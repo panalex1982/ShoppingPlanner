@@ -4,6 +4,8 @@ import com.bue.shoppingplanner.free.MainMenuActivity;
 import com.bue.shoppingplanner.free.R;
 import com.bue.shoppingplanner.free.R.layout;
 import com.bue.shoppingplanner.free.R.menu;
+import com.bue.shoppingplanner.free.helpers.AdMobCreator;
+import com.google.ads.AdView;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import android.widget.Button;
 public class StatisticsMenuActivity extends Activity {
 	private Button sumsButton,
 					chartButton;
+	private AdView adView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +51,7 @@ public class StatisticsMenuActivity extends Activity {
 				return false;
 			}
 		});
+		AdMobCreator.createAd(this, adView, R.id.statistics_main_ad_mob);
 	}
 
 	@Override
@@ -66,5 +70,13 @@ public class StatisticsMenuActivity extends Activity {
 			getActionBar().setDisplayHomeAsUpEnabled(true);
 		}
 	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		AdMobCreator.destroyAd(adView);
+	}
+	
+	
 
 }

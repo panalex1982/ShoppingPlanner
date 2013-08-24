@@ -52,7 +52,10 @@ public class IntroActivity extends FragmentActivity {
 	private Dbh db;
 	private JsonUpdate lastUpdate;
 	private AdView adView;
-	private Button startButton;
+	private Button startButton,
+					helpIntroButton;
+	
+	BoughtController bController;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +63,8 @@ public class IntroActivity extends FragmentActivity {
 		// Test Barcode Scanner
 		setContentView(R.layout.activity_intro);
 		startButton=(Button)findViewById(R.id.startButton);
-		// Test Plot
+		helpIntroButton=(Button)findViewById(R.id.helpIntroButton);
+		bController = new BoughtController(this);
 		db = new Dbh(this);
 		initializeDatabase(this);
 		lastUpdate = JsonUpdate.getJsonUpdate(db);
@@ -102,6 +106,13 @@ public class IntroActivity extends FragmentActivity {
 				openMainApplication();				
 			}
 		});
+		helpIntroButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				DialogOpener.showAboutDialog(getSupportFragmentManager());				
+			}
+		});
 		AdMobCreator.createAd(this, adView, R.id.intro_ad_mob);
 	}
 
@@ -109,11 +120,8 @@ public class IntroActivity extends FragmentActivity {
 	 * Opens the Main Menu Activity.
 	 */
 	private void openMainApplication() {
-		;
 		try {
-			Intent main = new Intent(IntroActivity.this, MainMenuActivity.class);
-			// main.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			// startActivity(main);
+			checkUserExistance();
 			finish();
 		} catch (Exception ex) {
 			String exs = ex.toString();
@@ -128,7 +136,7 @@ public class IntroActivity extends FragmentActivity {
 	public void initializeDatabase(Context context) {
 		try {
 			if (ProductKind.getProductKindCount(db) <= 0) {
-				BoughtController bController = new BoughtController(context);
+				
 				ShopController sContreller = new ShopController(context);
 				String unknown = context.getResources().getString(
 						R.string.unknown);
@@ -183,11 +191,11 @@ public class IntroActivity extends FragmentActivity {
 	protected void onActivityResult(int arg0, int arg1, Intent arg2) {
 		super.onActivityResult(arg0, arg1, arg2);
 		if (arg0 == 0) {
-			Intent initializeSettings = new Intent(IntroActivity.this,
+			Intent initializeUser = new Intent(IntroActivity.this,
 					ManageTableActivity.class);
-			initializeSettings.putExtra(ManageTableType.TAG,
+			initializeUser.putExtra(ManageTableType.TAG,
 					ManageTableType.INIT_USER);
-			startActivityForResult(initializeSettings, 1);
+			startActivityForResult(initializeUser, 1);
 		}
 	}
 
@@ -225,12 +233,22 @@ public class IntroActivity extends FragmentActivity {
 		Locale locale;
 		TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 		String countryCode = tm.getSimCountryIso();
-		if (countryCode != "")
+		if (!countryCode.equals(""))
 			locale = new Locale(countryCode, countryCode);
 		else
 			locale = getResources().getConfiguration().locale;
 		CurrencyController currencyController = new CurrencyController(this);
 		currencyController.setDefaultCurrencyFromLocale(locale);
+	}
+	
+	/**
+	 * Check if any user exist, and if not creates Unknown user.
+	 */
+	public void checkUserExistance(){
+		if(bController.getAllUserNames().size()==0){
+			bController.persistUser(getResources().getString(R.string.unknown));
+		}
+			
 	}
 
 	@Override

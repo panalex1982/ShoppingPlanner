@@ -628,7 +628,7 @@
     <string name="main_chart_one_title">Έξοδα / ΦΠΑ</string>
     <string name="main_chart_two_title">Οι 5 πιο δαπανηρές κατηγορίες.</string>
     <string name="about">Σχετικά</string>
-    <string name="about_text">Έκδοση 1.0. Copyright 2013.</string>
+    <string name="about_text">Έκδοση 0.9.2. Copyright 2013.</string>
     <string name="manage_shops">Διαχείρηση Καταστημάτων</string>
     <string name="provide_product">Το προϊόν είναι υποχρεωτικό πεδίο.</string>
     <string name="zero_user_warning">Μη έγκυρη ενέργεια. Πρέπει να υπάρχει τουλάχιστον ένας καταναλωτής.</string>
@@ -654,5 +654,7 @@
 	<string name="title_activity_statistics_menu">Μενού Στατιστικών</string>
 	<string name="title_activity_price_in_time_chart">Διάγραμμα τιμών στο χρόνο</string>
 	<string name="date">Ημερομηνία</string>
+	<string name="no_autofocus">Η σάρωση πιθανόν θα αποτύχει, καθώς η συσκευή σας δεν υποστηρίζει αυτόματη εστίαση για καθαρή απεικόνιση.</string>
+	<string name="scan">Σάρωση</string>
 	
 </resources>
