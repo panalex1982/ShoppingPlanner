@@ -20,4 +20,4 @@ local.properties
 .project
 
 #keys
-src/com/bue/shoppingplanner/utilities/Keys.java
+Keys.java
