@@ -199,12 +199,12 @@ public class Dbh extends SQLiteOpenHelper {
 		
 		// Currencies
 		String CREATE_TABLE_CURRENCIES="CREATE TABLE " + TABLE_CURRENCIES+ "("
-				+ CURRENCIES_ID+" TEXT PRIMARY_KEY, "
+				+ CURRENCIES_ID+" TEXT PRIMARY KEY, "
 				+ CURRENCIES_RATE_TO_USD+" REAL NOT NULL)";
 		
 		// Json Last Update
 		String CREATE_TABLE_JSON_UPDATE="CREATE TABLE " + TABLE_JSON_UPDATE+ "("
-				+ JSON_UPDATE_ID+" INTEGER PRIMARY_KEY, "
+				+ JSON_UPDATE_ID+" INTEGER PRIMARY KEY, "
 				+ JSON_UPDATE_DATE+" DATE NOT NULL)";
 				
 
@@ -220,7 +220,7 @@ public class Dbh extends SQLiteOpenHelper {
 		db.execSQL(CREATE_TABLE_UNKNOWN_BARCODE);
 		db.execSQL(CREATE_TABLE_CURRENCIES);
 		db.execSQL(CREATE_TABLE_JSON_UPDATE);
-		Log.d("Initialize table: ", CREATE_TABLE_USER+"\n"
+		Log.i("Initialize table: ", CREATE_TABLE_USER+"\n"
 				+CREATE_TABLE_PRODUCT_KIND+"\n"
 				+CREATE_TABLE_COMMERCIAL_PRODUCT+"\n"
 				+CREATE_TABLE_PRODUCT+"\n"
